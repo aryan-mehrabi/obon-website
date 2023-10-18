@@ -1,16 +1,13 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { hashPassword } from "@/lib/helpers";
 import { credentialsSchema } from "@/lib/validations/auth";
 import { User } from "@/types/next-auth";
-import * as z from "zod"
+import * as z from "zod";
+import prisma from "@/prisma/client";
 
-
-const prisma = new PrismaClient();
-
-export const authOptions : AuthOptions = {
+export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
