@@ -57,5 +57,7 @@ export async function POST(request: Request) {
     },
   });
 
-  return Response.json({ success: true, data: newUser });
+  const { password: _, ...otherUser } = newUser;
+
+  return Response.json({ success: true, data: otherUser });
 }
