@@ -48,11 +48,12 @@ export async function POST(request: Request) {
     );
   }
 
+  const password = await hashPassword(data.password);
   //actual registering
   const newUser = await prisma.user.create({
     data: {
       email: data.email,
-      password: hashPassword(data.password),
+      password,
     },
   });
 

@@ -6,6 +6,7 @@ import { credentialsSchema } from "@/lib/validations/auth";
 import { User } from "@/types/next-auth";
 import * as z from "zod";
 import prisma from "@/prisma/client";
+import bcrypt from "bcrypt";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -35,7 +36,9 @@ export const authOptions: AuthOptions = {
           if (!user) {
             throw new Error("Please register first");
           }
-          if (hashPassword(credentials?.password!) === user.password) {
+          if (
+            await bcrypt.compare(user.password!, credentials?.password!)
+          ) {
             const { password, ...userData } = user;
             return userData;
           } else {

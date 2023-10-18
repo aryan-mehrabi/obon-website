@@ -1,5 +1,6 @@
-import { SHA256 as sha256 } from "crypto-js";
+import bcrypt from "bcrypt";
 
-export const hashPassword = (password: string): string => {
-  return sha256(password).toString();
+export const hashPassword = async (password: string): Promise<string> => {
+  const SALTROUND = 10;
+  return await bcrypt.hash(password, SALTROUND);
 };
