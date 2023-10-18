@@ -36,9 +36,7 @@ export const authOptions: AuthOptions = {
           if (!user) {
             throw new Error("Please register first");
           }
-          if (
-            await bcrypt.compare(user.password!, credentials?.password!)
-          ) {
+          if (await bcrypt.compare(credentials?.password!, user.password!)) {
             const { password, ...userData } = user;
             return userData;
           } else {
@@ -72,9 +70,9 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
-  pages: {
-    signIn: "/login",
-  },
+  // pages: {
+  //   signIn: "/login",
+  // },
 };
 
 const handler = NextAuth(authOptions);
