@@ -10,15 +10,29 @@ export const i18n = {
 
 export type Locale = (typeof i18n)["locales"][number];
 
-export function getLocale(request: NextRequest): string | undefined {
-  // Negotiator expects plain object so we need to transform headers
+const firstPathname = (url: URL): string | undefined => {
+  return url.pathname.split("/").filter(el => el)[0];
+};
+
+type LocaleType = (typeof i18n.locales)[number];
+const isInLocales = (x: string | undefined): x is LocaleType =>
+  i18n.locales.includes(x as LocaleType);
+
+export function getLocale(request: NextRequest): string {
+  const referer = request.headers.get("referer");
+  if (referer) {
+    const pathnameLocale = firstPathname(new URL(referer));
+    if (isInLocales(pathnameLocale)) {
+      return pathnameLocale;
+    }
+  }
+
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
   // @ts-ignore locales are readonly
   const locales: string[] = i18n.locales;
 
-  // Use negotiator and intl-localematcher to get best locale
   let languages = new Negotiator({ headers: negotiatorHeaders }).languages(
     locales
   );
@@ -28,12 +42,10 @@ export function getLocale(request: NextRequest): string | undefined {
   return locale;
 }
 
-// We enumerate all dictionaries here for better linting and typescript support
-// We also get the default import for cleaner types
 const dictionaries = {
   fa: () => import("../dictionaries/fa.json").then(module => module.default),
   en: () => import("../dictionaries/en.json").then(module => module.default),
 };
 
 export const getDictionary = async (locale: Locale) =>
-  dictionaries[locale]?.() ?? dictionaries.en();
+  dictionaries[locale]?.() ?? dictionaries.fa();
