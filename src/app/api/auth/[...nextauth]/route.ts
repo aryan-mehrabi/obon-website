@@ -70,9 +70,9 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
-  // pages: {
-  //   signIn: "/login",
-  // },
+  pages: {
+    signIn: "/login",
+  },
 };
 
 const handler = NextAuth(authOptions);
