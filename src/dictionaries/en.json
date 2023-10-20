@@ -3,5 +3,11 @@
     "home": {
       "title": "hi"
     }
+  },
+  "errors": {
+    "register": "Please register.",
+    "wrong_password": "Wrong password",
+    "user_exist": "User exists. Please Login",
+    "server": "Something wrong happend."
   }
 }
