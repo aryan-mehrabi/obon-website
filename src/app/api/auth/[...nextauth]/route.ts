@@ -1,12 +1,13 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { hashPassword } from "@/lib/helpers";
 import { credentialsSchema } from "@/lib/validations/auth";
 import { User } from "@/types/next-auth";
 import * as z from "zod";
 import prisma from "@/prisma/client";
 import bcrypt from "bcrypt";
+import { getDictionary, getLocale } from "@/lib/locale";
+import type { NextRequest } from "next/server";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -25,7 +26,19 @@ export const authOptions: AuthOptions = {
           placeholder: "Enter your password",
         },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
+        const newReq = new Request(
+          req.headers!.host + "/api/auth/callback/credentials",
+          {
+            method: req.method,
+            headers: req.headers,
+            body: JSON.stringify(req.body),
+          }
+        ) as NextRequest;
+
+        const locale = getLocale(newReq);
+        const { errors } = await getDictionary(locale);
+        
         try {
           credentialsSchema.parse(credentials);
           const user = await prisma.user.findUnique({
@@ -34,15 +47,16 @@ export const authOptions: AuthOptions = {
             },
           });
           if (!user) {
-            throw new Error("Please register first");
+            throw new Error(errors.register);
           }
           if (await bcrypt.compare(credentials?.password!, user.password!)) {
             const { password, ...userData } = user;
             return userData;
           } else {
-            throw new Error("Wrong password");
+            throw new Error(errors.wrong_password);
           }
         } catch (error) {
+          console.log(error);
           if (error instanceof z.ZodError) {
             throw new Error(JSON.stringify(error.issues));
           } else {

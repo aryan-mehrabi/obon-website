@@ -5,11 +5,15 @@ import * as z from "zod";
 import { credentialsSchema } from "@/lib/validations/auth";
 import { hashPassword } from "@/lib/helpers";
 import { redirect } from "next/navigation";
+import { getDictionary, getLocale } from "@/lib/locale";
+import type { NextRequest } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (session) redirect("/");
 
+  const locale = getLocale(request);
+  const { errors } = await getDictionary(locale);
   const data = await request.json();
 
   try {
@@ -40,7 +44,7 @@ export async function POST(request: Request) {
     return new Response(
       JSON.stringify({
         success: false,
-        message: "user already exists",
+        message: errors.user_exist,
       }),
       {
         status: 400,

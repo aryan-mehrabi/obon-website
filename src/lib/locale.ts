@@ -18,7 +18,7 @@ type LocaleType = (typeof i18n.locales)[number];
 const isInLocales = (x: string | undefined): x is LocaleType =>
   i18n.locales.includes(x as LocaleType);
 
-export function getLocale(request: NextRequest): string {
+export function getLocale(request: NextRequest): Locale {
   const referer = request.headers.get("referer");
   if (referer) {
     const pathnameLocale = firstPathname(new URL(referer));
@@ -37,7 +37,7 @@ export function getLocale(request: NextRequest): string {
     locales
   );
 
-  const locale = matchLocale(languages, locales, i18n.defaultLocale);
+  const locale = matchLocale(languages, locales, i18n.defaultLocale) as Locale;
 
   return locale;
 }
