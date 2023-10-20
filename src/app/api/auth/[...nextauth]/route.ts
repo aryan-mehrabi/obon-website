@@ -1,7 +1,7 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { credentialsSchema } from "@/lib/validations/auth";
+import { credentialsSchema } from "@/lib/validations";
 import { User } from "@/types/next-auth";
 import * as z from "zod";
 import prisma from "@/prisma/client";

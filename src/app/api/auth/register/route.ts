@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../[...nextauth]/route";
 import prisma from "@/prisma/client";
 import * as z from "zod";
-import { credentialsSchema } from "@/lib/validations/auth";
+import { credentialsSchema } from "@/lib/validations";
 import { hashPassword } from "@/lib/helpers";
 import { redirect } from "next/navigation";
 import { getDictionary, getLocale } from "@/lib/locale";
