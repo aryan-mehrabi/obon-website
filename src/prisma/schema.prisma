@@ -31,6 +31,8 @@ model Address {
   address       String
   user          User   @relation(fields: [userId], references: [id])
   userId        String @unique
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }
 
 model Product {
@@ -55,6 +57,9 @@ model Image {
   url         String
   width       Int?
   height      Int?
+  is_default  Boolean @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Category {
@@ -62,6 +67,8 @@ model Category {
   products      Product[]
   persian_name  String
   english_name  String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 enum Role {
