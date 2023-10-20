@@ -16,7 +16,52 @@ model User {
   last_name      String?
   email          String @unique
   password       String?
+  emailVerified  DateTime?
+  address        Address?
   role           Role @default(USER)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Address {
+  id            Int    @id @default(autoincrement())
+  county        String
+  city          String
+  postal_code   Int
+  address       String
+  user          User   @relation(fields: [userId], references: [id])
+  userId        String @unique
+}
+
+model Product {
+  id             Int    @id @default(autoincrement())
+  persian_name   String
+  english_name   String
+  is_availbale   Boolean @default(true)
+  is_visible_to_user Boolean @default(true)
+  dimensions     Json?
+  description    String?
+  quantity       Int @default(1)
+  images         Image[]
+  categories     Category[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Image {
+  id          Int    @id @default(autoincrement())
+  product     Product       @relation(fields: [productId], references: [id])
+  productId   Int
+  url         String
+  width       Int?
+  height      Int?
+}
+
+model Category {
+  id            Int    @id @default(autoincrement())
+  products      Product[]
+  persian_name  String
+  english_name  String
 }
 
 enum Role {
