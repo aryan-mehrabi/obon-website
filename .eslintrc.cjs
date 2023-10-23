@@ -41,6 +41,17 @@ module.exports = {
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error",
     quotes: ["error", "double", { avoidEscape: true }],
+    "react/jsx-filename-extension": [1, { extensions: [".tsx", ".ts"] }],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        js: "never",
+        jsx: "never",
+        ts: "never",
+        tsx: "never",
+      },
+    ],
   },
   settings: {
     react: {
