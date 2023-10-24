@@ -53,6 +53,7 @@ module.exports = {
       },
     ],
     "react/jsx-props-no-spreading": "off",
+    "linebreak-style": "off",
   },
   settings: {
     react: {
