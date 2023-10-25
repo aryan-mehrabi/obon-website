@@ -2,6 +2,15 @@
   "pages": {
     "home": {
       "title": "سلام"
+    },
+    "login": {
+      "title": "ورود",
+      "email": "ایمیل",
+      "password": "رمز عبور",
+      "password_placeholder": "رمز عبور خود را وارد کنید",
+      "submit": "ورود",
+      "no_account": "ثبت نام نکرده اید؟",
+      "register_here": "اینجا ثبت نام کنید"
     }
   },
   "errors": {

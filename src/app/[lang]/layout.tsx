@@ -26,7 +26,7 @@ export default function RootLayout({
   params: { lang: Locale };
 }) {
   return (
-    <html lang={lang}>
+    <html lang={lang} dir={lang === "fa" ? "rtl" : ""}>
       <body className={inter.className}>{children}</body>
     </html>
   );

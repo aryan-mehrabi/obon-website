@@ -2,6 +2,15 @@
   "pages": {
     "home": {
       "title": "hi"
+    },
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "password_placeholder": "Enter your password",
+      "submit": "login",
+      "no_account": "Don't have an account?",
+      "register_here": "Register Here"
     }
   },
   "errors": {
