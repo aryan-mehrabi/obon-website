@@ -1,13 +1,14 @@
-import NextAuth, { AuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { credentialsSchema } from "@/lib/validations";
-import { User } from "@/types/next-auth";
-import * as z from "zod";
-import prisma from "@/prisma/client";
 import bcrypt from "bcrypt";
-import { getDictionary, getLocale } from "@/lib/locale";
 import type { NextRequest } from "next/server";
+import NextAuth, { AuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import * as z from "zod";
+
+import { getDictionary, getLocale } from "@/lib/locale";
+import { credentialsSchema } from "@/lib/validations";
+import prisma from "@/prisma/client";
+import { User } from "@/types/next-auth";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -28,17 +29,17 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials, req) {
         const newReq = new Request(
-          req.headers!.host + "/api/auth/callback/credentials",
+          `${req.headers!.host}/api/auth/callback/credentials`,
           {
             method: req.method,
             headers: req.headers,
             body: JSON.stringify(req.body),
-          }
+          },
         ) as NextRequest;
 
         const locale = getLocale(newReq);
         const { errors } = await getDictionary(locale);
-        
+
         try {
           credentialsSchema.parse(credentials);
           const user = await prisma.user.findUnique({
@@ -49,18 +50,21 @@ export const authOptions: AuthOptions = {
           if (!user) {
             throw new Error(errors.register);
           }
-          if (await bcrypt.compare(credentials?.password!, user.password!)) {
-            const { password, ...userData } = user;
+          if (
+            await bcrypt.compare(
+              credentials?.password as string,
+              user.password!,
+            )
+          ) {
+            const { password: _, ...userData } = user;
             return userData;
-          } else {
-            throw new Error(errors.wrong_password);
           }
+          throw new Error(errors.wrong_password);
         } catch (error) {
-          console.log(error);
           if (error instanceof z.ZodError) {
             throw new Error(JSON.stringify(error.issues));
           } else {
-            throw new Error(JSON.stringify(error));
+            throw new Error(JSON.stringify((error as Error).message));
           }
         }
       },
