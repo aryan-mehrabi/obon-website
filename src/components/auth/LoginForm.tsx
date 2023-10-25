@@ -28,6 +28,7 @@ interface PropType {
 export default function LoginForm({
   dict: {
     pages: { login },
+    form: dictForm,
   },
 }: PropType) {
   const router = useRouter();
@@ -63,9 +64,9 @@ export default function LoginForm({
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{login.email}</FormLabel>
+              <FormLabel>{dictForm.fields.email}</FormLabel>
               <FormControl>
-                <Input placeholder="example@example.com" {...field} />
+                <Input placeholder={dictForm.placeholders.email} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -76,11 +77,11 @@ export default function LoginForm({
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{login.password}</FormLabel>
+              <FormLabel>{dictForm.fields.password}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
-                  placeholder={login.password_placeholder}
+                  placeholder={dictForm.placeholders.password}
                   {...field}
                 />
               </FormControl>

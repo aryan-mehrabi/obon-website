@@ -5,12 +5,27 @@
     },
     "login": {
       "title": "ورود",
-      "email": "ایمیل",
-      "password": "رمز عبور",
-      "password_placeholder": "رمز عبور خود را وارد کنید",
       "submit": "ورود",
       "no_account": "ثبت نام نکرده اید؟",
       "register_here": "اینجا ثبت نام کنید"
+    },
+    "register": {
+      "title": "ثبت نام",
+      "submit": "ثبت نام",
+      "have_account": "ثبت نام کرده اید؟",
+      "login_here": "اینجا وارد شوید"
+    }
+  },
+  "form": {
+    "fields": {
+      "email": "ایمیل",
+      "password": "رمز عبور",
+      "confirm_password": "تکرار رمز عبور"
+    },
+    "placeholders": {
+      "email": "example@example.com",
+      "password": "رمز عبور خود را وارد کنید",
+      "confirm_password": "تکرار رمز عبور را وارد کنید"
     }
   },
   "errors": {

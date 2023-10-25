@@ -5,12 +5,27 @@
     },
     "login": {
       "title": "Login",
-      "email": "Email",
-      "password": "Password",
-      "password_placeholder": "Enter your password",
       "submit": "login",
       "no_account": "Don't have an account?",
       "register_here": "Register Here"
+    },
+    "register": {
+      "title": "Register",
+      "submit": "register",
+      "have_account": "Have an account?",
+      "login_here": "Login Here"
+    }
+  },
+  "form": {
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "confirm_password": "Repeat Password"
+    },
+    "placeholders": {
+      "email": "example@example.com",
+      "password": "Enter your password",
+      "confirm_password": "Repeat your password"
     }
   },
   "errors": {
