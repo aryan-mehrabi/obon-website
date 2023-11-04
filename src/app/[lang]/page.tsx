@@ -1,6 +1,12 @@
+import { HamburgerMenuIcon, PersonIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
-import { getDictionary } from "@/lib/locale";
+import Link from "next/link";
+import React from "react";
+
 import type { Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
+
+import CartIcon from "../../../public/carticon.svg";
 
 export default async function Home({
   params: { lang },
@@ -9,112 +15,172 @@ export default async function Home({
 }) {
   const dict = await getDictionary(lang);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          {dict.pages.home.title}
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="flex flex-col">
+      <header className="bg-[url('/header-image.jpg')] bg-cover overflow-auto">
+        <nav className="bg-white flex items-center justify-between p-7 fixed w-full z-10">
+          <HamburgerMenuIcon className="w-8 h-8" />
+          <h3 className="text-2xl font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            Candleaf
+          </h3>
+          <div className="flex gap-3">
+            <PersonIcon className="w-8 h-8" />
+            <CartIcon className="w-8 h-8" />
+          </div>
+        </nav>
+        <div className="bg-white backdrop-blur-md bg-opacity-80 my-64 mx-3 text-center p-10">
+          <h1 className="text-4xl leading-tight font-semibold mb-3">
+            🌱
+            <br />
+            The nature candle
+          </h1>
+          <p className="text-[18px]">
+            All handmade with natural soy wax, Candleaf is a companion for all
+            your pleasure moments
+          </p>
+          <button
+            type="button"
+            className="mt-9 w-full bg-eprimary p-2 text-white rounded-sm"
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            Discovery our collection
+          </button>
         </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
+      </header>
+      <section className="my-16 mx-5">
+        <div className="text-center space-y-2 mb-14">
+          <h2 className="text-4xl font-semibold">Products</h2>
+          <p className="text-[#5E6E89] text-xl">
+            Order it for you or for your beloved ones
           </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
+        </div>
+        <div className="flex flex-col gap-5">
+          <div className="shadow-sm rounded p-3 bg-white">
+            <div className="h-[170px] overflow-hidden -mt-4 mb-2">
+              <Image
+                alt="sample product image"
+                width={3000}
+                height={2250}
+                src="/sample-product.png"
+                className=""
+              />
+            </div>
+            <p className="font-[500]">Spice mint</p>
+            <p className="rtl:text-left text-right">$9.99</p>
+          </div>
+          <div className="shadow-sm rounded p-3 bg-white">
+            <div className="h-[170px] overflow-hidden -mt-4 mb-2">
+              <Image
+                alt="sample product image"
+                width={3000}
+                height={2250}
+                src="/sample-product.png"
+                className=""
+              />
+            </div>
+            <p className="font-[500]">Spice mint</p>
+            <p className="rtl:text-left text-right">$9.99</p>
+          </div>
+        </div>
+        <div className="text-center mt-12">
+          <button
+            className="bg-eprimary text-white px-11 py-2 rounded-sm"
+            type="button"
+          >
+            See more
+          </button>
+        </div>
+      </section>
+      <section className="my-16 space-y-10">
+        <div className="text-center mx-4 space-y-4">
+          <h2 className="font-bold text-4xl">Clean and fragrant soy wax</h2>
+          <p className="text-eprimary">
+            Made for your home and for your wellnewss
           </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        </div>
+        <div>
+          <Image alt="" width={1380} height={964} src="/mockups.png" />
+        </div>
+        <div className="mx-5">
+          <ul className="list-image-[url('/checkmark-circle-outline.svg')] list-outside ps-8 text-xl flex flex-col gap-5">
+            <li>
+              <strong>Eco-sustainable:</strong>
+              All recyclable materials, 0% CO2 emissions
+            </li>
+            <li>
+              <strong>Hyphoallergenic:</strong> 100% natural, human friendly
+              ingredients
+            </li>
+            <li>
+              <strong>Handmade:</strong> All candles are craftly made with love.
+            </li>
+            <li>
+              <strong>Long burning:</strong> No more waste. Created for last
+              long.
+            </li>
+          </ul>
+        </div>
+        <div className="text-center">
+          <button
+            type="button"
+            className="bg-eprimary text-white px-11 py-2 rounded-sm"
+          >
+            See more
+          </button>
+        </div>
+      </section>
+      <footer className="bg-esecondary text-white py-10 px-4 relative">
+        <hr />
+        <div className="mt-4 mb-12">
+          <h3 className="text-3xl font-semibold mb-3">Candleaf</h3>
+          <p>Your natural candle made for your home and for your wellness.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-y-10 mb-16">
+          <div>
+            <h4 className="text-eprimary font-[500] mb-5">Discovery</h4>
+            <ul className="flex flex-col gap-4">
+              <li>
+                <Link href="#">New seasosn</Link>
+              </li>
+              <li>
+                <Link href="#">Most searched</Link>
+              </li>
+              <li>
+                <Link href="#">Most selled</Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-eprimary font-[500] mb-5">Info</h4>
+            <ul className="flex flex-col gap-4">
+              <li>
+                <Link href="#">Contact Us</Link>
+              </li>
+              <li>
+                <Link href="#">Privacy Policies</Link>
+              </li>
+              <li>
+                <Link href="#">Terms & Conditions</Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-eprimary font-[500] mb-5">About</h4>
+            <ul className="flex flex-col gap-4">
+              <li>
+                <Link href="#">About</Link>
+              </li>
+              <li>
+                <Link href="#">Shipping</Link>
+              </li>
+              <li>
+                <Link href="#">Affiliate</Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="bg-white text-black absolute w-full bottom-0 left-0 text-center p-4">
+          <p>Made with Love by Aryan</p>
+        </div>
+      </footer>
+    </div>
   );
 }
