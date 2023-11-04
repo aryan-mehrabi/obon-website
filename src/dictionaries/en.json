@@ -16,18 +16,22 @@
         "description": "Made for your home and for your wellness",
         "benefit_list": [
           {
+            "id": 1,
             "title": "Eco-sustainable",
             "description": "All recyclable materials, 0% CO2 emissions"
           },
           {
+            "id": 2,
             "title": "Hyphoallergenic",
             "description": "100% natural, human friendly ingredients "
           },
           {
+            "id": 3,
             "title": "Handmade",
             "description": "All candles are craftly made with love."
           },
           {
+            "id": 4,
             "title": "Long burning:",
             "description": "No more waste. Created for last long."
           }
@@ -39,27 +43,30 @@
         "description": "Your natural candle made for your home and for your wellness.",
         "menu": [
           {
+            "id": 1,
             "title": "Discovery",
             "links": [
-              { "title": "New season", "href": "#" },
-              { "title": "Most searched", "href": "#" },
-              { "title": "Most selled", "href": "#" }
+              { "id": 1, "title": "New season", "href": "#" },
+              { "id": 2, "title": "Most searched", "href": "#" },
+              { "id": 3, "title": "Most selled", "href": "#" }
             ]
           },
           {
+            "id": 2,
             "title": "Info",
             "links": [
-              { "title": "Contact us", "href": "#" },
-              { "title": "Privacy Policies", "href": "#" },
-              { "title": "Terms & Conditions", "href": "#" }
+              { "id": 1, "title": "Contact us", "href": "#" },
+              { "id": 2, "title": "Privacy Policies", "href": "#" },
+              { "id": 3, "title": "Terms & Conditions", "href": "#" }
             ]
           },
           {
+            "id": 3,
             "title": "About",
             "links": [
-              { "title": "Help", "href": "#" },
-              { "title": "Shipping", "href": "#" },
-              { "title": "Affiliate", "href": "#" }
+              { "id": 1, "title": "Help", "href": "#" },
+              { "id": 2, "title": "Shipping", "href": "#" },
+              { "id": 3, "title": "Affiliate", "href": "#" }
             ]
           }
         ],
@@ -93,14 +100,17 @@
   },
   "nav_menu": [
     {
+      "id": 1,
       "title": "Products",
       "href": "#"
     },
     {
+      "id": 2,
       "title": "About",
       "href": "#"
     },
     {
+      "id": 3,
       "title": "Cart",
       "href": "#"
     }

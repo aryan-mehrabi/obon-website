@@ -114,8 +114,8 @@ export default async function Home({
         </div>
         <div className="mx-5 md:mx-auto">
           <ul className="list-image-[url('/checkmark-circle-outline.svg')] list-outside ps-8 text-xl flex flex-col gap-5">
-            {benefits.benefit_list.map(({ title, description }) => (
-              <li>
+            {benefits.benefit_list.map(({ id, title, description }) => (
+              <li key={id}>
                 <strong>
                   {title}
                   :
@@ -143,12 +143,12 @@ export default async function Home({
               <p>{footer.description}</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-10 mb-16 md:mt-10">
-              {footer.menu.map(({ title, links }) => (
-                <div>
+              {footer.menu.map(({ id, title, links }) => (
+                <div key={id}>
                   <h4 className="text-eprimary font-[500] mb-5">{title}</h4>
                   <ul className="flex flex-col gap-4">
-                    {links.map(({ title: linkTitle, href }) => (
-                      <li>
+                    {links.map(({ id: j, title: linkTitle, href }) => (
+                      <li key={j}>
                         <Link href={href}>{linkTitle}</Link>
                       </li>
                     ))}

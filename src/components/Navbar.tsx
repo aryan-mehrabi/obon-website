@@ -33,8 +33,8 @@ export default function Navbar({ navMenu }: PropTypes) {
           } md:block md:static md:translate-y-0 md:w-auto`}
         >
           <ul className="px-10 py-5 flex flex-col md:flex-row gap-y-5 md:gap-16 text-2xl md:text-base md:p-0">
-            {navMenu.map(({ title, href }) => (
-              <li>
+            {navMenu.map(({ id, title, href }) => (
+              <li key={id}>
                 <Link className="p-2" href={href}>
                   {title}
                 </Link>
