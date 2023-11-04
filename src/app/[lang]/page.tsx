@@ -1,12 +1,10 @@
-import { HamburgerMenuIcon, PersonIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+import Navbar from "@/components/Navbar";
 import type { Locale } from "@/lib/locale";
 import { getDictionary } from "@/lib/locale";
-
-import CartIcon from "../../../public/carticon.svg";
 
 export default async function Home({
   params: { lang },
@@ -20,16 +18,7 @@ export default async function Home({
   return (
     <div className="flex flex-col">
       <header className="bg-[url('/header-image.jpg')] bg-cover overflow-auto">
-        <nav className="bg-white flex items-center justify-between p-7 fixed w-full z-10">
-          <HamburgerMenuIcon className="w-8 h-8" />
-          <h3 className="text-2xl font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            Candleaf
-          </h3>
-          <div className="flex gap-3">
-            <PersonIcon className="w-8 h-8" />
-            <CartIcon className="w-8 h-8" />
-          </div>
-        </nav>
+        <Navbar />
         <div className="bg-white backdrop-blur-md bg-opacity-80 my-64 mx-3 text-center p-10">
           <h1 className="text-4xl leading-tight font-semibold mb-3">
             🌱
