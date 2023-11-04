@@ -91,6 +91,20 @@
       "confirm_password": "Repeat your password"
     }
   },
+  "nav_menu": [
+    {
+      "title": "Products",
+      "href": "#"
+    },
+    {
+      "title": "About",
+      "href": "#"
+    },
+    {
+      "title": "Cart",
+      "href": "#"
+    }
+  ],
   "errors": {
     "register": "Please register.",
     "wrong_password": "Wrong password",

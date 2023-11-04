@@ -1,13 +1,19 @@
 "use client";
 
 import { HamburgerMenuIcon, PersonIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import React, { useRef, useState } from "react";
 
+import fa from "@/dictionaries/fa.json";
 import useClickOutside from "@/hooks/useClickOutside";
 
 import CartIcon from "../../public/carticon.svg";
 
-export default function Navbar() {
+interface PropTypes {
+  navMenu: typeof fa.nav_menu;
+}
+
+export default function Navbar({ navMenu }: PropTypes) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const ref = useRef<HTMLElement>(null);
   useClickOutside(ref, () => setIsMenuOpen(false));
@@ -29,9 +35,11 @@ export default function Navbar() {
         }`}
       >
         <ul className="px-10 py-5 flex flex-col gap-y-5 text-2xl">
-          <li>Discovery</li>
-          <li>About</li>
-          <li>Contact us</li>
+          {navMenu.map(({ title, href }) => (
+            <li>
+              <Link href={href}>{title}</Link>
+            </li>
+          ))}
         </ul>
       </div>
       <div className="flex gap-3">

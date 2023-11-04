@@ -13,12 +13,15 @@ export default async function Home({
 }) {
   const {
     pages: { home },
+    nav_menu: navMenu,
   } = await getDictionary(lang);
-  const { header, product, benefits, footer } = home;
+  const {
+    header, product, benefits, footer,
+  } = home;
   return (
     <div className="flex flex-col">
       <header className="bg-[url('/header-image.jpg')] bg-cover overflow-auto">
-        <Navbar />
+        <Navbar navMenu={navMenu} />
         <div className="bg-white backdrop-blur-md bg-opacity-80 my-64 mx-3 text-center p-10">
           <h1 className="text-4xl leading-tight font-semibold mb-3">
             🌱
@@ -87,7 +90,10 @@ export default async function Home({
           <ul className="list-image-[url('/checkmark-circle-outline.svg')] list-outside ps-8 text-xl flex flex-col gap-5">
             {benefits.benefit_list.map(({ title, description }) => (
               <li>
-                <strong>{title}:</strong>
+                <strong>
+                  {title}
+                  :
+                </strong>
                 {description}
               </li>
             ))}
