@@ -13,7 +13,10 @@ export default async function Home({
 }: {
   params: { lang: Locale };
 }) {
-  const dict = await getDictionary(lang);
+  const {
+    pages: { home },
+  } = await getDictionary(lang);
+  const { header, product, benefits, footer } = home;
   return (
     <div className="flex flex-col">
       <header className="bg-[url('/header-image.jpg')] bg-cover overflow-auto">
@@ -31,26 +34,21 @@ export default async function Home({
           <h1 className="text-4xl leading-tight font-semibold mb-3">
             🌱
             <br />
-            The nature candle
+            {header.title}
           </h1>
-          <p className="text-[18px]">
-            All handmade with natural soy wax, Candleaf is a companion for all
-            your pleasure moments
-          </p>
+          <p className="text-[18px]">{header.description}</p>
           <button
             type="button"
             className="mt-9 w-full bg-eprimary p-2 text-white rounded-sm"
           >
-            Discovery our collection
+            {header.cta}
           </button>
         </div>
       </header>
       <section className="my-16 mx-5">
         <div className="text-center space-y-2 mb-14">
-          <h2 className="text-4xl font-semibold">Products</h2>
-          <p className="text-[#5E6E89] text-xl">
-            Order it for you or for your beloved ones
-          </p>
+          <h2 className="text-4xl font-semibold">{product.title}</h2>
+          <p className="text-[#5E6E89] text-xl">{product.description}</p>
         </div>
         <div className="flex flex-col gap-5">
           <div className="shadow-sm rounded p-3 bg-white">
@@ -60,7 +58,6 @@ export default async function Home({
                 width={3000}
                 height={2250}
                 src="/sample-product.png"
-                className=""
               />
             </div>
             <p className="font-[500]">Spice mint</p>
@@ -85,37 +82,26 @@ export default async function Home({
             className="bg-eprimary text-white px-11 py-2 rounded-sm"
             type="button"
           >
-            See more
+            {product.cta}
           </button>
         </div>
       </section>
       <section className="my-16 space-y-10">
         <div className="text-center mx-4 space-y-4">
-          <h2 className="font-bold text-4xl">Clean and fragrant soy wax</h2>
-          <p className="text-eprimary">
-            Made for your home and for your wellnewss
-          </p>
+          <h2 className="font-bold text-4xl">{benefits.title}</h2>
+          <p className="text-eprimary">{benefits.description}</p>
         </div>
         <div>
           <Image alt="" width={1380} height={964} src="/mockups.png" />
         </div>
         <div className="mx-5">
           <ul className="list-image-[url('/checkmark-circle-outline.svg')] list-outside ps-8 text-xl flex flex-col gap-5">
-            <li>
-              <strong>Eco-sustainable:</strong>
-              All recyclable materials, 0% CO2 emissions
-            </li>
-            <li>
-              <strong>Hyphoallergenic:</strong> 100% natural, human friendly
-              ingredients
-            </li>
-            <li>
-              <strong>Handmade:</strong> All candles are craftly made with love.
-            </li>
-            <li>
-              <strong>Long burning:</strong> No more waste. Created for last
-              long.
-            </li>
+            {benefits.benefit_list.map(({ title, description }) => (
+              <li>
+                <strong>{title}:</strong>
+                {description}
+              </li>
+            ))}
           </ul>
         </div>
         <div className="text-center">
@@ -123,62 +109,32 @@ export default async function Home({
             type="button"
             className="bg-eprimary text-white px-11 py-2 rounded-sm"
           >
-            See more
+            {benefits.cta}
           </button>
         </div>
       </section>
       <footer className="bg-esecondary text-white py-10 px-4 relative">
         <hr />
         <div className="mt-4 mb-12">
-          <h3 className="text-3xl font-semibold mb-3">Candleaf</h3>
-          <p>Your natural candle made for your home and for your wellness.</p>
+          <h3 className="text-3xl font-semibold mb-3">{footer.title}</h3>
+          <p>{footer.description}</p>
         </div>
         <div className="grid grid-cols-2 gap-y-10 mb-16">
-          <div>
-            <h4 className="text-eprimary font-[500] mb-5">Discovery</h4>
-            <ul className="flex flex-col gap-4">
-              <li>
-                <Link href="#">New seasosn</Link>
-              </li>
-              <li>
-                <Link href="#">Most searched</Link>
-              </li>
-              <li>
-                <Link href="#">Most selled</Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-eprimary font-[500] mb-5">Info</h4>
-            <ul className="flex flex-col gap-4">
-              <li>
-                <Link href="#">Contact Us</Link>
-              </li>
-              <li>
-                <Link href="#">Privacy Policies</Link>
-              </li>
-              <li>
-                <Link href="#">Terms & Conditions</Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-eprimary font-[500] mb-5">About</h4>
-            <ul className="flex flex-col gap-4">
-              <li>
-                <Link href="#">About</Link>
-              </li>
-              <li>
-                <Link href="#">Shipping</Link>
-              </li>
-              <li>
-                <Link href="#">Affiliate</Link>
-              </li>
-            </ul>
-          </div>
+          {footer.menu.map(({ title, links }) => (
+            <div>
+              <h4 className="text-eprimary font-[500] mb-5">{title}</h4>
+              <ul className="flex flex-col gap-4">
+                {links.map(({ title: linkTitle, href }) => (
+                  <li>
+                    <Link href={href}>{linkTitle}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
         <div className="bg-white text-black absolute w-full bottom-0 left-0 text-center p-4">
-          <p>Made with Love by Aryan</p>
+          <p>{footer.bottom}</p>
         </div>
       </footer>
     </div>

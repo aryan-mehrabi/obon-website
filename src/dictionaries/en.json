@@ -1,7 +1,70 @@
 {
   "pages": {
     "home": {
-      "title": "hi"
+      "header": {
+        "title": "The nature candle",
+        "description": "All handmade with natural soy wax, Candleaf is a companion for all your pleasure moments",
+        "cta": "Discover our collection"
+      },
+      "product": {
+        "title": "Products",
+        "description": "Order it for you or for your beloved ones ",
+        "cta": "See more"
+      },
+      "benefits": {
+        "title": "Clean and fragrant soy wax",
+        "description": "Made for your home and for your wellness",
+        "benefit_list": [
+          {
+            "title": "Eco-sustainable",
+            "description": "All recyclable materials, 0% CO2 emissions"
+          },
+          {
+            "title": "Hyphoallergenic",
+            "description": "100% natural, human friendly ingredients "
+          },
+          {
+            "title": "Handmade",
+            "description": "All candles are craftly made with love."
+          },
+          {
+            "title": "Long burning:",
+            "description": "No more waste. Created for last long."
+          }
+        ],
+        "cta": "See more"
+      },
+      "footer": {
+        "title": "Candleaf",
+        "description": "Your natural candle made for your home and for your wellness.",
+        "menu": [
+          {
+            "title": "Discovery",
+            "links": [
+              { "title": "New season", "href": "#" },
+              { "title": "Most searched", "href": "#" },
+              { "title": "Most selled", "href": "#" }
+            ]
+          },
+          {
+            "title": "Info",
+            "links": [
+              { "title": "Contact us", "href": "#" },
+              { "title": "Privacy Policies", "href": "#" },
+              { "title": "Terms & Conditions", "href": "#" }
+            ]
+          },
+          {
+            "title": "About",
+            "links": [
+              { "title": "Help", "href": "#" },
+              { "title": "Shipping", "href": "#" },
+              { "title": "Affiliate", "href": "#" }
+            ]
+          }
+        ],
+        "bottom": "Made with Love by Aryan"
+      }
     },
     "login": {
       "title": "Login",
