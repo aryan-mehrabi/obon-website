@@ -55,6 +55,12 @@ module.exports = {
     "react/jsx-props-no-spreading": "off",
     "linebreak-style": "off",
     "no-unused-vars": ["error", { varsIgnorePattern: "[_]" }],
+    "react/require-default-props": [
+      1,
+      {
+        functions: "defaultArguments",
+      },
+    ],
   },
   settings: {
     react: {
