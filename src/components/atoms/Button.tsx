@@ -5,22 +5,20 @@ const buttonTypes = {
   disabled: "disabled",
 } as const;
 
-interface PropTypes {
-  children: React.ReactNode;
-  className?: string;
-  type?: keyof typeof buttonTypes;
+interface PropTypes extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  styleType?: keyof typeof buttonTypes;
 }
 
 export default function Button({
   children,
-  className = "",
-  type = buttonTypes.default,
+  className,
+  styleType = buttonTypes.default,
   ...props
 }: PropTypes) {
   let classes = "";
-  if (type === buttonTypes.default) {
+  if (styleType === buttonTypes.default) {
     classes = "bg-eprimary text-white hover:bg-white hover:text-eprimary border border-eprimary transition";
-  } else if (type === buttonTypes.disabled) {
+  } else if (styleType === buttonTypes.disabled) {
     classes = "bg-[#D6D6D6] cursor-default";
   }
   return (

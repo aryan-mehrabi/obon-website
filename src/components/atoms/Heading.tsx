@@ -1,16 +1,14 @@
 import { createElement } from "react";
 
 const headerTypes = ["h1", "h2", "h3", "h4"] as const;
-interface PropTypes {
-  children: React.ReactNode;
-  className?: string;
+interface PropTypes extends React.HTMLAttributes<HTMLElement> {
   type: (typeof headerTypes)[number];
 }
 
 export default function Heading({
   children,
   type,
-  className = "",
+  className,
   ...props
 }: PropTypes) {
   let classes = "";
