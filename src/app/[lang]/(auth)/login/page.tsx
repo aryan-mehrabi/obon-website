@@ -12,7 +12,7 @@ interface PropTypes {
 export default async function LoginPage({ params: { lang } }: PropTypes) {
   const dict = await getDictionary(lang);
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center pt-10">
       <LoginForm dict={dict} />
     </div>
   );
