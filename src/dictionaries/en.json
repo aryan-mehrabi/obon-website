@@ -37,40 +37,6 @@
           }
         ],
         "cta": "See more"
-      },
-      "footer": {
-        "title": "Candleaf",
-        "description": "Your natural candle made for your home and for your wellness.",
-        "menu": [
-          {
-            "id": 1,
-            "title": "Discovery",
-            "links": [
-              { "id": 1, "title": "New season", "href": "#" },
-              { "id": 2, "title": "Most searched", "href": "#" },
-              { "id": 3, "title": "Most selled", "href": "#" }
-            ]
-          },
-          {
-            "id": 2,
-            "title": "Info",
-            "links": [
-              { "id": 1, "title": "Contact us", "href": "#" },
-              { "id": 2, "title": "Privacy Policies", "href": "#" },
-              { "id": 3, "title": "Terms & Conditions", "href": "#" }
-            ]
-          },
-          {
-            "id": 3,
-            "title": "About",
-            "links": [
-              { "id": 1, "title": "Help", "href": "#" },
-              { "id": 2, "title": "Shipping", "href": "#" },
-              { "id": 3, "title": "Affiliate", "href": "#" }
-            ]
-          }
-        ],
-        "bottom": "Made with Love by Aryan"
       }
     },
     "login": {
@@ -115,6 +81,40 @@
       "href": "#"
     }
   ],
+  "footer": {
+    "title": "Candleaf",
+    "description": "Your natural candle made for your home and for your wellness.",
+    "menu": [
+      {
+        "id": 1,
+        "title": "Discovery",
+        "links": [
+          { "id": 1, "title": "New season", "href": "#" },
+          { "id": 2, "title": "Most searched", "href": "#" },
+          { "id": 3, "title": "Most selled", "href": "#" }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Info",
+        "links": [
+          { "id": 1, "title": "Contact us", "href": "#" },
+          { "id": 2, "title": "Privacy Policies", "href": "#" },
+          { "id": 3, "title": "Terms & Conditions", "href": "#" }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "About",
+        "links": [
+          { "id": 1, "title": "Help", "href": "#" },
+          { "id": 2, "title": "Shipping", "href": "#" },
+          { "id": 3, "title": "Affiliate", "href": "#" }
+        ]
+      }
+    ],
+    "bottom": "Made with Love by Aryan"
+  },
   "errors": {
     "register": "Please register.",
     "wrong_password": "Wrong password",
