@@ -4,7 +4,6 @@ import { getDictionary, Locale } from "@/lib/locale";
 
 import Button from "../atoms/Button";
 import Heading from "../atoms/Heading";
-import Navbar from "./Navbar";
 
 interface PropTypes extends React.HTMLAttributes<HTMLElement> {
   lang: Locale;
@@ -15,12 +14,10 @@ export default async function Header({ lang, className }: PropTypes) {
     pages: {
       home: { header },
     },
-    nav_menu: navMenu,
   } = await getDictionary(lang);
 
   return (
     <header className={`bg-[url('/header-image.jpg')] bg-cover ${className}`}>
-      <Navbar navMenu={navMenu} />
       <div className="bg-white backdrop-blur-md bg-opacity-80 my-60 mx-3 text-center p-10 md:max-w-3xl md:mx-auto">
         <Heading type="h1">
           🌱

@@ -4,7 +4,6 @@ import React from "react";
 import Button from "@/components/atoms/Button";
 import Heading from "@/components/atoms/Heading";
 import List from "@/components/atoms/List";
-import Footer from "@/components/organs/Footer";
 import Header from "@/components/organs/Header";
 import Products from "@/components/organs/Products";
 import { getDictionary, type Locale } from "@/lib/locale";
@@ -56,7 +55,6 @@ export default async function Home({
           <Button>{benefits.cta}</Button>
         </div>
       </section>
-      <Footer lang={lang} />
     </div>
   );
 }

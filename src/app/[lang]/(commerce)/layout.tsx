@@ -4,7 +4,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import React from "react";
 
-import { i18n, type Locale } from "@/lib/locale";
+import Footer from "@/components/organs/Footer";
+import Navbar from "@/components/organs/Navbar";
+import { getDictionary, i18n, type Locale } from "@/lib/locale";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,16 +20,21 @@ export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params: { lang },
 }: {
   children: React.ReactNode;
   params: { lang: Locale };
 }) {
+  const { nav_menu: navMenu } = await getDictionary(lang);
   return (
     <html lang={lang} dir={lang === "fa" ? "rtl" : ""}>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Navbar navMenu={navMenu} />
+        {children}
+        <Footer lang={lang} />
+      </body>
     </html>
   );
 }
