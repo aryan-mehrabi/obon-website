@@ -7,10 +7,12 @@ interface PropTypes extends React.HTMLAttributes<HTMLElement> {
   lang: Locale;
 }
 
-export default async function Footer({ lang, className }: PropTypes) {
+export default async function Footer({ lang, className = "" }: PropTypes) {
   const { footer } = await getDictionary(lang);
   return (
-    <footer className={`bg-esecondary text-white relative ${className}`}>
+    <footer
+      className={`bg-esecondary text-white relative mt-auto bottom-0 ${className}`}
+    >
       <div className="py-10 px-4 max-w-5xl md:mx-auto">
         <hr />
         <div className="md:flex">

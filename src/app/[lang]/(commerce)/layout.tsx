@@ -30,7 +30,7 @@ export default async function RootLayout({
   const { nav_menu: navMenu } = await getDictionary(lang);
   return (
     <html lang={lang} dir={lang === "fa" ? "rtl" : ""}>
-      <body className={inter.className}>
+      <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Navbar navMenu={navMenu} />
         {children}
         <Footer lang={lang} />
