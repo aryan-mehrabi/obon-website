@@ -25,7 +25,7 @@ export default function QuantityInput() {
         onChange={onChangeInput}
         value={counter}
         className="w-10 text-center self-stretch"
-        type="number"
+        type="text"
       />
       <button
         type="button"
