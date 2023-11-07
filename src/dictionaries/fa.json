@@ -50,6 +50,16 @@
       "submit": "ثبت نام",
       "have_account": "ثبت نام کرده اید؟",
       "login_here": "اینجا وارد شوید"
+    },
+    "productDetail": {
+      "quantity": "تعداد",
+      "addCart": "اضافه به سبد خرید",
+      "specifications": {
+        "description": "توضیحات",
+        "dimensions": "ابعاد",
+        "material": "متریال"
+      },
+      "disclaimer": "Candleaf تماما دست ساز با موم سویا طبیعی برای لحظات لذت بخشی شما ساخته شده است."
     }
   },
   "form": {
