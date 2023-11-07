@@ -23,7 +23,7 @@ export default function Navbar({ navMenu }: PropTypes) {
   const ref = useRef<HTMLElement>(null);
   useClickOutside(ref, () => setIsMenuOpen(false));
   return (
-    <nav ref={ref} className="bg-white fixed w-full z-10">
+    <nav ref={ref} className="bg-white fixed w-full z-10 top-0">
       <div className="flex items-center justify-between max-w-5xl md:mx-auto p-7 md:p-6">
         <Icon
           render={HamburgerMenuIcon}
