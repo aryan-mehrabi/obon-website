@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import React from "react";
 
 import Button from "@/components/atoms/Button";
@@ -6,6 +7,7 @@ import Heading from "@/components/atoms/Heading";
 import Icon from "@/components/atoms/Icon";
 import QuantityInput from "@/components/atoms/QuantityInput";
 import { getDictionary, Locale } from "@/lib/locale";
+import prisma from "@/prisma/client";
 
 import CartIcon from "../../../../../../public/carticon.svg";
 import SampleProduct from "../../../../../../public/sample-product.png";
@@ -17,34 +19,55 @@ interface PropTypes {
   };
 }
 
-export default async function Page({ params: { lang } }: PropTypes) {
+export default async function Page({ params: { lang, productId } }: PropTypes) {
+  const [dict, product] = await Promise.all([
+    getDictionary(lang),
+    prisma.product.findUnique({
+      where: {
+        id: +productId,
+      },
+      include: {
+        images: true,
+      },
+    }),
+  ]);
+
+  if (!product) {
+    notFound();
+  }
+
   const {
-    pages: { productDetail },
-  } = await getDictionary(lang);
-  const {
-    quantity, disclaimer, specifications, addCart,
-  } = productDetail;
+    pages: {
+      productDetail: {
+        quantity, disclaimer, specifications, addCart,
+      },
+    },
+  } = dict;
   return (
     <section className="mt-28 mb-10 space-y-5 p-3 md:grid md:grid-cols-2 md:gap-x-12 max-w-5xl mx-auto">
-      <div className="">
+      <div>
         <Image
-          src={SampleProduct}
+          src={product.images[0].url || SampleProduct}
           alt="sample pic"
           className="h-80 w-auto mx-auto"
+          width={product.images[0].width!}
+          height={product.images[0].height!}
         />
       </div>
       <div className="space-y-5 row-span-2">
-        <div className="">
-          <Heading type="h3">Spice Mint Felan</Heading>
+        <div>
+          <Heading type="h3">{product[`title_${lang}`]}</Heading>
         </div>
         <div className="grid grid-cols-2 items-center md:flex md:justify-between">
-          <p className="text-2xl text-eprimary font-semibold">$9.99</p>
+          <p className="text-2xl text-eprimary font-semibold">
+            {product.price}
+          </p>
           <div className="flex flex-col gap-2">
             <p>{quantity}</p>
             <QuantityInput />
           </div>
         </div>
-        <div className="">
+        <div>
           <Button className="w-full flex justify-center items-center gap-1">
             {addCart}
             <Icon render={CartIcon as React.FC} />
@@ -58,7 +81,7 @@ export default async function Page({ params: { lang } }: PropTypes) {
                 :
                 {" "}
               </strong>
-              Top grade Soy wax that delivers a smoke less, consistent burn
+              {product[`description_${lang}`]}
             </li>
             <li>
               <strong>
@@ -66,7 +89,7 @@ export default async function Page({ params: { lang } }: PropTypes) {
                 :
                 {" "}
               </strong>
-              Top grade Soy wax that delivers a smoke less, consistent burn
+              {JSON.stringify(product.dimensions)}
             </li>
             <li>
               <strong>
@@ -74,7 +97,7 @@ export default async function Page({ params: { lang } }: PropTypes) {
                 :
                 {" "}
               </strong>
-              Top grade Soy wax that delivers a smoke less, consistent burn
+              {product[`material_${lang}`]}
             </li>
           </ul>
         </div>
