@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { twMerge } from "tailwind-merge";
 
 import { getDictionary, type Locale } from "@/lib/locale";
 
@@ -11,7 +12,9 @@ export default async function Footer({ lang, className = "" }: PropTypes) {
   const { footer } = await getDictionary(lang);
   return (
     <footer
-      className={`bg-esecondary text-white relative mt-auto bottom-0 ${className}`}
+      className={twMerge(
+        `bg-esecondary text-white relative mt-auto bottom-0 ${className}`,
+      )}
     >
       <div className="py-10 px-4 max-w-5xl md:mx-auto">
         <hr />

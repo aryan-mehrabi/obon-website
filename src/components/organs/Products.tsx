@@ -1,5 +1,6 @@
 import { Image, Product } from "@prisma/client";
 import React from "react";
+import { twMerge } from "tailwind-merge";
 
 import ProductCard from "@/components/molecules/ProductCard";
 import { Locale } from "@/lib/locale";
@@ -17,7 +18,9 @@ export default function Products({
   lang,
 }: PropTypes) {
   return (
-    <div className={`grid grid-cols-1 md:grid-cols-4 gap-5 ${className}`}>
+    <div
+      className={twMerge(`grid grid-cols-1 md:grid-cols-4 gap-5 ${className}`)}
+    >
       {products.map((product) => (
         <ProductCard key={product.id} product={product} lang={lang} />
       ))}

@@ -1,4 +1,5 @@
 import { createElement } from "react";
+import { twMerge } from "tailwind-merge";
 
 const headerTypes = ["h1", "h2", "h3", "h4"] as const;
 interface PropTypes extends React.HTMLAttributes<HTMLElement> {
@@ -30,7 +31,7 @@ export default function Heading({
   }
   return createElement(
     type,
-    { className: `font-semibold ${classes} ${className}`, ...props },
+    { className: twMerge(`font-semibold ${classes} ${className}`), ...props },
     children,
   );
 }

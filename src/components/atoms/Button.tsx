@@ -1,4 +1,5 @@
 import React from "react";
+import { twMerge } from "tailwind-merge";
 
 const buttonTypes = {
   default: "default",
@@ -24,7 +25,7 @@ export default function Button({
   return (
     <button
       type="button"
-      className={`py-2 px-11 rounded-sm ${classes} ${className}`}
+      className={twMerge(`py-2 px-11 rounded-sm ${classes} ${className}`)}
       {...{ props }}
     >
       {children}
