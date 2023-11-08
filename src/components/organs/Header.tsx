@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 import { getDictionary, Locale } from "@/lib/locale";
@@ -25,7 +26,9 @@ export default async function Header({ lang, className }: PropTypes) {
           {header.title}
         </Heading>
         <p className="text-[18px]">{header.description}</p>
-        <Button className="mt-9">{header.cta}</Button>
+        <Link href={header.cta.href}>
+          <Button className="mt-9">{header.cta.title}</Button>
+        </Link>
       </div>
     </header>
   );

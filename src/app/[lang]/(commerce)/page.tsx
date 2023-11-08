@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 import Button from "@/components/atoms/Button";
@@ -39,7 +40,9 @@ export default async function Home({
         </div>
         <Products lang={lang} products={products} />
         <div className="text-center mt-12">
-          <Button>{product.cta}</Button>
+          <Link href={product.cta.href}>
+            <Button>{product.cta.title}</Button>
+          </Link>
         </div>
       </section>
       <section className="my-16 space-y-10 max-w-5xl md:mx-auto md:grid md:grid-cols-2">
@@ -64,7 +67,9 @@ export default async function Home({
           </List>
         </div>
         <div className="text-center md:text-left md:rtl:text-right">
-          <Button>{benefits.cta}</Button>
+          <Link href={benefits.cta.href}>
+            <Button>{benefits.cta.title}</Button>
+          </Link>
         </div>
       </section>
     </div>

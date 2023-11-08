@@ -4,12 +4,12 @@
       "header": {
         "title": "The nature candle",
         "description": "All handmade with natural soy wax, Candleaf is a companion for all your pleasure moments",
-        "cta": "Discover our collection"
+        "cta": { "title": "Discover our collection", "href": "/products" }
       },
       "product": {
         "title": "Products",
         "description": "Order it for you or for your beloved ones ",
-        "cta": "See more"
+        "cta": { "title": "See more", "href": "/products" }
       },
       "benefits": {
         "title": "Clean and fragrant soy wax",
@@ -36,7 +36,7 @@
             "description": "No more waste. Created for last long."
           }
         ],
-        "cta": "See more"
+        "cta": { "title": "See more", "href": "#" }
       }
     },
     "login": {

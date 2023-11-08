@@ -30,11 +30,13 @@ export default function Navbar({ navMenu }: PropTypes) {
           className="md:hidden"
           onClick={() => setIsMenuOpen((val) => !val)}
         />
-        <Image
-          alt="Candleaf Logo"
-          src={Logo}
-          className="h-8 w-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:static md:translate-x-0 md:translate-y-0"
-        />
+        <Link href="/">
+          <Image
+            alt="Candleaf Logo"
+            src={Logo}
+            className="h-8 w-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:static md:translate-x-0 md:translate-y-0"
+          />
+        </Link>
         <div
           className={`absolute bottom-0 left-0 translate-y-full bg-white w-full ${
             isMenuOpen ? "" : "hidden"
