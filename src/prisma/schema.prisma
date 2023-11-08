@@ -47,6 +47,7 @@ model Product {
   description_en      String?
   description_fa      String?
   quantity            Int @default(1)
+  price               Int @default(0)
   images              Image[]
   categories          Category[]
   createdAt           DateTime  @default(now())
