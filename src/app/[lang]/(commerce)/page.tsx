@@ -7,16 +7,28 @@ import List from "@/components/atoms/List";
 import Header from "@/components/organs/Header";
 import Products from "@/components/organs/Products";
 import { getDictionary, type Locale } from "@/lib/locale";
+import prisma from "@/prisma/client";
 
 export default async function Home({
   params: { lang },
 }: {
   params: { lang: Locale };
 }) {
+  const [dict, products] = await Promise.all([
+    getDictionary(lang),
+    prisma.product.findMany({
+      include: {
+        images: true,
+      },
+    }),
+  ]);
+
   const {
-    pages: { home },
-  } = await getDictionary(lang);
-  const { product, benefits } = home;
+    pages: {
+      home: { product, benefits },
+    },
+  } = dict;
+
   return (
     <div className="flex flex-col">
       <Header className="overflow-auto" lang={lang} />
@@ -25,7 +37,7 @@ export default async function Home({
           <Heading type="h2">{product.title}</Heading>
           <p className="text-[#5E6E89] text-xl">{product.description}</p>
         </div>
-        <Products />
+        <Products lang={lang} products={products} />
         <div className="text-center mt-12">
           <Button>{product.cta}</Button>
         </div>
