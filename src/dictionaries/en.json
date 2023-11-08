@@ -51,6 +51,10 @@
       "have_account": "Have an account?",
       "login_here": "Login Here"
     },
+    "products": {
+      "title": "Products",
+      "description": "Order it for you or for your beloved ones"
+    },
     "productDetail": {
       "quantity": "Quantity",
       "addCart": "Add to Cart",
@@ -77,17 +81,17 @@
   "nav_menu": [
     {
       "id": 1,
-      "title": "Products",
-      "href": "#"
+      "title": "Home",
+      "href": "/"
     },
     {
       "id": 2,
-      "title": "About",
-      "href": "#"
+      "title": "Products",
+      "href": "/products"
     },
     {
       "id": 3,
-      "title": "Cart",
+      "title": "About",
       "href": "#"
     }
   ],
