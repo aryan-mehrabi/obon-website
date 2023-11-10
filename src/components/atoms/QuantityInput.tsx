@@ -5,11 +5,22 @@ import React, { useState } from "react";
 
 import Icon from "./Icon";
 
-export default function QuantityInput() {
+interface PropTypes {
+  availableQuantity: number;
+}
+
+export default function QuantityInput({ availableQuantity }: PropTypes) {
   const [counter, setCounter] = useState(1);
 
+  const counterValidator = (val: string): number => {
+    if (+val > availableQuantity || +val < 1) {
+      return counter;
+    }
+    return +val;
+  };
+
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCounter(+e.target.value);
+    setCounter(counterValidator(e.target.value) || counter);
   };
 
   return (
@@ -17,7 +28,8 @@ export default function QuantityInput() {
       <button
         type="button"
         onClick={() => setCounter((val) => val - 1)}
-        className="p-2"
+        className="p-2 disabled:text-neutral-500"
+        disabled={counter < 2}
       >
         <Icon render={MinusIcon} className="w-4 h-4" />
       </button>
@@ -26,11 +38,13 @@ export default function QuantityInput() {
         value={counter}
         className="w-10 text-center self-stretch"
         type="text"
+        name="quantity"
       />
       <button
         type="button"
         onClick={() => setCounter((val) => val + 1)}
-        className="p-2"
+        className="p-2 disabled:text-neutral-500"
+        disabled={counter > availableQuantity - 1}
       >
         <Icon render={PlusIcon} className="w-4 h-4" />
       </button>
