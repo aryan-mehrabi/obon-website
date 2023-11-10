@@ -14,6 +14,7 @@ export default function Button({
   children,
   className,
   styleType = buttonTypes.default,
+  type = "button",
   ...props
 }: PropTypes) {
   let classes = "";
@@ -24,7 +25,8 @@ export default function Button({
   }
   return (
     <button
-      type="button"
+      // eslint-disable-next-line
+      type={type}
       className={twMerge(`py-2 px-11 rounded-sm ${classes} ${className}`)}
       {...{ props }}
     >
