@@ -1,7 +1,8 @@
 import React from "react";
 
-import LoginForm from "@/components/auth/LoginForm";
 import { getDictionary, type Locale } from "@/lib/locale";
+
+import LoginForm from "./LoginForm";
 
 interface PropTypes {
   params: {
