@@ -4,12 +4,11 @@ import { Image, Product } from "@prisma/client";
 import { useParams } from "next/navigation";
 import React from "react";
 
+import CartIcon from "@/assets/carticon.svg";
 import Icon from "@/components/atoms/Icon";
 import QuantityInput from "@/components/atoms/QuantityInput";
 import { Button } from "@/components/ui/button";
 import dictEn from "@/dictionaries/en.json";
-
-import CartIcon from "../../../../../../public/carticon.svg";
 
 interface CartItem {
   productId: number;

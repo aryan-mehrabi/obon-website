@@ -7,11 +7,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 
+import CartIcon from "@/assets/carticon.svg";
+import Logo from "@/assets/logo.png";
 import fa from "@/dictionaries/fa.json";
 import useClickOutside from "@/hooks/useClickOutside";
 
-import CartIcon from "../../../public/carticon.svg";
-import Logo from "../../../public/logo.png";
 import Icon from "../atoms/Icon";
 
 interface PropTypes {

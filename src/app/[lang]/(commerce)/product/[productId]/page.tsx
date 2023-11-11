@@ -2,11 +2,11 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import React from "react";
 
+import SampleProduct from "@/assets/sample-product.png";
 import Heading from "@/components/atoms/Heading";
 import { getDictionary, Locale } from "@/lib/locale";
 import prisma from "@/prisma/client";
 
-import SampleProduct from "../../../../../../public/sample-product.png";
 import AddToCart from "./AddToCart";
 
 interface PropTypes {

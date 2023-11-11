@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+import Mockups from "@/assets/mockups.png";
 import Button from "@/components/atoms/Button";
 import Heading from "@/components/atoms/Heading";
 import List from "@/components/atoms/List";
@@ -51,16 +52,16 @@ export default async function Home({
           <p className="text-eprimary">{benefits.description}</p>
         </div>
         <div className="row-span-2">
-          <Image alt="" width={1380} height={964} src="/mockups.png" />
+          <Image
+            alt="two candleaf candles with a background of a flower"
+            src={Mockups}
+          />
         </div>
         <div className="mx-5 md:mx-auto">
           <List className="text-xl">
             {benefits.benefit_list.map(({ id, title, description }) => (
               <li key={id}>
-                <strong>
-                  {title}
-                  :
-                </strong>
+                <strong>{title}:</strong>
                 {description}
               </li>
             ))}
