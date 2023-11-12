@@ -6,7 +6,7 @@ import { type NextRequest } from "next/server";
 import { getServerSession } from "next-auth/next";
 import * as z from "zod";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import authOptions from "@/app/api/auth/[...nextauth]/authOptions";
 import { hashPassword } from "@/lib/helpers";
 import { getDictionary, getLocale } from "@/lib/locale";
 import { registerFormSchema } from "@/lib/validations";
