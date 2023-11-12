@@ -56,7 +56,6 @@
       "description": "برای خود یا عزیزانتان سفارش دهید"
     },
     "productDetail": {
-      "quantity": "تعداد",
       "addCart": "اضافه به سبد خرید",
       "specifications": {
         "description": "توضیحات",

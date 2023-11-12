@@ -56,7 +56,6 @@
       "description": "Order it for you or for your beloved ones"
     },
     "productDetail": {
-      "quantity": "Quantity",
       "addCart": "Add to Cart",
       "specifications": {
         "description": "Description",
