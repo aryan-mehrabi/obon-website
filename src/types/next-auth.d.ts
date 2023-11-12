@@ -1,8 +1,7 @@
 import NextAuth from "next-auth";
-import { JWT } from "next-auth/jwt"
-import { User as schemaUser } from "@prisma/client";
+import { JWT } from "next-auth/jwt";
 
-export type User = Omit<schemaUser, "password">
+import { User } from "./index";
 
 declare module "next-auth" {
   interface User {
@@ -17,6 +16,6 @@ declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
   interface JWT {
     /** OpenID ID Token */
-    user: User
+    user: User;
   }
 }

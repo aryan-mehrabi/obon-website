@@ -8,11 +8,7 @@ import Button from "@/components/atoms/Button";
 import Icon from "@/components/atoms/Icon";
 import QuantityInput from "@/components/atoms/QuantityInput";
 import dictEn from "@/dictionaries/en.json";
-
-interface CartItem {
-  productId: number;
-  quantity: number;
-}
+import { type CartItem } from "@/types";
 
 interface PropTypes {
   availableQuantity: number;
@@ -42,10 +38,11 @@ export default function AddToCart({ dict, availableQuantity }: PropTypes) {
 
   const addToShoppingCart = (): void => {
     setCart(
-      (cartItems) => [
-        ...(cartItems || []),
-        { productId: +productId, quantity: 1 },
-      ] as CartItem[],
+      (cartItems) =>
+        [
+          ...(cartItems || []),
+          { productId: +productId, quantity: 1 },
+        ] as CartItem[],
     );
   };
 

@@ -8,7 +8,7 @@ import * as z from "zod";
 import { getDictionary, getLocale } from "@/lib/locale";
 import { credentialsSchema } from "@/lib/validations";
 import prisma from "@/prisma/client";
-import { User } from "@/types/next-auth";
+import { User } from "@/types";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
