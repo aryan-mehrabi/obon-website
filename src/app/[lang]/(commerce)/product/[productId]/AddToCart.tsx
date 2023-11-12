@@ -1,13 +1,12 @@
 "use client";
 
-import { Image, Product } from "@prisma/client";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import CartIcon from "@/assets/carticon.svg";
+import Button from "@/components/atoms/Button";
 import Icon from "@/components/atoms/Icon";
 import QuantityInput from "@/components/atoms/QuantityInput";
-import { Button } from "@/components/ui/button";
 import dictEn from "@/dictionaries/en.json";
 
 interface CartItem {
@@ -16,55 +15,76 @@ interface CartItem {
 }
 
 interface PropTypes {
+  availableQuantity: number;
   dict: typeof dictEn;
-  product: Product & {
-    images: Image[];
-  };
 }
 
-export default function AddToCart({ product, dict }: PropTypes) {
+export default function AddToCart({ dict, availableQuantity }: PropTypes) {
+  const { productId } = useParams();
+  const [cart, setCart] = useState<CartItem[] | undefined>(undefined);
+  const cartItem = cart?.find((item) => item.productId === +productId);
+
   const {
     pages: {
-      productDetail: { addCart, quantity },
+      productDetail: { addCart },
     },
   } = dict;
-  const addToShoppingCart = (productId: number, quantity: number): void => {
-    const items: CartItem[] = JSON.parse(
-      window.localStorage.getItem("cart") || "[]",
-    ) as CartItem[];
-    window.localStorage.setItem(
-      "cart",
-      JSON.stringify([...items, { productId, quantity }]),
+
+  useEffect(() => {
+    if (!cart) {
+      setCart(
+        JSON.parse(window.localStorage.getItem("cart") || "[]") as CartItem[],
+      );
+    } else {
+      window.localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart]);
+
+  const addToShoppingCart = (): void => {
+    setCart(
+      (cartItems) => [
+        ...(cartItems || []),
+        { productId: +productId, quantity: 1 },
+      ] as CartItem[],
     );
   };
 
-  const { productId } = useParams();
-  const onsubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const quantity = (
-      e.currentTarget.elements.namedItem("quantity") as HTMLInputElement
-    ).value;
-    addToShoppingCart(+productId, +quantity);
+  const onChangeQuantity = (quantity: number) => {
+    if (!quantity) {
+      setCart(cart?.filter((item) => item.productId !== +productId));
+    } else {
+      setCart(
+        cart?.map((item) => {
+          if (item.productId === +productId) {
+            return {
+              productId: +productId,
+              quantity,
+            };
+          }
+          return item;
+        }),
+      );
+    }
   };
 
   return (
-    <>
-      <div className="grid grid-cols-2 items-center md:flex md:justify-between">
-        <p className="text-2xl text-eprimary font-semibold">{product.price}</p>
-        <div className="flex flex-col gap-2">
-          <p>{quantity}</p>
-          <QuantityInput availableQuantity={product.quantity} />
-        </div>
-      </div>
-      <div>
+    <div>
+      {cartItem ? (
+        <QuantityInput
+          availableQuantity={availableQuantity}
+          initQuantity={cartItem?.quantity}
+          onChange={onChangeQuantity}
+        />
+      ) : (
         <Button
           type="submit"
           className="w-full flex justify-center items-center gap-1"
+          onClick={() => addToShoppingCart()}
         >
           {addCart}
           <Icon render={CartIcon as React.FC} />
         </Button>
-      </div>
-    </>
+      )}
+    </div>
   );
 }

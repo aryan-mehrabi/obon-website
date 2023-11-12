@@ -53,19 +53,36 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
         <div>
           <Heading type="h3">{product[`title_${lang}`]}</Heading>
         </div>
-        <AddToCart dict={dict} product={product} />
+        <div>
+          <p className="text-2xl text-eprimary font-semibold">
+            {product.price}
+          </p>
+        </div>
+        <AddToCart dict={dict} availableQuantity={product.quantity} />
         <div className="border border-neutral-200 p-5 rounded-sm ">
           <ul className="space-y-2">
             <li>
-              <strong>{specifications.description}: </strong>
+              <strong>
+                {specifications.description}
+                :
+                {" "}
+              </strong>
               {product[`description_${lang}`]}
             </li>
             <li>
-              <strong>{specifications.dimensions}: </strong>
+              <strong>
+                {specifications.dimensions}
+                :
+                {" "}
+              </strong>
               {JSON.stringify(product.dimensions)}
             </li>
             <li>
-              <strong>{specifications.material}: </strong>
+              <strong>
+                {specifications.material}
+                :
+                {" "}
+              </strong>
               {product[`material_${lang}`]}
             </li>
           </ul>

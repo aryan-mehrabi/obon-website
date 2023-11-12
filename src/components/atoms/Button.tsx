@@ -28,7 +28,7 @@ export default function Button({
       // eslint-disable-next-line
       type={type}
       className={twMerge(`py-2 px-11 rounded-sm ${classes} ${className}`)}
-      {...{ props }}
+      {...{ ...props }}
     >
       {children}
     </button>
