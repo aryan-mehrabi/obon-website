@@ -24,7 +24,7 @@ export default async function page({ params: { lang } }: PropTypes) {
   } = dict;
 
   return (
-    <main className="mt-24 mb-16 mx-3">
+    <main className="mt-24 mb-16 px-3">
       <div className="text-center my-20">
         <Heading type="h3">{title}</Heading>
         <Link
@@ -35,7 +35,7 @@ export default async function page({ params: { lang } }: PropTypes) {
         </Link>
       </div>
       <ProductTable dict={dict} />
-      <div className="text-center mt-10">
+      <div className="text-center mt-10 md:flex md:items-start md:justify-end md:gap-20 max-w-5xl mx-auto">
         <div className="mb-9">
           <div className="flex items-center justify-center gap-6 text-xl font-semibold space-y-1">
             <p>{total}</p>
@@ -43,7 +43,7 @@ export default async function page({ params: { lang } }: PropTypes) {
           </div>
           <p className="text-gray-400">{disclaimer}</p>
         </div>
-        <Button className="w-full">{cta.title}</Button>
+        <Button className="w-full md:w-auto">{cta.title}</Button>
       </div>
     </main>
   );
