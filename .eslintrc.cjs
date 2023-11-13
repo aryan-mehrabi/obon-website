@@ -61,6 +61,7 @@ module.exports = {
         functions: "defaultArguments",
       },
     ],
+    "import/prefer-default-export": "off",
   },
   settings: {
     react: {
