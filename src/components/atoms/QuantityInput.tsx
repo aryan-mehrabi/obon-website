@@ -6,12 +6,12 @@ import Icon from "./Icon";
 interface PropTypes {
   availableQuantity: number;
   initQuantity: number;
-  onChange: (counter: number) => void;
+  onChange?: (counter: number) => void;
 }
 
 export default function QuantityInput({
   availableQuantity,
-  onChange,
+  onChange = () => {},
   initQuantity,
 }: PropTypes) {
   const [counter, setCounter] = useState(initQuantity);

@@ -63,6 +63,32 @@
         "material": "Material"
       },
       "disclaimer": "All hand-made with natural soy wax, Candleaf is made for your pleasuremoments."
+    },
+    "cart": {
+      "title": "Your cart items",
+      "backShopping": {
+        "title": "Back to shopping",
+        "href": "/products"
+      },
+      "table": {
+        "product": {
+          "title": "Product"
+        },
+        "quantity": {
+          "title": "Quantity"
+        },
+        "price": {
+          "title": "Price"
+        },
+        "total": {
+          "title": "Total"
+        }
+      },
+      "total": "Sub-total",
+      "disclaimer": "Tax and shipping cost will be calculated later",
+      "cta": {
+        "title": "checkout"
+      }
     }
   },
   "form": {
