@@ -8,6 +8,7 @@ import QuantityInput from "@/components/atoms/QuantityInput";
 import en from "@/dictionaries/en.json";
 import useStore from "@/hooks/useStore";
 import { Locale } from "@/lib/locale";
+import { formatNumber } from "@/lib/utils";
 import { usePresistStore } from "@/store";
 import { ProductWithImage } from "@/types";
 
@@ -29,6 +30,7 @@ export default function ProductTable({ dict }: PropTypes) {
         },
       },
     },
+    price: { currency },
   } = dict;
 
   useEffect(() => {
@@ -78,10 +80,7 @@ export default function ProductTable({ dict }: PropTypes) {
             {productItem[`title_${lang}`]}
           </h5>
         </td>
-        <td className="mx-3">
-          $
-          {productItem.price}
-        </td>
+        <td className="mx-3">{formatNumber(productItem.price)}</td>
         <td className="mx-3">
           <QuantityInput
             onChange={(prodQuantity) => onChangeQuantity(prodQuantity, productItem.id)}
@@ -90,7 +89,7 @@ export default function ProductTable({ dict }: PropTypes) {
           />
         </td>
         <td className="mx-3 hidden md:table-cell">
-          {cartItem.quantity * productItem.price}
+          {formatNumber(cartItem.quantity * productItem.price)}
         </td>
       </tr>
     );
@@ -101,9 +100,9 @@ export default function ProductTable({ dict }: PropTypes) {
       <thead>
         <tr className="border-b-[1px]">
           <th className="pb-4">{product.title}</th>
-          <th className="pb-4">{price.title}</th>
+          <th className="pb-4">{`${price.title} (${currency})`}</th>
           <th className="pb-4">{quantity.title}</th>
-          <th className="pb-4 hidden md:table-cell">{total.title}</th>
+          <th className="pb-4 hidden md:table-cell">{`${total.title} (${currency})`}</th>
         </tr>
       </thead>
       <tbody>{renderCartItems()}</tbody>

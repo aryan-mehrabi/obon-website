@@ -5,6 +5,7 @@ import React from "react";
 import SampleProduct from "@/assets/sample-product.png";
 import Heading from "@/components/atoms/Heading";
 import { getDictionary, Locale } from "@/lib/locale";
+import { formatNumber } from "@/lib/utils";
 import prisma from "@/prisma/client";
 
 import AddToCart from "./AddToCart";
@@ -37,6 +38,7 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     pages: {
       productDetail: { disclaimer, specifications },
     },
+    price: { currency },
   } = dict;
   return (
     <main className="mt-28 mb-10 space-y-5 p-3 md:grid md:grid-cols-2 md:gap-x-12 max-w-5xl mx-auto">
@@ -55,7 +57,7 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
         </div>
         <div>
           <p className="text-2xl text-eprimary font-semibold">
-            {product.price}
+            {`${formatNumber(product.price)} ${currency}`}
           </p>
         </div>
         <AddToCart dict={dict} availableQuantity={product.quantity} />
