@@ -8,7 +8,7 @@ import Button from "@/components/atoms/Button";
 import Icon from "@/components/atoms/Icon";
 import QuantityInput from "@/components/atoms/QuantityInput";
 import dictEn from "@/dictionaries/en.json";
-import { type CartItem } from "@/types";
+import { useStore } from "@/store";
 
 interface PropTypes {
   availableQuantity: number;
@@ -16,10 +16,14 @@ interface PropTypes {
 }
 
 export default function AddToCart({ dict, availableQuantity }: PropTypes) {
+  const [isHydrated, setIsHydrated] = useState(false);
   const { productId } = useParams();
-  const [cart, setCart] = useState<CartItem[] | undefined>(undefined);
-  const cartItem = cart?.find((item) => item.productId === +productId);
-
+  const {
+    cart, addProduct, removeProduct, updateProduct,
+  } = useStore(
+    (state) => state,
+  );
+  const cartItem = cart[productId as string];
   const {
     pages: {
       productDetail: { addCart },
@@ -27,61 +31,37 @@ export default function AddToCart({ dict, availableQuantity }: PropTypes) {
   } = dict;
 
   useEffect(() => {
-    if (!cart) {
-      setCart(
-        JSON.parse(window.localStorage.getItem("cart") || "[]") as CartItem[],
-      );
-    } else {
-      window.localStorage.setItem("cart", JSON.stringify(cart));
-    }
+    setIsHydrated(true);
   }, [cart]);
-
-  const addToShoppingCart = (): void => {
-    setCart(
-      (cartItems) =>
-        [
-          ...(cartItems || []),
-          { productId: +productId, quantity: 1 },
-        ] as CartItem[],
-    );
-  };
 
   const onChangeQuantity = (quantity: number) => {
     if (!quantity) {
-      setCart(cart?.filter((item) => item.productId !== +productId));
+      removeProduct(+productId);
     } else {
-      setCart(
-        cart?.map((item) => {
-          if (item.productId === +productId) {
-            return {
-              productId: +productId,
-              quantity,
-            };
-          }
-          return item;
-        }),
-      );
+      updateProduct(+productId, quantity);
     }
   };
 
   return (
-    <div>
-      {cartItem ? (
-        <QuantityInput
-          availableQuantity={availableQuantity}
-          initQuantity={cartItem?.quantity}
-          onChange={onChangeQuantity}
-        />
-      ) : (
-        <Button
-          type="submit"
-          className="w-full flex justify-center items-center gap-1"
-          onClick={() => addToShoppingCart()}
-        >
-          {addCart}
-          <Icon render={CartIcon as React.FC} />
-        </Button>
-      )}
-    </div>
+    isHydrated && (
+      <div>
+        {cartItem ? (
+          <QuantityInput
+            availableQuantity={availableQuantity}
+            initQuantity={cartItem?.quantity}
+            onChange={onChangeQuantity}
+          />
+        ) : (
+          <Button
+            type="submit"
+            className="w-full flex justify-center items-center gap-1"
+            onClick={() => addProduct(+productId)}
+          >
+            {addCart}
+            <Icon render={CartIcon as React.FC} />
+          </Button>
+        )}
+      </div>
+    )
   );
 }

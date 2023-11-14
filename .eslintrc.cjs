@@ -54,7 +54,10 @@ module.exports = {
     ],
     "react/jsx-props-no-spreading": "off",
     "linebreak-style": "off",
-    "no-unused-vars": ["error", { varsIgnorePattern: "[_]" }],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { varsIgnorePattern: "[_]" },
+    ],
     "react/require-default-props": [
       1,
       {
@@ -62,6 +65,13 @@ module.exports = {
       },
     ],
     "import/prefer-default-export": "off",
+    "no-param-reassign": [
+      "error",
+      {
+        props: true,
+        ignorePropertyModificationsFor: ["state"],
+      },
+    ],
   },
   settings: {
     react: {
