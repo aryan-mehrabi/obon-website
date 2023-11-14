@@ -1,17 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 "use client";
 
 import { HamburgerMenuIcon, PersonIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useRef, useState } from "react";
+import React, { FC, useRef, useState } from "react";
 
 import CartIcon from "@/assets/carticon.svg";
 import Logo from "@/assets/logo.png";
 import fa from "@/dictionaries/fa.json";
 import useClickOutside from "@/hooks/useClickOutside";
+import useStore from "@/hooks/useStore";
+import { usePresistStore } from "@/store";
 
+import Badge from "../atoms/Badge";
 import Icon from "../atoms/Icon";
 
 interface PropTypes {
@@ -19,6 +20,7 @@ interface PropTypes {
 }
 
 export default function Navbar({ navMenu }: PropTypes) {
+  const cart = useStore(usePresistStore, (state) => state.cart) || {};
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const ref = useRef<HTMLElement>(null);
   useClickOutside(ref, () => setIsMenuOpen(false));
@@ -54,7 +56,10 @@ export default function Navbar({ navMenu }: PropTypes) {
         </div>
         <div className="flex gap-3">
           <Icon render={PersonIcon} />
-          <Icon render={CartIcon} />
+          <Link href="/cart">
+            <Badge>{Object.values(cart).length}</Badge>
+            <Icon render={CartIcon as FC} />
+          </Link>
         </div>
       </div>
     </nav>
