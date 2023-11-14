@@ -20,11 +20,8 @@ export default function AddToCart({ dict, availableQuantity }: PropTypes) {
   const { productId } = useParams();
   const {
     cart, addProduct, removeProduct, updateProduct,
-  } = useStore(
-    usePresistStore,
-    (state) => state,
-  )!;
-  const cartItem = cart[productId as string];
+  } = useStore(usePresistStore, (state) => state) || {};
+  const cartItem = cart?.[productId as string];
   const {
     pages: {
       productDetail: { addCart },
@@ -33,9 +30,9 @@ export default function AddToCart({ dict, availableQuantity }: PropTypes) {
 
   const onChangeQuantity = (quantity: number) => {
     if (!quantity) {
-      removeProduct(+productId);
+      removeProduct?.(+productId);
     } else {
-      updateProduct(+productId, quantity);
+      updateProduct?.(+productId, quantity);
     }
   };
 
@@ -51,7 +48,7 @@ export default function AddToCart({ dict, availableQuantity }: PropTypes) {
         <Button
           type="submit"
           className="w-full flex justify-center items-center gap-1"
-          onClick={() => addProduct(+productId)}
+          onClick={() => addProduct?.(+productId)}
         >
           {addCart}
           <Icon render={CartIcon as React.FC} />

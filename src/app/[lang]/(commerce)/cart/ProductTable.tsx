@@ -18,11 +18,8 @@ interface PropTypes {
 export default function ProductTable({ dict }: PropTypes) {
   const { lang }: { lang: Locale } = useParams();
   const [products, setProducts] = useState<ProductWithImage[]>([]);
-  const { cart, removeProduct, updateProduct } = useStore(
-    usePresistStore,
-    (state) => state,
-  )!;
-  const cartArr = Object.values(cart);
+  const { cart, removeProduct, updateProduct } = useStore(usePresistStore, (state) => state) || {};
+  const cartArr = Object.values(cart || {});
 
   const {
     pages: {
@@ -35,7 +32,7 @@ export default function ProductTable({ dict }: PropTypes) {
   } = dict;
 
   useEffect(() => {
-    if (cartArr.length) {
+    if (cartArr.length && !products.length) {
       const id = cartArr.map((productItem) => productItem.productId).join(",");
 
       const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`);
@@ -50,13 +47,13 @@ export default function ProductTable({ dict }: PropTypes) {
       // eslint-disable-next-line
       fetchProducts();
     }
-  }, []);
+  }, [cartArr, products]);
 
   const onChangeQuantity = (prodQuantity: number, productId: number) => {
     if (!prodQuantity) {
-      removeProduct(productId);
+      removeProduct?.(productId);
     } else {
-      updateProduct(productId, prodQuantity);
+      updateProduct?.(productId, prodQuantity);
     }
   };
 
@@ -66,7 +63,7 @@ export default function ProductTable({ dict }: PropTypes) {
     );
     if (!productItem) return null;
     return (
-      <tr className="border-b-[1px]">
+      <tr key={cartItem.productId} className="border-b-[1px]">
         <td className="flex items-center mx-3 w-min gap-1">
           <div className="w-24 md:w-40">
             <Image
