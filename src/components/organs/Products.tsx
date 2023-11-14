@@ -1,15 +1,13 @@
-import { Image, Product } from "@prisma/client";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
 import ProductCard from "@/components/molecules/ProductCard";
 import { Locale } from "@/lib/locale";
+import { ProductWithImage } from "@/types";
 
 interface PropTypes extends React.HTMLAttributes<HTMLElement> {
   lang: Locale;
-  products: (Product & {
-    images: Image[];
-  })[];
+  products: ProductWithImage[];
 }
 
 export default function Products({

@@ -1,6 +1,5 @@
 "use client";
 
-import { Image as PrismaImage, Product } from "@prisma/client";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import QuantityInput from "@/components/atoms/QuantityInput";
 import en from "@/dictionaries/en.json";
 import { Locale } from "@/lib/locale";
 import { useStore } from "@/store";
+import { ProductWithImage } from "@/types";
 
 interface PropTypes {
   dict: typeof en;
@@ -17,8 +17,7 @@ interface PropTypes {
 
 export default function ProductTable({ dict }: PropTypes) {
   const { lang }: { lang: Locale } = useParams();
-  const [products, setProducts] = useState<(Product & { images: PrismaImage })[]
-    >([]);
+  const [products, setProducts] = useState<ProductWithImage[]>([]);
   const cart = useStore((state) => state.cart);
   const cartArr = Object.values(cart);
   const removeProduct = useStore((state) => state.removeProduct);
@@ -43,7 +42,7 @@ export default function ProductTable({ dict }: PropTypes) {
 
       const fetchProducts = async () => {
         const { data } = (await fetch(url).then((res) => res.json())) as {
-          data: (Product & { images: PrismaImage })[];
+          data: ProductWithImage[];
         };
         setProducts(data);
       };

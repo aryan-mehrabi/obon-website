@@ -1,4 +1,4 @@
-import { User as schemaUser } from "@prisma/client";
+import { Image, Product, User as schemaUser } from "@prisma/client";
 
 export type User = Omit<schemaUser, "password">;
 
@@ -10,3 +10,5 @@ export interface CartItem {
 export interface Cart {
   [key: string]: CartItem;
 }
+
+export type ProductWithImage = Product & { images: Image[] };

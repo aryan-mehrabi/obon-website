@@ -1,15 +1,13 @@
-import { Image as ProductImage, Product } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 import { type Locale } from "@/lib/locale";
+import { ProductWithImage } from "@/types";
 
 interface PropTypes {
   lang: Locale;
-  product: Product & {
-    images: ProductImage[];
-  };
+  product: ProductWithImage;
 }
 
 export default function ProductCard({ product, lang }: PropTypes) {
