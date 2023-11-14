@@ -37,7 +37,7 @@ export default function ProductTable({ dict }: PropTypes) {
     if (cartArr.length) {
       const id = cartArr.map((productItem) => productItem.productId).join(",");
 
-      const url = new URL("http://localhost:3000/api/products");
+      const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`);
       url.searchParams.set("id", id);
 
       const fetchProducts = async () => {
