@@ -18,7 +18,7 @@ export default async function Footer({ lang, className = "" }: PropTypes) {
     >
       <div className="py-10 px-4 max-w-5xl md:mx-auto">
         <hr />
-        <div className="md:flex">
+        <div className="md:flex md:gap-8">
           <div className="mt-4 mb-12">
             <h3 className="text-2xl font-semibold mb-3">{footer.title}</h3>
             <p>{footer.description}</p>
@@ -38,7 +38,7 @@ export default async function Footer({ lang, className = "" }: PropTypes) {
             ))}
           </div>
         </div>
-        <div className="bg-white text-black absolute w-full bottom-0 left-0 text-center p-4">
+        <div className="bg-secondary text-black text-sm absolute w-full bottom-0 left-0 text-center p-1">
           <p>{footer.bottom}</p>
         </div>
       </div>
