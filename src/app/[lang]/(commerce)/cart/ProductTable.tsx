@@ -4,11 +4,11 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-import Mockup from "@/assets/mockups.png";
 import QuantityInput from "@/components/atoms/QuantityInput";
 import en from "@/dictionaries/en.json";
+import useStore from "@/hooks/useStore";
 import { Locale } from "@/lib/locale";
-import { useStore } from "@/store";
+import { usePresistStore } from "@/store";
 import { ProductWithImage } from "@/types";
 
 interface PropTypes {
@@ -18,10 +18,11 @@ interface PropTypes {
 export default function ProductTable({ dict }: PropTypes) {
   const { lang }: { lang: Locale } = useParams();
   const [products, setProducts] = useState<ProductWithImage[]>([]);
-  const cart = useStore((state) => state.cart);
+  const { cart, removeProduct, updateProduct } = useStore(
+    usePresistStore,
+    (state) => state,
+  )!;
   const cartArr = Object.values(cart);
-  const removeProduct = useStore((state) => state.removeProduct);
-  const updateProduct = useStore((state) => state.updateProduct);
 
   const {
     pages: {
@@ -69,9 +70,11 @@ export default function ProductTable({ dict }: PropTypes) {
         <td className="flex items-center mx-3 w-min gap-1">
           <div className="w-24 md:w-40">
             <Image
-              src={Mockup}
+              src={productItem.images[0].url}
               alt="sample product"
               className="w-full h-full"
+              width={productItem.images[0].width!}
+              height={productItem.images[0].height!}
             />
           </div>
           <h5 className="text-lg font-semibold">
@@ -106,26 +109,7 @@ export default function ProductTable({ dict }: PropTypes) {
           <th className="pb-4 hidden md:table-cell">{total.title}</th>
         </tr>
       </thead>
-      <tbody>
-        {/* <tr className="border-b-[1px]">
-          <td className="flex items-center mx-3 w-min gap-1">
-            <div className="w-24 md:w-40">
-              <Image
-                src={Mockup}
-                alt="sample product"
-                className="w-full h-full"
-              />
-            </div>
-            <h5 className="text-lg font-semibold">product title</h5>
-          </td>
-          <td className="mx-3">$25000</td>
-          <td className="mx-3">
-            <QuantityInput availableQuantity={1} initQuantity={1} />
-          </td>
-          <td className="mx-3 hidden md:table-cell">$55000</td>
-        </tr> */}
-        {renderCartItems()}
-      </tbody>
+      <tbody>{renderCartItems()}</tbody>
     </table>
   );
 }

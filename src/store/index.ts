@@ -4,14 +4,14 @@ import { immer } from "zustand/middleware/immer";
 
 import { Cart } from "@/types";
 
-interface CartStore {
+interface PresistStore {
   addProduct: (productId: number) => void;
   cart: Cart;
   removeProduct: (productId: number) => void;
   updateProduct: (productId: number, quantity: number) => void;
 }
 
-export const useStore = create<CartStore>()(
+export const usePresistStore = create<PresistStore>()(
   persist(
     immer((set) => ({
       cart: {},
