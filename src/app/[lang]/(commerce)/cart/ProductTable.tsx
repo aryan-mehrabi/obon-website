@@ -52,7 +52,7 @@ export default function ProductTable({ dict }: PropTypes) {
   }, []);
 
   const onChangeQuantity = (prodQuantity: number, productId: number) => {
-    if (!quantity) {
+    if (!prodQuantity) {
       removeProduct(productId);
     } else {
       updateProduct(productId, prodQuantity);
