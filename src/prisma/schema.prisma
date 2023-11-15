@@ -59,8 +59,9 @@ model Image {
   product     Product       @relation(fields: [productId], references: [id])
   productId   Int
   url         String
-  width       Int?
-  height      Int?
+  width       Int
+  height      Int
+  alt         String? @default("")
   is_default  Boolean @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
