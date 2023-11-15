@@ -6,6 +6,7 @@ import Image from "@/components/atoms/Image";
 import { getDictionary, Locale } from "@/lib/locale";
 import { formatNumber } from "@/lib/utils";
 import prisma from "@/prisma/client";
+import { Dimension } from "@/types";
 
 import AddToCart from "./AddToCart";
 
@@ -29,10 +30,6 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     }),
   ]);
 
-  const defaultImage = product?.images.find(
-    (imageItem) => imageItem.is_default,
-  );
-
   if (!product) {
     notFound();
   }
@@ -43,6 +40,35 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     },
     price: { currency },
   } = dict;
+
+  const defaultImage = product.images.find((imageItem) => imageItem.is_default);
+
+  const renderDimensions = () => {
+    if (!product.dimensions) return null;
+    const {
+      width: dimWidth,
+      length: dimlength,
+      height: dimHeight,
+    } = product.dimensions as Dimension;
+    const {
+      width, height, length, title, unit,
+    } = specifications.dimensions;
+    return (
+      <p>
+        <strong>
+          {title}
+          (
+          {unit}
+          ):
+          {" "}
+        </strong>
+        {dimWidth && `${width}: ${dimWidth} `}
+        {dimlength && `${height}: ${dimlength} `}
+        {dimHeight && `${length}: ${dimHeight}`}
+      </p>
+    );
+  };
+
   return (
     <main className="mt-28 mb-10 space-y-5 p-3 md:grid md:grid-cols-2 md:gap-x-12 max-w-5xl mx-auto">
       <div>
@@ -67,28 +93,29 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
         <div className="border border-neutral-200 p-5 rounded-sm ">
           <ul className="space-y-2">
             <li>
-              <strong>
-                {specifications.description}
-                :
-                {" "}
-              </strong>
-              {product[`description_${lang}`]}
+              {product[`description_${lang}`] && (
+                <>
+                  <strong>
+                    {specifications.description}
+                    :
+                    {" "}
+                  </strong>
+                  {product[`description_${lang}`]}
+                </>
+              )}
             </li>
+            <li>{renderDimensions()}</li>
             <li>
-              <strong>
-                {specifications.dimensions}
-                :
-                {" "}
-              </strong>
-              {JSON.stringify(product.dimensions)}
-            </li>
-            <li>
-              <strong>
-                {specifications.material}
-                :
-                {" "}
-              </strong>
-              {product[`material_${lang}`]}
+              {product[`material_${lang}`] && (
+                <>
+                  <strong>
+                    {specifications.material}
+                    :
+                    {" "}
+                  </strong>
+                  {product[`material_${lang}`]}
+                </>
+              )}
             </li>
           </ul>
         </div>

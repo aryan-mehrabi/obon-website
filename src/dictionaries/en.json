@@ -59,7 +59,13 @@
       "addCart": "Add to Cart",
       "specifications": {
         "description": "Description",
-        "dimensions": "Dimensions",
+        "dimensions": {
+          "title": "Dimensions",
+          "width": "width",
+          "height": "height",
+          "length": "length",
+          "unit": "cm"
+        },
         "material": "Material"
       },
       "disclaimer": "All hand-made with natural soy wax, Candleaf is made for your pleasuremoments."

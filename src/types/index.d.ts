@@ -12,3 +12,9 @@ export interface Cart {
 }
 
 export type ProductWithImage = Product & { images: Image[] };
+
+export interface Dimension {
+  height?: number;
+  length?: number;
+  width?: number;
+}
