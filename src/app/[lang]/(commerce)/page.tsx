@@ -46,7 +46,7 @@ export default async function Home({
           </Link>
         </div>
       </section>
-      <section className="my-16 space-y-10 max-w-5xl md:mx-auto md:grid md:grid-cols-2">
+      <section className="my-16 space-y-10 max-w-5xl md:mx-auto md:grid md:grid-cols-2 md:gap-x-5">
         <div className="text-center mx-4 space-y-4 md:text-left md:rtl:text-right">
           <Heading type="h2">{benefits.title}</Heading>
           <p className="text-eprimary">{benefits.description}</p>
