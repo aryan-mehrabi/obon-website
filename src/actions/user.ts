@@ -12,9 +12,9 @@ import { getDictionary, getLocale } from "@/lib/locale";
 import { registerFormSchema } from "@/lib/validations";
 import prisma from "@/prisma/client";
 
-const createRequest = (url: string, header: Headers, body = {}): NextRequest =>
+const createRequest = (header: Headers, body = {}): NextRequest =>
   // eslint-disable-next-line implicit-arrow-linebreak
-  new Request(header.get("host") + url, {
+  new Request(header.get("referer")!, {
     method: "POST",
     headers: header,
     body: JSON.stringify(body),
@@ -27,7 +27,7 @@ export const registerUser = async (
   const session = await getServerSession(authOptions);
   if (session) redirect("/");
   const requestHeader = headers();
-  const locale = getLocale(createRequest("/register", requestHeader));
+  const locale = getLocale(createRequest(requestHeader));
   const { errors } = await getDictionary(locale);
 
   try {
