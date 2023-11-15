@@ -12,15 +12,12 @@ import { getDictionary, getLocale } from "@/lib/locale";
 import { registerFormSchema } from "@/lib/validations";
 import prisma from "@/prisma/client";
 
-const createRequest = (header: Headers, body = {}): NextRequest =>
-  // eslint-disable-next-line implicit-arrow-linebreak
-  new Request(header.get("referer")!, {
-    method: "POST",
-    headers: header,
-    body: JSON.stringify(body),
-  }) as NextRequest;
+const createRequest = (header: Headers, body = {}): NextRequest => new Request(header.get("referer")!, {
+  method: "POST",
+  headers: header,
+  body: JSON.stringify(body),
+}) as NextRequest;
 
-// eslint-disable-next-line import/prefer-default-export
 export const registerUser = async (
   values: z.infer<typeof registerFormSchema>,
 ) => {
