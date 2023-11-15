@@ -29,6 +29,10 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     }),
   ]);
 
+  const defaultImage = product?.images.find(
+    (imageItem) => imageItem.is_default,
+  );
+
   if (!product) {
     notFound();
   }
@@ -43,9 +47,9 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     <main className="mt-28 mb-10 space-y-5 p-3 md:grid md:grid-cols-2 md:gap-x-12 max-w-5xl mx-auto">
       <div>
         <Image
-          src={product.images[0]?.url}
-          width={product.images[0]?.width}
-          height={product.images[0]?.height}
+          src={defaultImage?.url}
+          width={defaultImage?.width}
+          height={defaultImage?.height}
           alt="sample pic"
           className="w-full h-full mx-auto"
         />

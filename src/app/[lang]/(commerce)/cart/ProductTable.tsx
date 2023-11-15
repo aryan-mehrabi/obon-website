@@ -64,16 +64,19 @@ export default function ProductTable({ dict }: PropTypes) {
       (prod) => cartItem.productId === prod.id,
     );
     if (!productItem) return null;
+    const defaultImage = productItem.images.find(
+      (imageItem) => imageItem.is_default,
+    );
     return (
       <tr key={cartItem.productId} className="border-b-[1px]">
         <td className="flex items-center mx-3 w-min gap-1">
           <div className="w-24 md:w-40">
             <Image
-              src={productItem.images[0].url}
+              src={defaultImage?.url}
+              width={defaultImage?.width}
+              height={defaultImage?.height}
               alt="sample product"
               className="w-full h-full"
-              width={productItem.images[0].width}
-              height={productItem.images[0].height}
             />
           </div>
           <h5 className="text-lg font-semibold">

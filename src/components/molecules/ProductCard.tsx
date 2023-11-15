@@ -16,15 +16,18 @@ export default async function ProductCard({ product, lang }: PropTypes) {
   const {
     price: { currency },
   } = dict;
+
+  const defaultImage = product.images.find((imageItem) => imageItem.is_default);
+
   return (
     <Link href={`/product/${product.id}`}>
       <div className="shadow-sm rounded p-3 bg-white">
         <div className="mb-2 h-[250px] overflow-hidden">
           <Image
             alt="sample product image"
-            src={product.images[0]?.url}
-            width={product.images[0]?.width}
-            height={product.images[0]?.height}
+            src={defaultImage?.url}
+            width={defaultImage?.width}
+            height={defaultImage?.height}
             className="w-full h-full object-cover"
           />
         </div>
