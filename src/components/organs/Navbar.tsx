@@ -1,12 +1,12 @@
 "use client";
 
 import { HamburgerMenuIcon, PersonIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
 import Link from "next/link";
 import React, { FC, useRef, useState } from "react";
 
 import CartIcon from "@/assets/carticon.svg";
 import Logo from "@/assets/logo.png";
+import Image from "@/components/atoms/Image";
 import fa from "@/dictionaries/fa.json";
 import useClickOutside from "@/hooks/useClickOutside";
 import useStore from "@/hooks/useStore";

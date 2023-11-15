@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
+import Image from "@/components/atoms/Image";
 import QuantityInput from "@/components/atoms/QuantityInput";
 import en from "@/dictionaries/en.json";
 import useStore from "@/hooks/useStore";
@@ -72,8 +72,8 @@ export default function ProductTable({ dict }: PropTypes) {
               src={productItem.images[0].url}
               alt="sample product"
               className="w-full h-full"
-              width={productItem.images[0].width!}
-              height={productItem.images[0].height!}
+              width={productItem.images[0].width}
+              height={productItem.images[0].height}
             />
           </div>
           <h5 className="text-lg font-semibold">

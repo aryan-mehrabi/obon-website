@@ -1,9 +1,8 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import React from "react";
 
-import SampleProduct from "@/assets/sample-product.png";
 import Heading from "@/components/atoms/Heading";
+import Image from "@/components/atoms/Image";
 import { getDictionary, Locale } from "@/lib/locale";
 import { formatNumber } from "@/lib/utils";
 import prisma from "@/prisma/client";
@@ -44,11 +43,11 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     <main className="mt-28 mb-10 space-y-5 p-3 md:grid md:grid-cols-2 md:gap-x-12 max-w-5xl mx-auto">
       <div>
         <Image
-          src={product.images[0].url || SampleProduct}
+          src={product.images[0]?.url}
+          width={product.images[0]?.width}
+          height={product.images[0]?.height}
           alt="sample pic"
           className="w-full h-full mx-auto"
-          width={product.images[0].width!}
-          height={product.images[0].height!}
         />
       </div>
       <div className="space-y-5 row-span-2">

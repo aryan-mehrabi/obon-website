@@ -1,10 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 import Mockups from "@/assets/mockups.png";
 import Button from "@/components/atoms/Button";
 import Heading from "@/components/atoms/Heading";
+import Image from "@/components/atoms/Image";
 import List from "@/components/atoms/List";
 import Header from "@/components/organs/Header";
 import Products from "@/components/organs/Products";
@@ -61,7 +61,10 @@ export default async function Home({
           <List className="text-xl">
             {benefits.benefit_list.map(({ id, title, description }) => (
               <li key={id}>
-                <strong>{title}:</strong>
+                <strong>
+                  {title}
+                  :
+                </strong>
                 {description}
               </li>
             ))}

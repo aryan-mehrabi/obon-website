@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+import Image from "@/components/atoms/Image";
 import { getDictionary, type Locale } from "@/lib/locale";
 import { formatNumber } from "@/lib/utils";
 import { ProductWithImage } from "@/types";
@@ -19,12 +19,12 @@ export default async function ProductCard({ product, lang }: PropTypes) {
   return (
     <Link href={`/product/${product.id}`}>
       <div className="shadow-sm rounded p-3 bg-white">
-        <div className="-mt-4 mb-2 h-[250px] overflow-hidden">
+        <div className="mb-2 h-[250px] overflow-hidden">
           <Image
             alt="sample product image"
-            src={product.images[0]?.url || "/sample-product.png"}
-            width={product.images[0]?.width || 3000}
-            height={product.images[0]?.height || 2250}
+            src={product.images[0]?.url}
+            width={product.images[0]?.width}
+            height={product.images[0]?.height}
             className="w-full h-full object-cover"
           />
         </div>

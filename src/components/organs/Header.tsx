@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
 import HeaderImage from "@/assets/header-image.jpg";
+import Image from "@/components/atoms/Image";
 import { getDictionary, Locale } from "@/lib/locale";
 
 import Button from "../atoms/Button";
