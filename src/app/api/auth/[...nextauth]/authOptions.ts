@@ -28,14 +28,11 @@ const authOptions: AuthOptions = {
         },
       },
       async authorize(credentials, req) {
-        const newReq = new Request(
-          `${req.headers!.host}/api/auth/callback/credentials`,
-          {
-            method: req.method,
-            headers: req.headers,
-            body: JSON.stringify(req.body),
-          },
-        ) as NextRequest;
+        const newReq = new Request(req.headers!.referer as string, {
+          method: req.method,
+          headers: req.headers,
+          body: JSON.stringify(req.body),
+        }) as NextRequest;
 
         const locale = getLocale(newReq);
         const { errors } = await getDictionary(locale);
