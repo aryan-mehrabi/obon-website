@@ -1,13 +1,15 @@
 import "@/styles/tailwind.css";
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Vazirmatn } from "next/font/google";
 import React from "react";
 
 import Navbar from "@/components/organs/Navbar";
+import Provider from "@/components/Provider";
 import { getDictionary, i18n, type Locale } from "@/lib/locale";
 
 const inter = Inter({ subsets: ["latin"] });
+const vazir = Vazirmatn({ subsets: ["arabic"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,10 +30,16 @@ export default async function RootLayout({
 }) {
   const { nav_menu: navMenu } = await getDictionary(lang);
   return (
-    <html lang={lang} dir={lang === "fa" ? "rtl" : ""}>
-      <body className={inter.className}>
-        <Navbar navMenu={navMenu} />
-        {children}
+    <html lang={lang} dir={lang === "fa" ? "rtl" : "ltr"}>
+      <body
+        className={`${
+          lang === "fa" ? vazir.className : inter.className
+        } min-h-screen flex flex-col`}
+      >
+        <Provider>
+          <Navbar navMenu={navMenu} />
+          {children}
+        </Provider>
       </body>
     </html>
   );
