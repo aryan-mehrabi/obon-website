@@ -1,11 +1,11 @@
 import Link from "next/link";
 import React from "react";
 
-import Button from "@/components/atoms/Button";
 import Heading from "@/components/atoms/Heading";
 import { getDictionary, type Locale } from "@/lib/locale";
 
-import ProductTable from "./ProductTable";
+import CartCheckout from "./CartCheckout";
+import CartList from "./CartList";
 
 interface PropTypes {
   params: {
@@ -17,9 +17,7 @@ export default async function page({ params: { lang } }: PropTypes) {
   const dict = await getDictionary(lang);
   const {
     pages: {
-      cart: {
-        title, backShopping, disclaimer, total, cta,
-      },
+      cart: { title, backShopping },
     },
   } = dict;
 
@@ -34,17 +32,8 @@ export default async function page({ params: { lang } }: PropTypes) {
           {backShopping.title}
         </Link>
       </div>
-      <ProductTable dict={dict} />
-      <div className="text-center mt-10 md:flex md:items-start md:justify-end md:gap-20 max-w-5xl mx-auto">
-        <div className="mb-9">
-          <div className="flex items-center justify-center gap-6 text-xl font-semibold space-y-1">
-            <p>{total}</p>
-            <p>$9.99</p>
-          </div>
-          <p className="text-gray-400">{disclaimer}</p>
-        </div>
-        <Button className="w-full md:w-auto">{cta.title}</Button>
-      </div>
+      <CartList dict={dict} />
+      <CartCheckout dict={dict} />
     </main>
   );
 }
