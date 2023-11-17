@@ -90,8 +90,9 @@
           "title": "Total"
         }
       },
-      "total": "Sub-total",
+      "total": "Total",
       "disclaimer": "Tax and shipping cost will be calculated later",
+      "empty": "Your Cart Is Empty",
       "cta": {
         "title": "checkout"
       }

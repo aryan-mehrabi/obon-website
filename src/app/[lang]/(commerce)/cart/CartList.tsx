@@ -9,6 +9,7 @@ import useStore from "@/hooks/useStore";
 import { usePresistStore } from "@/store";
 
 import CartListItem from "./CartListItem";
+import CartListItemSkeleton from "./CartListItemSkeleton";
 
 interface PropTypes {
   dict: typeof en;
@@ -23,35 +24,44 @@ export default function CartList({ dict }: PropTypes) {
         table: {
           price, product, quantity, total,
         },
+        empty,
       },
     },
     price: { currency },
   } = dict;
 
   const id = cartArr.map((productItem) => productItem.productId).join(",");
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["products", id],
-    queryFn: () => (id ? fetchProducts(id) : null),
+    queryFn: () => (id ? fetchProducts(id) : undefined),
     staleTime: Infinity,
   });
-  if (!data) return null;
-  const products = data.data;
 
-  const renderCartItems = () => cartArr.map((cartItem) => {
-    const productItem = products.find(
-      (prod) => cartItem.productId === prod.id,
-    );
-    if (!productItem) return null;
-    return (
-      <CartListItem
-        key={cartItem.productId}
-        cartItem={cartItem}
-        productItem={productItem}
-      />
-    );
-  });
+  const renderCartItems = () => {
+    if (isLoading) {
+      return Array<React.JSX.Element>(2).fill(<CartListItemSkeleton />);
+    }
+    const products = data?.data;
+    return cartArr.map((cartItem) => {
+      const productItem = products.find(
+        (prod) => cartItem.productId === prod.id,
+      );
+      if (!productItem) return null;
+      return (
+        <CartListItem
+          key={cartItem.productId}
+          cartItem={cartItem}
+          productItem={productItem}
+        />
+      );
+    });
+  };
 
-  return (
+  return !data && !isLoading ? (
+    <div className="text-center text-xl font-bold">
+      <p>{empty}</p>
+    </div>
+  ) : (
     <table className="table-auto text-left rtl:text-right w-full mx-auto max-w-5xl border-spacing-8">
       <thead>
         <tr className="border-b-[1px]">

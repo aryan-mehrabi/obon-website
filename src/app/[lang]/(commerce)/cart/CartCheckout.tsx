@@ -21,6 +21,7 @@ export default function CartCheckout({ dict }: PropTypes) {
     pages: {
       cart: { cta, total, disclaimer },
     },
+    price: { currency },
   } = dict;
 
   const id = cartArr.map((productItem) => productItem.productId).join(",");
@@ -40,9 +41,16 @@ export default function CartCheckout({ dict }: PropTypes) {
   return (
     <div className="text-center mt-10 md:flex md:items-start md:justify-end md:gap-20 max-w-5xl mx-auto">
       <div className="mb-9">
-        <div className="flex items-center justify-center gap-6 text-xl font-semibold space-y-1">
-          <p>{total}</p>
-          <p>{formatNumber(calculateTotal())}</p>
+        <div className="flex items-center justify-center gap-6 font-semibold space-y-1">
+          <p className="text-base">
+            {total}
+            :
+          </p>
+          <p className="text-xl">
+            {`${formatNumber(
+              calculateTotal(),
+            )} ${currency}`}
+          </p>
         </div>
         <p className="text-gray-400 text-sm">{disclaimer}</p>
       </div>
