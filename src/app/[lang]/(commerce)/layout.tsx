@@ -6,6 +6,7 @@ import React from "react";
 
 import Footer from "@/components/organs/Footer";
 import Navbar from "@/components/organs/Navbar";
+import Provider from "@/components/Provider";
 import { getDictionary, i18n, type Locale } from "@/lib/locale";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -36,9 +37,11 @@ export default async function RootLayout({
           lang === "fa" ? vazir.className : inter.className
         } min-h-screen flex flex-col`}
       >
-        <Navbar navMenu={navMenu} />
-        {children}
-        <Footer lang={lang} />
+        <Provider>
+          <Navbar navMenu={navMenu} />
+          {children}
+          <Footer lang={lang} />
+        </Provider>
       </body>
     </html>
   );
