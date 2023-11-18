@@ -49,7 +49,8 @@
       "title": "ثبت نام",
       "submit": "ثبت نام",
       "have_account": "ثبت نام کرده اید؟",
-      "login_here": "اینجا وارد شوید"
+      "login_here": "اینجا وارد شوید",
+      "successfullRegister": "با موفقیت ثبتام کردید"
     },
     "products": {
       "title": "محصولات",

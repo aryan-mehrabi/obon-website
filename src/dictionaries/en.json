@@ -49,7 +49,8 @@
       "title": "Register",
       "submit": "register",
       "have_account": "Have an account?",
-      "login_here": "Login Here"
+      "login_here": "Login Here",
+      "successfullRegister": "Registered Successfully!"
     },
     "products": {
       "title": "Products",

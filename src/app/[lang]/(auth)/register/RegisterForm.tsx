@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import * as z from "zod";
 
 import { registerUser } from "@/actions/user";
@@ -43,7 +44,12 @@ export default function RegisterForm({
   // eslint-disable-next-line @typescript-eslint/require-await
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     startTransition(async () => {
-      await registerUser(values);
+      const res = await registerUser(values);
+      if (res.success) {
+        toast.success(register.successfullRegister);
+      } else {
+        toast.error(res.message);
+      }
     });
   }
   return (
