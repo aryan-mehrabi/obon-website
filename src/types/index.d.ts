@@ -18,3 +18,13 @@ export interface Dimension {
   length?: number;
   width?: number;
 }
+
+export interface ErrorResponse {
+  message: string;
+  success: false;
+}
+
+export interface SuccessResponse {
+  data?: unknown;
+  success: true;
+}
