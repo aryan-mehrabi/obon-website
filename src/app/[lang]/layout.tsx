@@ -3,6 +3,7 @@ import "@/styles/tailwind.css";
 import type { Metadata } from "next";
 import { Inter, Vazirmatn } from "next/font/google";
 import React from "react";
+import { Toaster } from "react-hot-toast";
 
 import Navbar from "@/components/organs/Navbar";
 import Provider from "@/components/Provider";
@@ -37,6 +38,7 @@ export default async function RootLayout({
         } min-h-screen flex flex-col`}
       >
         <Provider>
+          <Toaster position="bottom-left" />
           <Navbar navMenu={navMenu} />
           {children}
         </Provider>
