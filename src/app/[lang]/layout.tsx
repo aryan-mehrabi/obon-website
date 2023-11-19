@@ -35,7 +35,7 @@ export default async function RootLayout({
       <body
         className={`${
           lang === "fa" ? vazir.className : inter.className
-        } min-h-screen flex flex-col`}
+        } min-h-screen flex flex-col pt-20`}
       >
         <Provider>
           <Toaster position="bottom-left" />
