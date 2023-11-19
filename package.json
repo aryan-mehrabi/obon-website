@@ -20,6 +20,7 @@
     "react-hot-toast": "^2.4.1",
     "react-query": "^3.39.3",
     "server-only": "^0.0.1",
+    "sharp": "^0.32.6",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "tsc-files": "^1.1.4",
