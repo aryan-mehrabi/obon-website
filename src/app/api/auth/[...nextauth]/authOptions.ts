@@ -39,31 +39,29 @@ const authOptions: AuthOptions = {
 
         try {
           credentialsSchema.parse(credentials);
-          const user = await prisma.user.findUnique({
-            where: {
-              email: credentials?.email,
-            },
-          });
-          if (!user) {
-            throw new Error(errors.register);
-          }
-          if (
-            await bcrypt.compare(
-              credentials?.password as string,
-              user.password!,
-            )
-          ) {
-            const { password: _, ...userData } = user;
-            return userData;
-          }
-          throw new Error(errors.wrong_password);
-        } catch (error) {
-          if (error instanceof z.ZodError) {
-            throw new Error(JSON.stringify(error.issues));
-          } else {
-            throw new Error(JSON.stringify((error as Error).message));
-          }
+        } catch (err) {
+          throw new Error(
+            (err as z.ZodError).issues.reduce(
+              (acc, issue) => acc + issue.message,
+              "",
+            ),
+          );
         }
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials?.email,
+          },
+        });
+        if (!user) {
+          throw new Error(errors.register);
+        }
+        if (
+          await bcrypt.compare(credentials?.password as string, user.password!)
+        ) {
+          const { password: _, ...userData } = user;
+          return userData;
+        }
+        throw new Error(errors.wrong_password);
       },
     }),
   ],

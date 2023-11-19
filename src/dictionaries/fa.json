@@ -43,7 +43,8 @@
       "title": "ورود",
       "submit": "ورود",
       "no_account": "ثبت نام نکرده اید؟",
-      "register_here": "اینجا ثبت نام کنید"
+      "register_here": "اینجا ثبت نام کنید",
+      "welcome": "با موفقیت وارد شدید"
     },
     "register": {
       "title": "ثبت نام",

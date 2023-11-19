@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -47,8 +48,12 @@ export default function LoginForm({
       ...values,
       redirect: false,
     });
+
     if (res?.ok) {
       router.push(callbackParam);
+      toast.success(login.welcome);
+    } else {
+      toast.error(res?.error);
     }
   }
   return (

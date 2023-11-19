@@ -43,7 +43,8 @@
       "title": "Login",
       "submit": "login",
       "no_account": "Don't have an account?",
-      "register_here": "Register Here"
+      "register_here": "Register Here",
+      "welcome": "Login Successfully"
     },
     "register": {
       "title": "Register",
