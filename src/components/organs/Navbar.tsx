@@ -21,6 +21,7 @@ interface PropTypes {
 
 export default function Navbar({ navMenu }: PropTypes) {
   const cart = useStore(usePresistStore, (state) => state.cart) || {};
+  const cartArr = Object.values(cart);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const ref = useRef<HTMLElement>(null);
   useClickOutside(ref, () => setIsMenuOpen(false));
@@ -57,7 +58,7 @@ export default function Navbar({ navMenu }: PropTypes) {
         <div className="flex gap-3">
           <Icon render={PersonIcon} />
           <Link href="/cart">
-            <Badge>{Object.values(cart).length}</Badge>
+            {cartArr.length !== 0 && <Badge>{cartArr.length}</Badge>}
             <Icon render={CartIcon as FC} />
           </Link>
         </div>
