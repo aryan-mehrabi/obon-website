@@ -43,7 +43,7 @@ export default function CartList({ dict }: PropTypes) {
     }
     const products = data?.data;
     return cartArr.map((cartItem) => {
-      const productItem = products.find(
+      const productItem = products?.find(
         (prod) => cartItem.productId === prod.id,
       );
       if (!productItem) return null;
