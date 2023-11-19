@@ -30,6 +30,7 @@ export default function LoginForm({
   dict: {
     pages: { login },
     form: dictForm,
+    errors: { server },
   },
 }: PropType) {
   const router = useRouter();
@@ -53,7 +54,7 @@ export default function LoginForm({
       router.push(callbackParam);
       toast.success(login.welcome);
     } else {
-      toast.error(res?.error);
+      toast.error(res?.error || server);
     }
   }
   return (
