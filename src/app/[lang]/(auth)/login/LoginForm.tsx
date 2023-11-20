@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -19,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import en from "@/dictionaries/en.json";
 import { credentialsSchema } from "@/lib/validations";
 
@@ -33,6 +33,7 @@ export default function LoginForm({
     errors: { server },
   },
 }: PropType) {
+  const { toast } = useToast();
   const router = useRouter();
   const params = useSearchParams();
   const callbackParam = params.get("callback") || "/";
@@ -52,9 +53,11 @@ export default function LoginForm({
 
     if (res?.ok) {
       router.push(callbackParam);
-      toast.success(login.welcome);
+      toast({
+        title: login.welcome,
+      });
     } else {
-      toast.error(res?.error || server);
+      toast({ title: res?.error || server, variant: "destructive" });
     }
   }
   return (

@@ -2,9 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import * as z from "zod";
 
 import { registerUser } from "@/actions/user";
@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import en from "@/dictionaries/en.json";
 import { registerFormSchema } from "@/lib/validations";
 
@@ -31,6 +32,7 @@ export default function RegisterForm({
     form: dictForm,
   },
 }: PropType) {
+  const { toast } = useToast();
   const [, startTransition] = useTransition();
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
@@ -46,9 +48,10 @@ export default function RegisterForm({
     startTransition(async () => {
       const res = await registerUser(values);
       if (res.success) {
-        toast.success(register.successfullRegister);
+        toast({ title: register.successfullRegister });
+        redirect("/login");
       } else {
-        toast.error(res.message);
+        toast({ title: res.message, variant: "destructive" });
       }
     });
   }

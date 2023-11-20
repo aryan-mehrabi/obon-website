@@ -1,13 +1,14 @@
 "use server";
 
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import { type NextRequest } from "next/server";
-import { getServerSession } from "next-auth/next";
 import * as z from "zod";
 
-import authOptions from "@/app/api/auth/[...nextauth]/authOptions";
-import { hashPassword, serverActionMiddleware } from "@/lib/helpers";
+import {
+  hashPassword,
+  serverActionMiddleware,
+  successResponse,
+} from "@/lib/helpers";
 import { getDictionary, getLocale } from "@/lib/locale";
 import { registerFormSchema } from "@/lib/validations";
 import prisma from "@/prisma/client";
@@ -20,8 +21,6 @@ const createRequest = (header: Headers, body = {}): NextRequest => new Request(h
 
 export const registerUser = serverActionMiddleware(
   async (values: z.infer<typeof registerFormSchema>) => {
-    const session = await getServerSession(authOptions);
-    if (session) redirect("/");
     const requestHeader = headers();
     const locale = getLocale(createRequest(requestHeader));
     const { errors } = await getDictionary(locale);
@@ -45,6 +44,6 @@ export const registerUser = serverActionMiddleware(
         password,
       },
     });
-    return redirect("/login");
+    return successResponse();
   },
 );
