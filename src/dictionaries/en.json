@@ -163,6 +163,28 @@
     ],
     "bottom": "Made with <3 by Aryan"
   },
+  "sidebar": {
+    "overview": {
+      "title": "Overview",
+      "href": "/dashboard"
+    },
+    "orders": {
+      "title": "Orders",
+      "href": "/dashboard/orders"
+    },
+    "products": {
+      "title": "Products",
+      "href": "/dashboard/products"
+    },
+    "customers": {
+      "title": "Customers",
+      "href": "/dashboard/customers"
+    },
+    "settings": {
+      "title": "Settings",
+      "href": "/dashboard/settings"
+    }
+  },
   "errors": {
     "register": "Please register.",
     "wrong_password": "Wrong password",

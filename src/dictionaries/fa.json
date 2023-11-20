@@ -163,6 +163,28 @@
     ],
     "bottom": "ساخته شده با 3> توسط آرین"
   },
+  "sidebar": {
+    "overview": {
+      "title": "داشبورد",
+      "href": "/dashboard"
+    },
+    "orders": {
+      "title": "سفارش ها",
+      "href": "/dashboard/orders"
+    },
+    "products": {
+      "title": "محصولات",
+      "href": "/dashboard/products"
+    },
+    "customers": {
+      "title": "مشتریان",
+      "href": "/dashboard/customers"
+    },
+    "settings": {
+      "title": "تنظیمات",
+      "href": "/dashboard/settings"
+    }
+  },
   "errors": {
     "register": "لطفا ثبت نام کنید.",
     "wrong_password": "پسورد اشتباه است",
