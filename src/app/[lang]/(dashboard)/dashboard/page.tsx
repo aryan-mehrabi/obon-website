@@ -1,5 +1,6 @@
 import React from "react";
 
+import Heading from "@/components/atoms/Heading";
 import {
   Card, CardContent, CardHeader, CardTitle,
 } from "@/components/ui/card";
@@ -8,7 +9,10 @@ import { Overview } from "./Overview";
 
 export default function page() {
   return (
-    <div className="grow p-12 overflow-auto">
+    <div className="space-y-4">
+      <div>
+        <Heading type="h3">Dashboard</Heading>
+      </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
