@@ -19,7 +19,7 @@ export default async function layout({
   return (
     <div className="flex h-[calc(100vh-80px)]">
       <Sidebar dict={sidebar} />
-      <main className="overflow-auto">{children}</main>
+      {children}
     </div>
   );
 }
