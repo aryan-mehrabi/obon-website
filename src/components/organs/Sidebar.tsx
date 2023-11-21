@@ -1,25 +1,17 @@
 "use client";
 
-import {
-  BackpackIcon,
-  DashboardIcon,
-  GearIcon,
-  PersonIcon,
-} from "@radix-ui/react-icons";
+import { BackpackIcon, DashboardIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { FC } from "react";
+import React from "react";
 
-import CartIcon from "@/assets/carticon.svg";
 import Icon from "@/components/atoms/Icon";
 import en from "@/dictionaries/en.json";
 
 export default function Sidebar({ dict }: { dict: typeof en.sidebar }) {
   const pathname = usePathname();
   const paths = pathname.split("/").filter((path) => path);
-  const {
-    overview, orders, products, customers, settings,
-  } = dict;
+  const { overview, products } = dict;
 
   const sidebarMenu = [
     {
@@ -27,26 +19,26 @@ export default function Sidebar({ dict }: { dict: typeof en.sidebar }) {
       icon: DashboardIcon,
       dict: overview,
     },
-    {
-      id: 2,
-      icon: CartIcon as FC,
-      dict: orders,
-    },
+    // {
+    //   id: 2,
+    //   icon: CartIcon as FC,
+    //   dict: orders,
+    // },
     {
       id: 3,
       icon: BackpackIcon,
       dict: products,
     },
-    {
-      id: 4,
-      icon: PersonIcon,
-      dict: customers,
-    },
-    {
-      id: 5,
-      icon: GearIcon,
-      dict: settings,
-    },
+    // {
+    //   id: 4,
+    //   icon: PersonIcon,
+    //   dict: customers,
+    // },
+    // {
+    //   id: 5,
+    //   icon: GearIcon,
+    //   dict: settings,
+    // },
   ];
 
   const renderList = () => {

@@ -9,7 +9,7 @@ import { Overview } from "./Overview";
 export default function page() {
   return (
     <div className="grow p-12 overflow-auto">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-10">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
@@ -106,7 +106,14 @@ export default function page() {
           </CardContent>
         </Card>
       </div>
-      <Overview />
+      <Card>
+        <CardHeader>
+          <CardTitle>Overview</CardTitle>
+        </CardHeader>
+        <CardContent className="pl-2">
+          <Overview />
+        </CardContent>
+      </Card>
     </div>
   );
 }
