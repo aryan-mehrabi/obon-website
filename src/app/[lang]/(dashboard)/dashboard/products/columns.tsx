@@ -7,9 +7,10 @@ import Image from "@/components/atoms/Image";
 import { DataTableColumnHeader } from "@/components/molecules/DataTableColumnHeader";
 import { DataTableRowActions } from "@/components/molecules/DataTableRowActions";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Switch } from "@/components/ui/switch";
 import { formatNumber } from "@/lib/utils";
 import { ProductWithImage } from "@/types";
+
+import DataTableSwitch from "./DataTableSwitch";
 
 export const columns: ColumnDef<ProductWithImage>[] = [
   {
@@ -42,7 +43,7 @@ export const columns: ColumnDef<ProductWithImage>[] = [
       <DataTableColumnHeader column={column} title="Id" />
     ),
     cell: ({ row }) => <div className="w-[40px]">{row.getValue("id")}</div>,
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: false,
   },
   {
@@ -93,7 +94,7 @@ export const columns: ColumnDef<ProductWithImage>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Visibility" />
     ),
-    cell: ({ row }) => <Switch checked={row.getValue("is_visible_to_user")} />,
+    cell: ({ row }) => <DataTableSwitch row={row} />,
     enableSorting: true,
     enableHiding: false,
   },
