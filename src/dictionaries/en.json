@@ -118,6 +118,19 @@
         "caption": "since last hour"
       },
       "overview": "Overview"
+    },
+    "dashboardProducts": {
+      "title": "Products",
+      "newProduct": "New Product",
+      "table": {
+        "cols": {
+          "id": "Id",
+          "title": "Title",
+          "quantity": "Quantity",
+          "price": "Price",
+          "visibility": "Visibility"
+        }
+      }
     }
   },
   "form": {

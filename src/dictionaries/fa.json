@@ -118,6 +118,19 @@
         "caption": "از ساعت پیش"
       },
       "overview": "دید کلی"
+    },
+    "dashboardProducts": {
+      "title": "محصولات",
+      "newProduct": "محصول جدید",
+      "table": {
+        "cols": {
+          "id": "Id",
+          "title": "تایتل",
+          "quantity": "Quantity",
+          "price": "Price",
+          "visibility": "Visibility"
+        }
+      }
     }
   },
   "form": {
