@@ -98,6 +98,26 @@
       "cta": {
         "title": "خرید"
       }
+    },
+    "dashboard": {
+      "title": "داشبورد",
+      "revenue": {
+        "title": "مجموع سود",
+        "caption": "از ماه پیش"
+      },
+      "subscription": {
+        "title": "دنبال کننده ها",
+        "caption": "از ماه پیش"
+      },
+      "sale": {
+        "title": "فروش",
+        "caption": "از ماه پیش"
+      },
+      "active": {
+        "title": "آنلاین",
+        "caption": "از ساعت پیش"
+      },
+      "overview": "دید کلی"
     }
   },
   "form": {

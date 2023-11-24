@@ -4,19 +4,34 @@ import Heading from "@/components/atoms/Heading";
 import {
   Card, CardContent, CardHeader, CardTitle,
 } from "@/components/ui/card";
+import { getDictionary, Locale } from "@/lib/locale";
 
 import { Overview } from "./Overview";
 
-export default function page() {
+export default async function page({
+  params: { lang },
+}: {
+  params: { lang: Locale };
+}) {
+  const dict = await getDictionary(lang);
+  const {
+    pages: {
+      dashboard: {
+        title, revenue, subscription, sale, active, overview,
+      },
+    },
+  } = dict;
   return (
     <div className="space-y-4">
       <div>
-        <Heading type="h3">Dashboard</Heading>
+        <Heading type="h3">{title}</Heading>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {revenue.title}
+            </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -33,13 +48,17 @@ export default function page() {
           <CardContent>
             <div className="text-2xl font-bold">$45,231.89</div>
             <p className="text-xs text-muted-foreground">
-              +20.1% from last month
+              +20.1%
+              {" "}
+              {revenue.caption}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {subscription.title}
+            </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -58,13 +77,15 @@ export default function page() {
           <CardContent>
             <div className="text-2xl font-bold">+2350</div>
             <p className="text-xs text-muted-foreground">
-              +180.1% from last month
+              +180.1%
+              {" "}
+              {subscription.caption}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sales</CardTitle>
+            <CardTitle className="text-sm font-medium">{sale.title}</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -82,13 +103,16 @@ export default function page() {
           <CardContent>
             <div className="text-2xl font-bold">+12,234</div>
             <p className="text-xs text-muted-foreground">
-              +19% from last month
+              +19%
+              {sale.caption}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Now</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {active.title}
+            </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -105,16 +129,18 @@ export default function page() {
           <CardContent>
             <div className="text-2xl font-bold">+573</div>
             <p className="text-xs text-muted-foreground">
-              +201 since last hour
+              +201
+              {" "}
+              {active.caption}
             </p>
           </CardContent>
         </Card>
       </div>
       <Card>
         <CardHeader>
-          <CardTitle>Overview</CardTitle>
+          <CardTitle>{overview}</CardTitle>
         </CardHeader>
-        <CardContent className="pl-2">
+        <CardContent className="ps-2">
           <Overview />
         </CardContent>
       </Card>

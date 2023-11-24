@@ -98,6 +98,26 @@
       "cta": {
         "title": "checkout"
       }
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "revenue": {
+        "title": "Total Revenue",
+        "caption": "from last month"
+      },
+      "subscription": {
+        "title": "Subscriptions",
+        "caption": "from last month"
+      },
+      "sale": {
+        "title": "Sales",
+        "caption": "from last month"
+      },
+      "active": {
+        "title": "Active Now",
+        "caption": "since last hour"
+      },
+      "overview": "Overview"
     }
   },
   "form": {
