@@ -15,3 +15,13 @@ export const registerFormSchema = z
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });
+
+export const newProductFirstStepFormSchema = z.object({
+  title_en: z.string().min(2).max(50),
+  title_fa: z.string().min(2).max(50),
+  price: z.number(),
+  quantity: z.number(),
+  images: z
+    .array(z.custom<File>())
+    .refine((files) => files.length !== 0, "req"),
+});
