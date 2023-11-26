@@ -28,3 +28,8 @@ export interface SuccessResponse {
   data?: unknown;
   success: true;
 }
+
+export const enum FormSteps {
+  first,
+  second,
+}
