@@ -41,7 +41,7 @@ model Product {
   title_fa            String
   material_en         String
   material_fa         String
-  is_availbale        Boolean @default(true)
+  is_available        Boolean @default(true)
   is_visible_to_user  Boolean @default(true)
   dimensions          Json?
   description_en      String?
