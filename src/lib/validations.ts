@@ -25,3 +25,15 @@ export const newProductFirstStepFormSchema = z.object({
     .array(z.custom<File>())
     .refine((files) => files.length !== 0, "req"),
 });
+
+export const newProductSecondStepFormSchema = z.object({
+  material_en: z.string().min(1),
+  material_fa: z.string().min(1),
+  description_fa: z.string(),
+  description_en: z.string(),
+  width: z.number(),
+  height: z.number(),
+  length: z.number(),
+  is_available: z.boolean(),
+  is_visible_to_user: z.boolean(),
+});
