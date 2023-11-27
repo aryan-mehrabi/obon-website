@@ -17,19 +17,15 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  newProductFirstStepFormSchema,
+  newProductFormSchema,
   newProductSecondStepFormSchema,
 } from "@/lib/validations";
 import { FormSteps } from "@/types";
 
 interface PropTypes {
-  formData: z.infer<typeof newProductSecondStepFormSchema> &
-    z.infer<typeof newProductFirstStepFormSchema>;
+  formData: z.infer<typeof newProductFormSchema>;
   setFormData: React.Dispatch<
-    React.SetStateAction<
-      z.infer<typeof newProductSecondStepFormSchema> &
-        z.infer<typeof newProductFirstStepFormSchema>
-    >
+    React.SetStateAction<z.infer<typeof newProductFormSchema>>
   >;
   setStep: React.Dispatch<React.SetStateAction<FormSteps>>;
 }

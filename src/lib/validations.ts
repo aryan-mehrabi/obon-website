@@ -17,13 +17,13 @@ export const registerFormSchema = z
   });
 
 export const newProductFirstStepFormSchema = z.object({
-  title_en: z.string().min(2).max(50),
-  title_fa: z.string().min(2).max(50),
+  title_en: z.string().min(1).max(50),
+  title_fa: z.string().min(1).max(50),
   price: z.number(),
   quantity: z.number(),
   images: z
     .array(z.custom<File>())
-    .refine((files) => files.length !== 0, "req"),
+    .refine((files) => files.length !== 0, "Image is required"),
 });
 
 export const newProductSecondStepFormSchema = z.object({
@@ -37,3 +37,7 @@ export const newProductSecondStepFormSchema = z.object({
   is_available: z.boolean(),
   is_visible_to_user: z.boolean(),
 });
+
+export const newProductFormSchema = newProductFirstStepFormSchema.merge(
+  newProductSecondStepFormSchema,
+);

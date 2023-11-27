@@ -14,13 +14,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { newProductFirstStepFormSchema } from "@/lib/validations";
+import {
+  newProductFirstStepFormSchema,
+  newProductFormSchema,
+} from "@/lib/validations";
 import { type FormSteps } from "@/types";
 
 interface PropTypes {
-  formData: z.infer<typeof newProductFirstStepFormSchema>;
+  formData: z.infer<typeof newProductFormSchema>;
   setFormData: React.Dispatch<
-    React.SetStateAction<z.infer<typeof newProductFirstStepFormSchema>>
+    React.SetStateAction<z.infer<typeof newProductFormSchema>>
   >;
   setStep: React.Dispatch<React.SetStateAction<FormSteps>>;
 }
@@ -64,9 +67,9 @@ export default function WizardFirstStep({
             name="title_en"
             render={({ field }) => (
               <FormItem className="grow">
-                <FormLabel>Product Name (EN)</FormLabel>
+                <FormLabel>Name (EN)</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="Product Name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -77,9 +80,9 @@ export default function WizardFirstStep({
             name="title_fa"
             render={({ field }) => (
               <FormItem className="grow">
-                <FormLabel>Product Name (FA)</FormLabel>
+                <FormLabel>Name (FA)</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="Product Name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -94,7 +97,7 @@ export default function WizardFirstStep({
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="shadcn"
+                    placeholder="Price"
                     {...field}
                     {...form.register("price", { valueAsNumber: true })}
                   />
@@ -112,7 +115,7 @@ export default function WizardFirstStep({
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="shadcn"
+                    placeholder="Quantity"
                     {...field}
                     {...form.register("quantity", { valueAsNumber: true })}
                   />
@@ -135,7 +138,6 @@ export default function WizardFirstStep({
                       onChange(Array.from(e.target.files!));
                     }}
                     type="file"
-                    placeholder="shadcn"
                     {...field}
                   />
                 </FormControl>
