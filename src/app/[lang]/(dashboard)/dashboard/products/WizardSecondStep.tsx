@@ -1,8 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { createProduct } from "@/actions/product";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
@@ -32,9 +33,10 @@ interface PropTypes {
 
 export default function WizardSecondStep({
   formData,
-  // setFormData,
+  setFormData,
   setStep,
 }: PropTypes) {
+  const [, startTransition] = useTransition();
   const form = useForm<z.infer<typeof newProductSecondStepFormSchema>>({
     resolver: zodResolver(newProductSecondStepFormSchema),
     defaultValues: {
@@ -51,7 +53,16 @@ export default function WizardSecondStep({
   });
 
   const onSubmit = (values: z.infer<typeof newProductSecondStepFormSchema>) => {
-    console.log(values);
+    setFormData((state) => ({ ...state, ...values }));
+    const { images, ...data } = formData;
+    const formDataa = new FormData();
+    images.forEach((file) => {
+      formDataa.append("files", file, file.name);
+    });
+    formDataa.append("data", JSON.stringify(data));
+    startTransition(async () => {
+      await createProduct(formDataa);
+    });
   };
 
   return (
