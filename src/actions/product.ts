@@ -61,3 +61,14 @@ export const createProduct = serverActionMiddleware(
     revalidatePath("/dashboard/products");
   },
 );
+
+export const deleteProduct = serverActionMiddleware(
+  async (productId: number) => {
+    await prisma.product.delete({
+      where: {
+        id: productId,
+      },
+    });
+    revalidatePath("/dashboard/products");
+  },
+);
