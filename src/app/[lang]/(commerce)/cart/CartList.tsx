@@ -39,7 +39,12 @@ export default function CartList({ dict }: PropTypes) {
 
   const renderCartItems = () => {
     if (isLoading) {
-      return Array<React.JSX.Element>(2).fill(<CartListItemSkeleton />);
+      return (
+        Array(2)
+          .fill(0)
+          // eslint-disable-next-line react/no-array-index-key
+          .map((_, i) => <CartListItemSkeleton key={i} />)
+      );
     }
     const products = data?.data;
     return cartArr.map((cartItem) => {
