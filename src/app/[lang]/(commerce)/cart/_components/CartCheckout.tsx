@@ -47,9 +47,7 @@ export default function CartCheckout({ dict }: PropTypes) {
             :
           </p>
           <p className="text-xl">
-            {`${formatNumber(
-              calculateTotal(),
-            )} ${currency}`}
+            {`${formatNumber(calculateTotal())} ${currency}`}
           </p>
         </div>
         <p className="text-gray-400 text-sm">{disclaimer}</p>

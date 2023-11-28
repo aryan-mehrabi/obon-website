@@ -15,8 +15,8 @@ import {
 import { getDictionary, Locale } from "@/lib/locale";
 import prisma from "@/prisma/client";
 
-import { columns } from "./columns";
-import Wizard from "./Wizard";
+import { columns } from "./_components/columns";
+import Wizard from "./_components/Wizard";
 
 export default async function page({
   params: { lang },

@@ -4,8 +4,8 @@ import React from "react";
 import Heading from "@/components/atoms/Heading";
 import { getDictionary, type Locale } from "@/lib/locale";
 
-import CartCheckout from "./CartCheckout";
-import CartList from "./CartList";
+import CartCheckout from "./_components/CartCheckout";
+import CartList from "./_components/CartList";
 
 interface PropTypes {
   params: {
