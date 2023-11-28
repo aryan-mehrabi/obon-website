@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import en from "@/dictionaries/en.json";
 import {
   newProductFirstStepFormSchema,
   newProductFormSchema,
@@ -21,6 +22,7 @@ import {
 import { type FormSteps } from "@/types";
 
 interface PropTypes {
+  dict: typeof en;
   formData: z.infer<typeof newProductFormSchema>;
   setFormData: React.Dispatch<
     React.SetStateAction<z.infer<typeof newProductFormSchema>>
@@ -32,7 +34,19 @@ export default function WizardFirstStep({
   setFormData,
   formData,
   setStep,
+  dict,
 }: PropTypes) {
+  const {
+    price: { currency },
+    pages: {
+      dashboardProducts: {
+        newProductModal,
+        productForm: {
+          name, price, quantity, images: imagesDict,
+        },
+      },
+    },
+  } = dict;
   const form = useForm<z.infer<typeof newProductFirstStepFormSchema>>({
     resolver: zodResolver(newProductFirstStepFormSchema),
     defaultValues: {
@@ -67,9 +81,13 @@ export default function WizardFirstStep({
             name="title_en"
             render={({ field }) => (
               <FormItem className="grow">
-                <FormLabel>Name (EN)</FormLabel>
+                <FormLabel>
+                  {name.title}
+                  {" "}
+                  (EN)
+                </FormLabel>
                 <FormControl>
-                  <Input placeholder="Product Name" {...field} />
+                  <Input placeholder={name.placeholder} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -80,9 +98,13 @@ export default function WizardFirstStep({
             name="title_fa"
             render={({ field }) => (
               <FormItem className="grow">
-                <FormLabel>Name (FA)</FormLabel>
+                <FormLabel>
+                  {name.title}
+                  {" "}
+                  (FA)
+                </FormLabel>
                 <FormControl>
-                  <Input placeholder="Product Name" {...field} />
+                  <Input placeholder={name.placeholder} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -93,11 +115,16 @@ export default function WizardFirstStep({
             name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Price(Toman)</FormLabel>
+                <FormLabel>
+                  {price.title}
+                  (
+                  {currency}
+                  )
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="Price"
+                    placeholder={price.placeholder}
                     {...field}
                     {...form.register("price", { valueAsNumber: true })}
                   />
@@ -111,11 +138,11 @@ export default function WizardFirstStep({
             name="quantity"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Quantity</FormLabel>
+                <FormLabel>{quantity.title}</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="Quantity"
+                    placeholder={quantity.placeholder}
                     {...field}
                     {...form.register("quantity", { valueAsNumber: true })}
                   />
@@ -130,7 +157,7 @@ export default function WizardFirstStep({
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             render={({ field: { value: _, onChange, ...field } }) => (
               <FormItem className="col-span-2">
-                <FormLabel>file</FormLabel>
+                <FormLabel>{imagesDict.title}</FormLabel>
                 <FormControl>
                   <Input
                     multiple
@@ -166,9 +193,9 @@ export default function WizardFirstStep({
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline">{newProductModal.buttons.dismiss}</Button>
           </DialogClose>
-          <Button>Next Step</Button>
+          <Button>{newProductModal.buttons.next}</Button>
         </DialogFooter>
       </form>
     </Form>

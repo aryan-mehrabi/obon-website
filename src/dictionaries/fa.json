@@ -121,7 +121,7 @@
     },
     "dashboardProducts": {
       "title": "محصولات",
-      "newProduct": "محصول جدید",
+      "newProductButton": "محصول جدید",
       "table": {
         "cols": {
           "id": "Id",
@@ -130,6 +130,32 @@
           "price": "Price",
           "visibility": "Visibility"
         }
+      },
+      "newProductModal": {
+        "title": "اضافه کردن محصول",
+        "buttons": {
+          "dismiss": "انصراف",
+          "previous": "مرحله قبل",
+          "next": "مرحله بعد",
+          "submit": "ثبت"
+        }
+      },
+      "productForm": {
+        "name": { "title": "نام", "placeholder": "نام محصول" },
+        "price": { "title": "قیمت", "placeholder": "قیمت" },
+        "quantity": { "title": "تعداد", "placeholder": "تعداد" },
+        "images": { "title": "تصاویر", "placeholder": "تصاویر" },
+        "material": { "title": "جنس", "placeholder": "جنس" },
+        "description": { "title": "توضیحات", "placeholder": "توضیحات" },
+        "width": { "title": "عرض", "placeholder": "عرض", "unit": "سانتی‌متر" },
+        "height": {
+          "title": "ارتفاع",
+          "placeholder": "ارتفاع",
+          "unit": "سانتی‌متر"
+        },
+        "length": { "title": "طول", "placeholder": "طول", "unit": "سانتی‌متر" },
+        "available": { "title": "موجود", "placeholder": "موجود" },
+        "visible": { "title": "نمایش دادن", "placeholder": "نمایش دادن" }
       }
     }
   },

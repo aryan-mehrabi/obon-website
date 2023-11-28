@@ -31,7 +31,7 @@ export default async function page({
   const dict = await getDictionary(lang);
   const {
     pages: {
-      dashboardProducts: { newProduct, title },
+      dashboardProducts: { newProductButton, title, newProductModal },
     },
   } = dict;
 
@@ -41,16 +41,16 @@ export default async function page({
         <Heading type="h3">{title}</Heading>
         <Dialog>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="flex gap-2 items-center">
               <Icon render={PlusIcon} className="w-4 h-4" />
-              <p>{newProduct}</p>
+              <span>{newProductButton}</span>
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Product Information</DialogTitle>
+              <DialogTitle>{newProductModal.title}</DialogTitle>
             </DialogHeader>
-            <Wizard />
+            <Wizard dict={dict} />
           </DialogContent>
         </Dialog>
       </div>

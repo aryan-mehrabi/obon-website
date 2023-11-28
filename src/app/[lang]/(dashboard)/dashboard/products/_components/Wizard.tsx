@@ -3,13 +3,14 @@
 import React, { useState } from "react";
 import * as z from "zod";
 
+import en from "@/dictionaries/en.json";
 import { newProductFormSchema } from "@/lib/validations";
 import { FormSteps } from "@/types";
 
 import WizardFirstStep from "./WizardFirstStep";
 import WizardSecondStep from "./WizardSecondStep";
 
-export default function Wizard() {
+export default function Wizard({ dict }: { dict: typeof en }) {
   const [formData, setFormData] = useState<
     z.infer<typeof newProductFormSchema>
   >({
@@ -31,8 +32,14 @@ export default function Wizard() {
   const [step, setStep] = useState(FormSteps.first);
 
   return step === FormSteps.first ? (
-    <WizardFirstStep {...{ formData, setFormData, setStep }} />
+    <WizardFirstStep {...{
+      formData, setFormData, setStep, dict,
+    }}
+    />
   ) : (
-    <WizardSecondStep {...{ formData, setFormData, setStep }} />
+    <WizardSecondStep {...{
+      formData, setFormData, setStep, dict,
+    }}
+    />
   );
 }

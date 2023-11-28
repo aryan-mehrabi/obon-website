@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import en from "@/dictionaries/en.json";
 import {
   newProductFormSchema,
   newProductSecondStepFormSchema,
@@ -24,6 +25,7 @@ import {
 import { FormSteps } from "@/types";
 
 interface PropTypes {
+  dict: typeof en;
   formData: z.infer<typeof newProductFormSchema>;
   setFormData: React.Dispatch<
     React.SetStateAction<z.infer<typeof newProductFormSchema>>
@@ -35,7 +37,24 @@ export default function WizardSecondStep({
   formData,
   setFormData,
   setStep,
+  dict,
 }: PropTypes) {
+  const {
+    pages: {
+      dashboardProducts: {
+        newProductModal: { buttons },
+        productForm: {
+          available,
+          visible,
+          material,
+          width,
+          length,
+          height,
+          description,
+        },
+      },
+    },
+  } = dict;
   const [, startTransition] = useTransition();
   const form = useForm<z.infer<typeof newProductSecondStepFormSchema>>({
     resolver: zodResolver(newProductSecondStepFormSchema),
@@ -59,7 +78,7 @@ export default function WizardSecondStep({
     images.forEach((file) => {
       formDataa.append("files", file, file.name);
     });
-    formDataa.append("data", JSON.stringify(data));
+    formDataa.append("data", JSON.stringify({ ...data, ...values }));
     startTransition(async () => {
       await createProduct(formDataa);
     });
@@ -75,9 +94,13 @@ export default function WizardSecondStep({
             name="material_en"
             render={({ field }) => (
               <FormItem className="grow">
-                <FormLabel>Material (EN)</FormLabel>
+                <FormLabel>
+                  {material.title}
+                  {" "}
+                  (EN)
+                </FormLabel>
                 <FormControl>
-                  <Input placeholder="Product Material" {...field} />
+                  <Input placeholder={material.placeholder} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -88,9 +111,13 @@ export default function WizardSecondStep({
             name="material_fa"
             render={({ field }) => (
               <FormItem className="grow">
-                <FormLabel>Material (FA)</FormLabel>
+                <FormLabel>
+                  {material.title}
+                  {" "}
+                  (FA)
+                </FormLabel>
                 <FormControl>
-                  <Input placeholder="Product Material" {...field} />
+                  <Input placeholder={material.placeholder} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -101,9 +128,13 @@ export default function WizardSecondStep({
             name="description_fa"
             render={({ field }) => (
               <FormItem className="col-span-2">
-                <FormLabel>Description (EN)</FormLabel>
+                <FormLabel>
+                  {description.title}
+                  {" "}
+                  (EN)
+                </FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Description" {...field} />
+                  <Textarea placeholder={description.placeholder} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -114,9 +145,13 @@ export default function WizardSecondStep({
             name="description_en"
             render={({ field }) => (
               <FormItem className="col-span-2">
-                <FormLabel>Description (FA)</FormLabel>
+                <FormLabel>
+                  {description.title}
+                  {" "}
+                  (FA)
+                </FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Description" {...field} />
+                  <Textarea placeholder={description.placeholder} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -128,11 +163,17 @@ export default function WizardSecondStep({
               name="width"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Width (cm)</FormLabel>
+                  <FormLabel>
+                    {width.title}
+                    {" "}
+                    (
+                    {width.unit}
+                    )
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Width"
+                      placeholder={width.placeholder}
                       {...field}
                       {...form.register("width", { valueAsNumber: true })}
                     />
@@ -146,11 +187,17 @@ export default function WizardSecondStep({
               name="height"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Height (cm)</FormLabel>
+                  <FormLabel>
+                    {height.title}
+                    {" "}
+                    (
+                    {height.unit}
+                    )
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Height"
+                      placeholder={height.placeholder}
                       {...field}
                       {...form.register("height", { valueAsNumber: true })}
                     />
@@ -164,11 +211,17 @@ export default function WizardSecondStep({
               name="length"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Length (cm)</FormLabel>
+                  <FormLabel>
+                    {length.title}
+                    {" "}
+                    (
+                    {length.unit}
+                    )
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Length"
+                      placeholder={length.placeholder}
                       {...field}
                       {...form.register("length", { valueAsNumber: true })}
                     />
@@ -183,7 +236,7 @@ export default function WizardSecondStep({
             name="is_available"
             render={({ field: { value, onChange, ...field } }) => (
               <FormItem className="flex gap-2 items-center space-y-0">
-                <FormLabel>Available</FormLabel>
+                <FormLabel>{available.title}</FormLabel>
                 <FormControl>
                   <Switch
                     onCheckedChange={(val) => onChange(val)}
@@ -200,7 +253,7 @@ export default function WizardSecondStep({
             name="is_visible_to_user"
             render={({ field: { value, onChange, ...field } }) => (
               <FormItem className="flex gap-2 items-center space-y-0">
-                <FormLabel>Visibile</FormLabel>
+                <FormLabel>{visible.placeholder}</FormLabel>
                 <FormControl>
                   <Switch
                     onCheckedChange={(val) => onChange(val)}
@@ -219,9 +272,9 @@ export default function WizardSecondStep({
             variant="outline"
             onClick={() => setStep((step) => step - 1)}
           >
-            Previous Step
+            {buttons.previous}
           </Button>
-          <Button>Submit</Button>
+          <Button>{buttons.submit}</Button>
         </DialogFooter>
       </form>
     </Form>

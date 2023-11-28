@@ -121,7 +121,7 @@
     },
     "dashboardProducts": {
       "title": "Products",
-      "newProduct": "New Product",
+      "newProductButton": "New Product",
       "table": {
         "cols": {
           "id": "Id",
@@ -130,6 +130,28 @@
           "price": "Price",
           "visibility": "Visibility"
         }
+      },
+      "newProductModal": {
+        "title": "Product Information",
+        "buttons": {
+          "dismiss": "Cancel",
+          "previous": "Previous Step",
+          "next": "Next Step",
+          "submit": "Submit"
+        }
+      },
+      "productForm": {
+        "name": { "title": "Name", "placeholder": "Product Name" },
+        "price": { "title": "Price", "placeholder": "Price" },
+        "quantity": { "title": "Quantity", "placeholder": "Quantity" },
+        "images": { "title": "Images", "placeholder": "Images" },
+        "material": { "title": "Material", "placeholder": "Material" },
+        "description": { "title": "Description", "placeholder": "Description" },
+        "width": { "title": "Width", "placeholder": "Width", "unit": "cm" },
+        "height": { "title": "Height", "placeholder": "Height", "unit": "cm" },
+        "length": { "title": "Length", "placeholder": "Length", "unit": "cm" },
+        "available": { "title": "Available", "placeholder": "Available" },
+        "visible": { "title": "Visible", "placeholder": "Visible" }
       }
     }
   },
