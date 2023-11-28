@@ -30,7 +30,7 @@ export const successResponse = <T>(data: T | null = null): SuccessResponse => ({
 
 export const serverActionMiddleware = <T extends (...args: any[]) => any>(fn: T) => async (...args: Parameters<T>): Promise<ErrorResponse | SuccessResponse> => {
   try {
-    return await fn(...args);
+    return successResponse(await fn(...args));
   } catch (error) {
     if (isRedirectError(error) || isNotFoundError(error)) {
       throw error;

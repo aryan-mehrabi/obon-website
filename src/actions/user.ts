@@ -4,11 +4,7 @@ import { headers } from "next/headers";
 import { type NextRequest } from "next/server";
 import * as z from "zod";
 
-import {
-  hashPassword,
-  serverActionMiddleware,
-  successResponse,
-} from "@/lib/helpers";
+import { hashPassword, serverActionMiddleware } from "@/lib/helpers";
 import { getDictionary, getLocale } from "@/lib/locale";
 import { registerFormSchema } from "@/lib/validations";
 import prisma from "@/prisma/client";
@@ -44,6 +40,5 @@ export const registerUser = serverActionMiddleware(
         password,
       },
     });
-    return successResponse();
   },
 );
