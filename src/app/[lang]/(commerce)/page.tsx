@@ -19,6 +19,9 @@ export default async function Home({
   const [dict, products] = await Promise.all([
     getDictionary(lang),
     prisma.product.findMany({
+      where: {
+        is_visible_to_user: true,
+      },
       include: {
         images: true,
       },

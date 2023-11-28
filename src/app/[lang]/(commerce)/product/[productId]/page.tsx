@@ -30,7 +30,7 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     }),
   ]);
 
-  if (!product) {
+  if (!product || !product.is_visible_to_user) {
     notFound();
   }
 

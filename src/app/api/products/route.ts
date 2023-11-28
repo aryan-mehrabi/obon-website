@@ -14,6 +14,7 @@ export const GET = async (req: NextRequest) => {
       id: {
         in: id,
       },
+      is_visible_to_user: true,
     },
     include: {
       images: true,
