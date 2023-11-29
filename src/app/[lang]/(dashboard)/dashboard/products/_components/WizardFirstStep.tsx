@@ -1,8 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { TrashIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import Icon from "@/components/atoms/Icon";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import {
@@ -60,11 +63,20 @@ export default function WizardFirstStep({
 
   const images = form.watch("images");
 
-  const onClickDelete = (index: number) => {
-    form.setValue(
-      "images",
-      images.filter((_, i) => index !== i),
-    );
+  const onClickDelete = (id: string) => {
+    const filteredFiles = images.files.filter((image) => image.name !== id);
+    let defaultImage = images.default;
+    if (images.default === id) {
+      if (filteredFiles.length) {
+        defaultImage = filteredFiles[0].name;
+      } else {
+        defaultImage = null;
+      }
+    }
+    form.setValue("images", {
+      files: filteredFiles,
+      default: defaultImage,
+    });
   };
 
   function onSubmit(values: z.infer<typeof newProductFirstStepFormSchema>) {
@@ -160,9 +172,13 @@ export default function WizardFirstStep({
                 <FormLabel>{imagesDict.title}</FormLabel>
                 <FormControl>
                   <Input
+                    accept="image/*"
                     multiple
                     onChange={(e) => {
-                      onChange(Array.from(e.target.files!));
+                      onChange({
+                        files: Array.from(e.target.files!),
+                        default: e.target.files![0].name,
+                      });
                     }}
                     type="file"
                     {...field}
@@ -172,21 +188,33 @@ export default function WizardFirstStep({
               </FormItem>
             )}
           />
-          <div className="col-span-2 flex gap-2">
-            {images?.map((image, i) => (
-              <div key={image.name} className="w-28 relative">
+          <div className="col-span-2 grid grid-cols-3 gap-2">
+            {images.files.map((image) => (
+              <div key={image.name} className="relative">
+                <div className="absolute top-0 right-0 rtl:left-0 m-1 flex items-center gap-1">
+                  {image.name === images.default && (
+                    <Badge className="">Default</Badge>
+                  )}
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    className="p-1 w-6 h-6"
+                    onClick={() => onClickDelete(image.name)}
+                  >
+                    <Icon render={TrashIcon} className="w-4 h-4" />
+                  </Button>
+                </div>
                 <button
                   type="button"
-                  className="absolute inset-0"
-                  onClick={() => onClickDelete(i)}
+                  className="w-full h-24 rounded overflow-hidden"
+                  onClick={() => form.setValue("images.default", image.name)}
                 >
-                  delete
+                  <img
+                    alt=""
+                    src={URL.createObjectURL(image)}
+                    className="w-full h-full object-cover"
+                  />
                 </button>
-                <img
-                  alt=""
-                  src={URL.createObjectURL(image)}
-                  className="w-full h-full"
-                />
               </div>
             ))}
           </div>

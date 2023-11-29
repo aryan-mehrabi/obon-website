@@ -18,7 +18,10 @@ export default function Wizard({ dict }: { dict: typeof en }) {
     title_fa: "",
     price: 0,
     quantity: 1,
-    images: [],
+    images: {
+      files: [],
+      default: null,
+    },
     material_en: "",
     material_fa: "",
     description_en: "",
@@ -32,14 +35,22 @@ export default function Wizard({ dict }: { dict: typeof en }) {
   const [step, setStep] = useState(FormSteps.first);
 
   return step === FormSteps.first ? (
-    <WizardFirstStep {...{
-      formData, setFormData, setStep, dict,
-    }}
+    <WizardFirstStep
+      {...{
+        formData,
+        setFormData,
+        setStep,
+        dict,
+      }}
     />
   ) : (
-    <WizardSecondStep {...{
-      formData, setFormData, setStep, dict,
-    }}
+    <WizardSecondStep
+      {...{
+        formData,
+        setFormData,
+        setStep,
+        dict,
+      }}
     />
   );
 }

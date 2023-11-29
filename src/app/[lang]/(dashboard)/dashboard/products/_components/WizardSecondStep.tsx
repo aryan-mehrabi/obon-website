@@ -73,14 +73,13 @@ export default function WizardSecondStep({
 
   const onSubmit = (values: z.infer<typeof newProductSecondStepFormSchema>) => {
     setFormData((state) => ({ ...state, ...values }));
-    const { images, ...data } = formData;
-    const formDataa = new FormData();
-    images.forEach((file) => {
-      formDataa.append("files", file, file.name);
+    const data = new FormData();
+    formData.images.files.forEach((file) => {
+      data.append("files", file, file.name);
     });
-    formDataa.append("data", JSON.stringify({ ...data, ...values }));
+    data.append("data", JSON.stringify({ ...formData, ...values }));
     startTransition(async () => {
-      await createProduct(formDataa);
+      await createProduct(data);
     });
   };
 

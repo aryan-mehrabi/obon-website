@@ -22,8 +22,11 @@ export const newProductFirstStepFormSchema = z.object({
   price: z.number(),
   quantity: z.number(),
   images: z
-    .array(z.custom<File>())
-    .refine((files) => files.length !== 0, "Image is required"),
+    .object({
+      files: z.array(z.custom<File>()),
+      default: z.string().nullable(),
+    })
+    .refine(({ files }) => files.length !== 0, "Image is Required"),
 });
 
 export const newProductSecondStepFormSchema = z.object({

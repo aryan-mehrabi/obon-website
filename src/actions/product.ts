@@ -24,10 +24,9 @@ export const updateProduct = serverActionMiddleware(
 export const createProduct = serverActionMiddleware(
   async (formData: FormData) => {
     const images = formData.getAll("files") as File[];
-    const data = JSON.parse(formData.get("data") as string) as unknown as Omit<
-      z.infer<typeof newProductFormSchema>,
-      "images"
-    >;
+    const data = JSON.parse(
+      formData.get("data") as string,
+    ) as unknown as z.infer<typeof newProductFormSchema>;
     const {
       width, height, length, ...productData
     } = data;
@@ -42,11 +41,11 @@ export const createProduct = serverActionMiddleware(
       Promise.all(buffers.map((buffer) => sharp(buffer).metadata())),
     ]);
 
-    const imagesData = fileNames.map((fileName, i) => ({
-      url: `/uploads/${fileName}`,
+    const imagesData = images.map((file, i) => ({
+      url: `/uploads/${fileNames[i]}`,
       width: imagesDim[i].width!,
       height: imagesDim[i].height!,
-      is_default: true,
+      is_default: file.name === data.images.default,
     }));
 
     await prisma.product.create({
