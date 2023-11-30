@@ -129,6 +129,16 @@
           "quantity": "Quantity",
           "price": "Price",
           "visibility": "Visibility"
+        },
+        "actions": {
+          "delete": "Delete",
+          "edit": "Edit",
+          "deleteDialog": {
+            "title": "Are you sure you wanna delete this product?",
+            "disclaimer": "This action cannot be undone. This will permanently delete this product and remove your data from our servers.",
+            "cancel": "Cancel",
+            "delete": "Delete"
+          }
         }
       },
       "newProductModal": {
