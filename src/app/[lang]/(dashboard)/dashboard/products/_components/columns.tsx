@@ -54,14 +54,14 @@ export const columns: ColumnDef<ProductWithImage>[] = [
     cell: ({ row }) => {
       const image = row.original.images.find((img) => img.is_default);
       return (
-        <div className="flex space-x-2">
-          <div className="h-16">
+        <div className="flex space-x-2 items-center">
+          <div className="h-14 w-24">
             <Image
               src={image?.url}
               width={image?.width}
               height={image?.height}
               alt={image?.alt || "product image"}
-              className="w-full h-full"
+              className="w-full h-full object-cover"
             />
           </div>
           <p className="max-w-[500px] truncate font-medium">
