@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import en from "@/dictionaries/en.json";
+import { convertToNumber, formatNumber } from "@/lib/utils";
 import {
   newProductFirstStepFormSchema,
   newProductFormSchema,
@@ -125,7 +126,7 @@ export default function WizardFirstStep({
           <FormField
             control={form.control}
             name="price"
-            render={({ field }) => (
+            render={({ field: { value, onChange, ...field } }) => (
               <FormItem>
                 <FormLabel>
                   {price.title}
@@ -135,10 +136,14 @@ export default function WizardFirstStep({
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
+                    value={formatNumber(value)}
+                    onChange={(e) => {
+                      const num = convertToNumber(e.target.value);
+                      onChange(Number.isNaN(num) ? "" : num);
+                    }}
+                    type="text"
                     placeholder={price.placeholder}
                     {...field}
-                    {...form.register("price", { valueAsNumber: true })}
                   />
                 </FormControl>
                 <FormMessage />
