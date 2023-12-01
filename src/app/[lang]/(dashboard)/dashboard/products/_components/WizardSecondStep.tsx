@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 import en from "@/dictionaries/en.json";
 import {
   newProductFormSchema,
@@ -30,6 +31,7 @@ interface PropTypes {
   setFormData: React.Dispatch<
     React.SetStateAction<z.infer<typeof newProductFormSchema>>
   >;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setStep: React.Dispatch<React.SetStateAction<FormSteps>>;
 }
 
@@ -38,6 +40,7 @@ export default function WizardSecondStep({
   setFormData,
   setStep,
   dict,
+  setOpen,
 }: PropTypes) {
   const {
     pages: {
@@ -55,7 +58,8 @@ export default function WizardSecondStep({
       },
     },
   } = dict;
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof newProductSecondStepFormSchema>>({
     resolver: zodResolver(newProductSecondStepFormSchema),
     defaultValues: {
@@ -63,9 +67,7 @@ export default function WizardSecondStep({
       material_fa: formData.material_fa,
       description_en: formData.description_en,
       description_fa: formData.description_fa,
-      width: formData.width,
-      height: formData.height,
-      length: formData.length,
+      dimensions: formData.dimensions,
       is_available: formData.is_available,
       is_visible_to_user: formData.is_visible_to_user,
     },
@@ -79,7 +81,13 @@ export default function WizardSecondStep({
     });
     data.append("data", JSON.stringify({ ...formData, ...values }));
     startTransition(async () => {
-      await createProduct(data);
+      const res = await createProduct(data);
+      if (res.success) {
+        toast({ title: "Product Created Successfully" });
+        setOpen(false);
+      } else {
+        toast({ title: res.message, variant: "destructive" });
+      }
     });
   };
 
@@ -159,8 +167,8 @@ export default function WizardSecondStep({
           <div className="col-span-2 grid grid-cols-3 gap-2">
             <FormField
               control={form.control}
-              name="width"
-              render={({ field }) => (
+              name="dimensions.width"
+              render={() => (
                 <FormItem>
                   <FormLabel>
                     {width.title}
@@ -173,8 +181,9 @@ export default function WizardSecondStep({
                     <Input
                       type="number"
                       placeholder={width.placeholder}
-                      {...field}
-                      {...form.register("width", { valueAsNumber: true })}
+                      {...form.register("dimensions.width", {
+                        valueAsNumber: true,
+                      })}
                     />
                   </FormControl>
                   <FormMessage />
@@ -183,8 +192,8 @@ export default function WizardSecondStep({
             />
             <FormField
               control={form.control}
-              name="height"
-              render={({ field }) => (
+              name="dimensions.height"
+              render={() => (
                 <FormItem>
                   <FormLabel>
                     {height.title}
@@ -197,8 +206,9 @@ export default function WizardSecondStep({
                     <Input
                       type="number"
                       placeholder={height.placeholder}
-                      {...field}
-                      {...form.register("height", { valueAsNumber: true })}
+                      {...form.register("dimensions.height", {
+                        valueAsNumber: true,
+                      })}
                     />
                   </FormControl>
                   <FormMessage />
@@ -207,8 +217,8 @@ export default function WizardSecondStep({
             />
             <FormField
               control={form.control}
-              name="length"
-              render={({ field }) => (
+              name="dimensions.length"
+              render={() => (
                 <FormItem>
                   <FormLabel>
                     {length.title}
@@ -221,8 +231,9 @@ export default function WizardSecondStep({
                     <Input
                       type="number"
                       placeholder={length.placeholder}
-                      {...field}
-                      {...form.register("length", { valueAsNumber: true })}
+                      {...form.register("dimensions.length", {
+                        valueAsNumber: true,
+                      })}
                     />
                   </FormControl>
                   <FormMessage />
@@ -273,7 +284,9 @@ export default function WizardSecondStep({
           >
             {buttons.previous}
           </Button>
-          <Button>{buttons.submit}</Button>
+          <Button type="submit" disabled={isPending}>
+            {buttons.submit}
+          </Button>
         </DialogFooter>
       </form>
     </Form>

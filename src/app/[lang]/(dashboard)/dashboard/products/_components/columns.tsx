@@ -1,11 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 import React from "react";
 
 import Image from "@/components/atoms/Image";
 import { DataTableColumnHeader } from "@/components/molecules/DataTableColumnHeader";
 import { DataTableRowActions } from "@/components/molecules/DataTableRowActions";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatNumber } from "@/lib/utils";
 import { ProductWithImage } from "@/types";
@@ -40,9 +42,19 @@ export const columns: ColumnDef<ProductWithImage>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Id" />
+      <DataTableColumnHeader column={column} title="Product Id" />
     ),
-    cell: ({ row }) => <div className="w-[40px]">{row.getValue("id")}</div>,
+    cell: ({ row }) => {
+      const id: number = row.getValue("id");
+      return (
+        <Link href={`/product/${id}`} className="w-[40px]">
+          <Button variant="link">
+            #
+            {id}
+          </Button>
+        </Link>
+      );
+    },
     enableSorting: true,
     enableHiding: false,
   },

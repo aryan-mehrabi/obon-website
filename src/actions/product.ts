@@ -27,14 +27,7 @@ export const createProduct = serverActionMiddleware(
     const data = JSON.parse(
       formData.get("data") as string,
     ) as unknown as z.infer<typeof newProductFormSchema>;
-    const {
-      width, height, length, ...productData
-    } = data;
-    const dimensions = {
-      width,
-      height,
-      length,
-    };
+
     const buffers = await getBuffer(images);
     const [fileNames, imagesDim] = await Promise.all([
       uploadImages(images, buffers, "public/uploads/"),
@@ -50,8 +43,10 @@ export const createProduct = serverActionMiddleware(
 
     await prisma.product.create({
       data: {
-        ...productData,
-        dimensions,
+        ...data,
+        dimensions: data.dimensions as
+          | Prisma.InputJsonValue
+          | Prisma.NullableJsonNullValueInput,
         images: {
           create: imagesData,
         },

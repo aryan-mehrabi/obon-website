@@ -19,7 +19,7 @@ export const registerFormSchema = z
 export const newProductFirstStepFormSchema = z.object({
   title_en: z.string().min(1).max(50),
   title_fa: z.string().min(1).max(50),
-  price: z.number(),
+  price: z.number().positive(),
   quantity: z.number(),
   images: z
     .object({
@@ -34,9 +34,13 @@ export const newProductSecondStepFormSchema = z.object({
   material_fa: z.string().min(1),
   description_fa: z.string(),
   description_en: z.string(),
-  width: z.number(),
-  height: z.number(),
-  length: z.number(),
+  dimensions: z
+    .object({
+      width: z.number().nullish(),
+      height: z.number().nullish(),
+      length: z.number().nullish(),
+    })
+    .nullish(),
   is_available: z.boolean(),
   is_visible_to_user: z.boolean(),
 });

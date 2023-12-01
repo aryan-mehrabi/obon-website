@@ -44,15 +44,18 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
   const defaultImage = product.images.find((imageItem) => imageItem.is_default);
 
   const renderDimensions = () => {
-    if (!product.dimensions) return null;
     const {
       width: dimWidth,
       length: dimlength,
       height: dimHeight,
-    } = product.dimensions as Dimension;
+    } = (product.dimensions || {}) as Dimension;
+
+    if (!dimWidth && !dimlength && !dimHeight) return null;
+
     const {
       width, height, length, title, unit,
     } = specifications.dimensions;
+
     return (
       <p>
         <strong>
