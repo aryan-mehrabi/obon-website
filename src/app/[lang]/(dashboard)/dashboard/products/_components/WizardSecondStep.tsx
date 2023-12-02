@@ -31,7 +31,6 @@ interface PropTypes {
   setFormData: React.Dispatch<
     React.SetStateAction<z.infer<typeof newProductFormSchema>>
   >;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setStep: React.Dispatch<React.SetStateAction<FormSteps>>;
 }
 
@@ -40,7 +39,6 @@ export default function WizardSecondStep({
   setFormData,
   setStep,
   dict,
-  setOpen,
 }: PropTypes) {
   const {
     pages: {
@@ -84,7 +82,6 @@ export default function WizardSecondStep({
       const res = await createProduct(data);
       if (res.success) {
         toast({ title: "Product Created Successfully" });
-        setOpen(false);
       } else {
         toast({ title: res.message, variant: "destructive" });
       }

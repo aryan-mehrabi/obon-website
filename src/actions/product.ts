@@ -2,6 +2,7 @@
 
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import sharp from "sharp";
 import * as z from "zod";
 
@@ -52,7 +53,7 @@ export const createProduct = serverActionMiddleware(
         },
       },
     });
-    revalidatePath("/dashboard/products");
+    redirect("/dashboard/products");
   },
 );
 
