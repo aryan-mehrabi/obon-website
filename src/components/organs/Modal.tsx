@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle,
@@ -13,9 +13,19 @@ interface PropTypes {
 }
 
 export default function Modal({ children, title, ...props }: PropTypes) {
+  const [open, setOpen] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setOpen(true);
+  }, []);
+
   return (
-    <Dialog open onOpenChange={(val) => !val && router.back()} {...props}>
+    <Dialog
+      open={open}
+      onOpenChange={(val) => !val && router.back()}
+      {...props}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
