@@ -2,6 +2,7 @@
 
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
 import React, { useTransition } from "react";
 
 import { deleteProduct } from "@/actions/product";
@@ -33,6 +34,7 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData extends { id: number }>({
   row,
 }: DataTableRowActionsProps<TData>) {
+  const router = useRouter();
   const [, startTransition] = useTransition();
   const { toast } = useToast();
   const onClickDelete = () => {
@@ -40,12 +42,18 @@ export function DataTableRowActions<TData extends { id: number }>({
     startTransition(async () => {
       const res = await deleteProduct(productId);
       if (res.success) {
-        toast({ title: "success" });
+        toast({ title: "Product deleted Successfully" });
       } else {
         toast({ title: res.message, variant: "destructive" });
       }
     });
   };
+
+  const onClickEdit = () => {
+    const productId = row.original.id;
+    router.push(`/dashboard/products/${productId}/edit`);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -59,9 +67,7 @@ export function DataTableRowActions<TData extends { id: number }>({
       </DropdownMenuTrigger>
       <AlertDialog>
         <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem onClick={() => console.log(row.original.id)}>
-            Edit
-          </DropdownMenuItem>
+          <DropdownMenuItem onClick={onClickEdit}>Edit</DropdownMenuItem>
           <AlertDialogTrigger asChild>
             <DropdownMenuItem className="text-destructive">
               Delete

@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { createProduct } from "@/actions/product";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
@@ -23,11 +23,15 @@ import {
   newProductFormSchema,
   newProductSecondStepFormSchema,
 } from "@/lib/validations";
-import { FormSteps } from "@/types";
+import { ErrorResponse, FormSteps, SuccessResponse } from "@/types";
 
 interface PropTypes {
   dict: typeof en;
   formData: z.infer<typeof newProductFormSchema>;
+  onSubmit: (
+    values: FormData,
+    id?: number,
+  ) => Promise<SuccessResponse | ErrorResponse>;
   setFormData: React.Dispatch<
     React.SetStateAction<z.infer<typeof newProductFormSchema>>
   >;
@@ -39,6 +43,7 @@ export default function WizardSecondStep({
   setFormData,
   setStep,
   dict,
+  onSubmit,
 }: PropTypes) {
   const {
     pages: {
@@ -58,6 +63,8 @@ export default function WizardSecondStep({
   } = dict;
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
+  const router = useRouter();
+  const pathname = usePathname();
   const form = useForm<z.infer<typeof newProductSecondStepFormSchema>>({
     resolver: zodResolver(newProductSecondStepFormSchema),
     defaultValues: {
@@ -71,17 +78,24 @@ export default function WizardSecondStep({
     },
   });
 
-  const onSubmit = (values: z.infer<typeof newProductSecondStepFormSchema>) => {
+  const onSubmitForm = (
+    values: z.infer<typeof newProductSecondStepFormSchema>,
+  ) => {
+    const id = +pathname.split("/").filter((path) => path)[3];
     setFormData((state) => ({ ...state, ...values }));
     const data = new FormData();
-    formData.images.files.forEach((file) => {
-      data.append("files", file, file.name);
+    formData.images.forEach(({ file }) => {
+      if (file) {
+        data.append("files", file, file.name);
+      }
     });
     data.append("data", JSON.stringify({ ...formData, ...values }));
     startTransition(async () => {
-      const res = await createProduct(data);
+      const res = await onSubmit(data, Number.isNaN(id) ? undefined : id);
       if (res.success) {
         toast({ title: "Product Created Successfully" });
+        router.push("/dashboard/products");
+        router.refresh();
       } else {
         toast({ title: res.message, variant: "destructive" });
       }
@@ -91,7 +105,7 @@ export default function WizardSecondStep({
   return (
     <Form {...form}>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmitForm)} className="space-y-8">
         <div className="grid grid-cols-2 gap-x-2 gap-y-6">
           <FormField
             control={form.control}

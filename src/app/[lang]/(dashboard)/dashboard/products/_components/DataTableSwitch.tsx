@@ -1,7 +1,7 @@
 import { Row } from "@tanstack/react-table";
 import React, { useOptimistic } from "react";
 
-import { updateProduct } from "@/actions/product";
+import { updateProductVisibile } from "@/actions/product";
 import { Switch } from "@/components/ui/switch";
 
 export default function DataTableSwitch<
@@ -17,9 +17,7 @@ export default function DataTableSwitch<
   );
   const onChangeSwitch = async () => {
     addOptimisticState(!optimisticState.isVisibile);
-    await updateProduct(row.original.id, {
-      is_visible_to_user: !optimisticState.isVisibile,
-    });
+    await updateProductVisibile(row.original.id, !optimisticState.isVisibile);
   };
   return (
     <Switch

@@ -1,5 +1,6 @@
 import React from "react";
 
+import { createProduct } from "@/actions/product";
 import Modal from "@/components/organs/Modal";
 import { getDictionary, Locale } from "@/lib/locale";
 
@@ -15,7 +16,7 @@ export default async function Page({ params: { lang } }: PropTypes) {
   const dict = await getDictionary(lang);
   return (
     <Modal title={dict.pages.dashboardProducts.newProductModal.title}>
-      <Wizard dict={dict} />
+      <Wizard dict={dict} onSubmit={createProduct} />
     </Modal>
   );
 }

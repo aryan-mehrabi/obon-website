@@ -22,11 +22,16 @@ export const newProductFirstStepFormSchema = z.object({
   price: z.number().positive(),
   quantity: z.number(),
   images: z
-    .object({
-      files: z.array(z.custom<File>()),
-      default: z.string().nullable(),
-    })
-    .refine(({ files }) => files.length !== 0, "Image is Required"),
+    .array(
+      z.object({
+        id: z.union([z.string(), z.number()]),
+        file: z.custom<File>().optional(),
+        url: z.string().optional(),
+        alt: z.string().optional().nullable(),
+        is_default: z.boolean(),
+      }),
+    )
+    .refine((images) => images.length !== 0, "Image is Required"),
 });
 
 export const newProductSecondStepFormSchema = z.object({

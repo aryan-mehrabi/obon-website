@@ -5,7 +5,7 @@ import * as z from "zod";
 
 import en from "@/dictionaries/en.json";
 import { newProductFormSchema } from "@/lib/validations";
-import { FormSteps } from "@/types";
+import { ErrorResponse, FormSteps, SuccessResponse } from "@/types";
 
 import WizardFirstStep from "./WizardFirstStep";
 import WizardSecondStep from "./WizardSecondStep";
@@ -15,10 +15,7 @@ const initVal = {
   title_fa: "",
   price: 0,
   quantity: 1,
-  images: {
-    files: [],
-    default: null,
-  },
+  images: [],
   material_en: "",
   material_fa: "",
   description_en: "",
@@ -28,8 +25,19 @@ const initVal = {
   is_visible_to_user: true,
 };
 
-export default function Wizard({ dict }: { dict: typeof en }) {
-  const [formData, setFormData] = useState<z.infer<typeof newProductFormSchema>>(initVal);
+export default function Wizard({
+  dict,
+  defaultValues = initVal,
+  onSubmit,
+}: {
+  defaultValues?: z.infer<typeof newProductFormSchema>;
+  dict: typeof en;
+  onSubmit: (
+    values: FormData,
+    id?: number,
+  ) => Promise<SuccessResponse | ErrorResponse>;
+}) {
+  const [formData, setFormData] = useState(defaultValues);
   const [step, setStep] = useState(FormSteps.first);
 
   return step === FormSteps.first ? (
@@ -48,6 +56,7 @@ export default function Wizard({ dict }: { dict: typeof en }) {
         setFormData,
         setStep,
         dict,
+        onSubmit,
       }}
     />
   );
