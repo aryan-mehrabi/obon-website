@@ -12,7 +12,7 @@ export const formatNumber = (number: number, locale: Locale = "en") => number.to
 
 export const convertToNumber = (str: string): number => parseInt(
   str
-    .replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
+    .replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
     .replace(/[^0-9]/g, ""),
   10,
 );
