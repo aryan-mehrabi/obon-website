@@ -4,7 +4,8 @@
 import "server-only";
 
 import bcrypt from "bcrypt";
-import { writeFile } from "fs/promises";
+import { v2 as cloudinary } from "cloudinary";
+import DatauriParser from "datauri/parser";
 import { isNotFoundError } from "next/dist/client/components/not-found";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import path from "path";
@@ -12,6 +13,12 @@ import * as z from "zod";
 
 import en from "@/dictionaries/en.json";
 import { ErrorResponse, SuccessResponse } from "@/types";
+
+cloudinary.config({
+  cloud_name: "dzmfdgasb",
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export const hashPassword = async (password: string): Promise<string> => {
   const SALTROUND = 10;
@@ -72,19 +79,20 @@ export const apiMiddleware = <T extends (...args: any[]) => any>(fn: T) => async
   }
 };
 
-export const uploadImages = async (
-  images: File[],
-  buffers: Buffer[],
-  filePath: string,
-) => {
-  const filenames = images.map(
-    (image) => Date.now() + image.name.replaceAll(" ", "_"),
+const parser = new DatauriParser();
+const createImage = async (imgBuffer: Buffer, imgFile: File) => {
+  const base64Image = parser.format(
+    path.extname(imgFile.name).toString(),
+    imgBuffer,
   );
-  await Promise.all(
-    images.map((_, i) => writeFile(path.join(process.cwd(), filePath + filenames[i]), buffers[i])),
+  const uploadedImageResponse = await cloudinary.uploader.upload(
+    base64Image.content!,
+    { resource_type: "image" },
   );
-  return filenames;
+  return uploadedImageResponse;
 };
+
+export const uploadImages = async (images: File[], buffers: Buffer[]) => Promise.all(images.map((_, i) => createImage(buffers[i], images[i])));
 
 export const getBuffer = (images: File[]) => Promise.all(
   images.map(async (image) => Buffer.from(await image.arrayBuffer())),

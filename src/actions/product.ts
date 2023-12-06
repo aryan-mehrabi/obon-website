@@ -31,17 +31,14 @@ export const createProduct = serverActionMiddleware(
     ) as unknown as z.infer<typeof newProductFormSchema>;
 
     const buffers = await getBuffer(images);
-    const [fileNames, imagesDim] = await Promise.all([
-      uploadImages(images, buffers, "public/uploads/"),
-      Promise.all(buffers.map((buffer) => sharp(buffer).metadata())),
-    ]);
+    const uploadedFiles = await uploadImages(images, buffers);
 
     const imagesData = data.images.map((image) => {
       const index = images.findIndex((val) => val.name === image.id);
       return {
-        url: `/uploads/${fileNames[index]}`,
-        width: imagesDim[index].width!,
-        height: imagesDim[index].height!,
+        url: uploadedFiles[index].url,
+        width: uploadedFiles[index].width,
+        height: uploadedFiles[index].height,
         is_default: image.is_default,
       };
     });
@@ -67,7 +64,7 @@ export const deleteProduct = serverActionMiddleware(
         id: productId,
       },
     });
-    revalidatePath("/dashboard/products", "page");
+    revalidatePath("/");
   },
 );
 

@@ -10,6 +10,16 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/dzmfdgasb/image/upload/**",
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;
