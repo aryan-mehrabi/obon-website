@@ -1,8 +1,8 @@
 "use server";
 
 import { Prisma } from "@prisma/client";
+import { UploadApiResponse } from "cloudinary";
 import { revalidatePath } from "next/cache";
-import sharp from "sharp";
 import * as z from "zod";
 
 import { getBuffer, serverActionMiddleware, uploadImages } from "@/lib/helpers";
@@ -76,14 +76,10 @@ export const updateProduct = serverActionMiddleware(
       formData.get("data") as string,
     ) as unknown as z.infer<typeof newProductFormSchema>;
     const files = formData.getAll("files") as File[];
-    let fileNames: string[];
-    let imagesDim: sharp.Metadata[];
+    let uploadedImages: UploadApiResponse[];
     if (files) {
       const buffers = await getBuffer(files);
-      [fileNames, imagesDim] = await Promise.all([
-        uploadImages(files, buffers, "public/uploads/"),
-        Promise.all(buffers.map((buffer) => sharp(buffer).metadata())),
-      ]);
+      uploadedImages = await uploadImages(files, buffers);
     }
 
     const filterNumbers = (imageId: number | string): imageId is number => typeof imageId === "number";
@@ -96,11 +92,10 @@ export const updateProduct = serverActionMiddleware(
       .filter((image) => !filterNumbers(image.id))
       .map((image, i) => ({
         is_default: image.is_default,
-        url: `/uploads/${fileNames[i]}`,
-        width: imagesDim[i].width!,
-        height: imagesDim[i].height!,
+        url: uploadedImages[i].url,
+        width: uploadedImages[i].width,
+        height: uploadedImages[i].height,
       }));
-    console.log(newImages);
     await prisma.product.update({
       where: {
         id,
