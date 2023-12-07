@@ -40,3 +40,5 @@ export default async function page({ params: { lang } }: PropTypes) {
     </section>
   );
 }
+
+export const dynamic = "force-dynamic";

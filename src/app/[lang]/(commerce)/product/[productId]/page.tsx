@@ -129,3 +129,5 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     </main>
   );
 }
+
+export const dynamic = "force-dynamic";
