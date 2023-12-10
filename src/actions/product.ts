@@ -64,7 +64,7 @@ export const deleteProduct = serverActionMiddleware(
         id: productId,
       },
     });
-    revalidatePath("/");
+    revalidatePath("/dashboard/products");
   },
 );
 
@@ -139,5 +139,6 @@ export const updateProduct = serverActionMiddleware(
         images: true,
       },
     });
+    revalidatePath(`/dashboard/${id}/edit`);
   },
 );
