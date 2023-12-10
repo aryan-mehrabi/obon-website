@@ -61,11 +61,9 @@ export function DataTableRowActions<TData extends { id: number }>({
       </DropdownMenuTrigger>
       <AlertDialog>
         <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem>
-            <Link href={`/dashboard/products/${row.original.id}/edit`}>
-              Edit
-            </Link>
-          </DropdownMenuItem>
+          <Link href={`/dashboard/products/${row.original.id}/edit`}>
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+          </Link>
           <AlertDialogTrigger asChild>
             <DropdownMenuItem className="text-destructive">
               Delete

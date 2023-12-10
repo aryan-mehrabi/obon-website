@@ -46,3 +46,5 @@ export default async function Page({ params: { productId, lang } }: PropTypes) {
     </Modal>
   );
 }
+
+export const revalidate = 0;
