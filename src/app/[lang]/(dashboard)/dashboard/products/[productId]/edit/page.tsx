@@ -40,7 +40,7 @@ export default async function Page({ params: { productId, lang } }: PropTypes) {
   const dict = await getDictionary(lang);
 
   return (
-    <Modal title="Edit Product">
+    <Modal title={dict.pages.dashboardProductsEdit.title}>
       <Wizard dict={dict} defaultValues={product} onSubmit={updateProduct} />
     </Modal>
   );

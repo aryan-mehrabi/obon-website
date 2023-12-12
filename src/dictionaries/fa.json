@@ -167,6 +167,9 @@
         "available": { "title": "موجود", "placeholder": "موجود" },
         "visible": { "title": "نمایش دادن", "placeholder": "نمایش دادن" }
       }
+    },
+    "dashboardProductsEdit": {
+      "title": "تغییر محصول"
     }
   },
   "form": {

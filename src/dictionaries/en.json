@@ -163,6 +163,9 @@
         "available": { "title": "Available", "placeholder": "Available" },
         "visible": { "title": "Visible", "placeholder": "Visible" }
       }
+    },
+    "dashboardProductsEdit": {
+      "title": "Edit Product"
     }
   },
   "form": {
