@@ -18,7 +18,7 @@ interface PropTypes {
 }
 
 export default async function Page({ params: { productId, lang } }: PropTypes) {
-  const product = (await prisma.product.findUnique({
+  const product = await prisma.product.findUnique({
     select: {
       title_en: true,
       title_fa: true,
@@ -36,13 +36,18 @@ export default async function Page({ params: { productId, lang } }: PropTypes) {
     where: {
       id: +productId,
     },
-  })) as z.infer<typeof newProductFormSchema>;
+  });
+
   if (!product) notFound();
   const dict = await getDictionary(lang);
 
   return (
     <Modal title="Edit Product">
-      <Wizard dict={dict} defaultValues={product} onSubmit={updateProduct} />
+      <Wizard
+        dict={dict}
+        defaultValues={product as z.infer<typeof newProductFormSchema>}
+        onSubmit={updateProduct}
+      />
     </Modal>
   );
 }
