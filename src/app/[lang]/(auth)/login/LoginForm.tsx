@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
-import React from "react";
+import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -33,6 +33,7 @@ export default function LoginForm({
     errors: { server },
   },
 }: PropType) {
+  const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const router = useRouter();
   const params = useSearchParams();
@@ -45,20 +46,22 @@ export default function LoginForm({
     },
   });
 
-  async function onSubmit(values: z.infer<typeof credentialsSchema>) {
-    const res = await signIn("credentials", {
-      ...values,
-      redirect: false,
-    });
-
-    if (res?.ok) {
-      router.push(callbackParam);
-      toast({
-        title: login.welcome,
+  function onSubmit(values: z.infer<typeof credentialsSchema>) {
+    startTransition(async () => {
+      const res = await signIn("credentials", {
+        ...values,
+        redirect: false,
       });
-    } else {
-      toast({ title: res?.error || server, variant: "destructive" });
-    }
+
+      if (res?.ok) {
+        router.push(callbackParam);
+        toast({
+          title: login.welcome,
+        });
+      } else {
+        toast({ title: res?.error || server, variant: "destructive" });
+      }
+    });
   }
   return (
     <Form {...form}>
@@ -98,7 +101,7 @@ export default function LoginForm({
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
+        <Button className="w-full" type="submit" disabled={isPending}>
           {login.submit}
         </Button>
         <hr />

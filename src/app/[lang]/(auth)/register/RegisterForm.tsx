@@ -33,7 +33,7 @@ export default function RegisterForm({
   },
 }: PropType) {
   const { toast } = useToast();
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -110,7 +110,7 @@ export default function RegisterForm({
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
+        <Button className="w-full" type="submit" disabled={isPending}>
           {register.submit}
         </Button>
         <hr />
