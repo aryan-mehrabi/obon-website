@@ -66,7 +66,7 @@ export const columns: ColumnDef<ProductWithImage>[] = [
     cell: ({ row }) => {
       const image = row.original.images.find((img) => img.is_default);
       return (
-        <div className="flex space-x-2 items-center">
+        <div className="flex gap-2 items-center">
           <div className="h-14 w-24">
             <Image
               src={image?.url}
