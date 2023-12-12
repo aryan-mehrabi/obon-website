@@ -65,7 +65,10 @@ export default function WizardFirstStep({
   const images = form.watch("images");
 
   const onClickDelete = (id: string | number) => {
+    const isDeletedDefault = images.find((image) => image.id === id)
+      ?.is_default;
     const newImages = images.filter((image) => image.id !== id);
+    if (isDeletedDefault && newImages[0]) newImages[0].is_default = true;
     form.setValue("images", newImages);
   };
 
@@ -182,6 +185,9 @@ export default function WizardFirstStep({
                         file,
                         is_default: false,
                       }));
+                      if (!value.some((image) => image.is_default)) {
+                        imagesFile[0].is_default = true;
+                      }
                       onChange([...value, ...imagesFile]);
                     }}
                     type="file"
