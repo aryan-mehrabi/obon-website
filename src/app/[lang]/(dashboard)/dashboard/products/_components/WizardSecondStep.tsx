@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
@@ -19,22 +18,23 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import en from "@/dictionaries/en.json";
+import { productSecondStepFormSchema } from "@/lib/validations";
 import {
-  newProductFormSchema,
-  newProductSecondStepFormSchema,
-} from "@/lib/validations";
-import { ErrorResponse, FormSteps, SuccessResponse } from "@/types";
+  ErrorResponse,
+  FormSteps,
+  ProductFormSchema,
+  ProductSecondStepFormSchema,
+  SuccessResponse,
+} from "@/types";
 
 interface PropTypes {
   dict: typeof en;
-  formData: z.infer<typeof newProductFormSchema>;
+  formData: ProductFormSchema;
   onSubmit: (
     values: FormData,
     id?: number,
   ) => Promise<SuccessResponse | ErrorResponse>;
-  setFormData: React.Dispatch<
-    React.SetStateAction<z.infer<typeof newProductFormSchema>>
-  >;
+  setFormData: React.Dispatch<React.SetStateAction<ProductFormSchema>>;
   setStep: React.Dispatch<React.SetStateAction<FormSteps>>;
 }
 
@@ -65,8 +65,8 @@ export default function WizardSecondStep({
   const { toast } = useToast();
   const router = useRouter();
   const pathname = usePathname();
-  const form = useForm<z.infer<typeof newProductSecondStepFormSchema>>({
-    resolver: zodResolver(newProductSecondStepFormSchema),
+  const form = useForm<ProductSecondStepFormSchema>({
+    resolver: zodResolver(productSecondStepFormSchema),
     defaultValues: {
       material_en: formData.material_en,
       material_fa: formData.material_fa,
@@ -78,9 +78,7 @@ export default function WizardSecondStep({
     },
   });
 
-  const onSubmitForm = (
-    values: z.infer<typeof newProductSecondStepFormSchema>,
-  ) => {
+  const onSubmitForm = (values: ProductSecondStepFormSchema) => {
     const id = +pathname.split("/").filter((path) => path)[3];
     setFormData((state) => ({ ...state, ...values }));
     const data = new FormData();

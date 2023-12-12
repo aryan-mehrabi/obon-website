@@ -1,4 +1,11 @@
 import { Image, Product, User as schemaUser } from "@prisma/client";
+import * as z from "zod";
+
+import {
+  productFirstStepFormSchema,
+  productFormSchema,
+  productSecondStepFormSchema,
+} from "@/lib/validations";
 
 export type User = Omit<schemaUser, "password">;
 
@@ -33,3 +40,11 @@ export const enum FormSteps {
   first,
   second,
 }
+
+export type ProductFirstStepFormSchema = z.infer<
+  typeof productFirstStepFormSchema
+>;
+export type ProductSecondStepFormSchema = z.infer<
+  typeof productSecondStepFormSchema
+>;
+export type ProductFormSchema = z.infer<typeof productFormSchema>;

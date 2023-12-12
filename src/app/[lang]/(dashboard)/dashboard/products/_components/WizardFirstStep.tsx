@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TrashIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 
 import Icon from "@/components/atoms/Icon";
 import { Badge } from "@/components/ui/badge";
@@ -19,18 +18,17 @@ import {
 import { Input } from "@/components/ui/input";
 import en from "@/dictionaries/en.json";
 import { convertToNumber, formatNumber } from "@/lib/utils";
+import { productFirstStepFormSchema } from "@/lib/validations";
 import {
-  newProductFirstStepFormSchema,
-  newProductFormSchema,
-} from "@/lib/validations";
-import { type FormSteps } from "@/types";
+  type FormSteps,
+  ProductFirstStepFormSchema,
+  ProductFormSchema,
+} from "@/types";
 
 interface PropTypes {
   dict: typeof en;
-  formData: z.infer<typeof newProductFormSchema>;
-  setFormData: React.Dispatch<
-    React.SetStateAction<z.infer<typeof newProductFormSchema>>
-  >;
+  formData: ProductFormSchema;
+  setFormData: React.Dispatch<React.SetStateAction<ProductFormSchema>>;
   setStep: React.Dispatch<React.SetStateAction<FormSteps>>;
 }
 
@@ -51,8 +49,8 @@ export default function WizardFirstStep({
       },
     },
   } = dict;
-  const form = useForm<z.infer<typeof newProductFirstStepFormSchema>>({
-    resolver: zodResolver(newProductFirstStepFormSchema),
+  const form = useForm<ProductFirstStepFormSchema>({
+    resolver: zodResolver(productFirstStepFormSchema),
     defaultValues: {
       title_en: formData.title_en,
       title_fa: formData.title_fa,
@@ -79,7 +77,7 @@ export default function WizardFirstStep({
     form.setValue("images", newImages);
   };
 
-  function onSubmit(values: z.infer<typeof newProductFirstStepFormSchema>) {
+  function onSubmit(values: ProductFirstStepFormSchema) {
     setFormData((state) => ({ ...state, ...values }));
     setStep((step) => step + 1);
   }

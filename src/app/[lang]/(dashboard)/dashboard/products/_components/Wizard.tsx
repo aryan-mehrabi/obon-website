@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import * as z from "zod";
 
 import en from "@/dictionaries/en.json";
-import { newProductFormSchema } from "@/lib/validations";
-import { ErrorResponse, FormSteps, SuccessResponse } from "@/types";
+import {
+  ErrorResponse,
+  FormSteps,
+  ProductFormSchema,
+  SuccessResponse,
+} from "@/types";
 
 import WizardFirstStep from "./WizardFirstStep";
 import WizardSecondStep from "./WizardSecondStep";
@@ -30,7 +33,7 @@ export default function Wizard({
   defaultValues = initVal,
   onSubmit,
 }: {
-  defaultValues?: z.infer<typeof newProductFormSchema>;
+  defaultValues?: ProductFormSchema;
   dict: typeof en;
   onSubmit: (
     values: FormData,

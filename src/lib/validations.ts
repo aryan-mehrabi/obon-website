@@ -16,7 +16,7 @@ export const registerFormSchema = z
     path: ["confirmPassword"],
   });
 
-export const newProductFirstStepFormSchema = z.object({
+export const productFirstStepFormSchema = z.object({
   title_en: z.string().min(1).max(50),
   title_fa: z.string().min(1).max(50),
   price: z.number().positive(),
@@ -34,7 +34,7 @@ export const newProductFirstStepFormSchema = z.object({
     .refine((images) => images.length !== 0, "Image is Required"),
 });
 
-export const newProductSecondStepFormSchema = z.object({
+export const productSecondStepFormSchema = z.object({
   material_en: z.string().min(1),
   material_fa: z.string().min(1),
   description_fa: z.string(),
@@ -50,6 +50,6 @@ export const newProductSecondStepFormSchema = z.object({
   is_visible_to_user: z.boolean(),
 });
 
-export const newProductFormSchema = newProductFirstStepFormSchema.merge(
-  newProductSecondStepFormSchema,
+export const productFormSchema = productFirstStepFormSchema.merge(
+  productSecondStepFormSchema,
 );

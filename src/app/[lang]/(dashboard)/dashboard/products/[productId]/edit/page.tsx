@@ -1,12 +1,11 @@
 import { notFound } from "next/navigation";
 import React from "react";
-import * as z from "zod";
 
 import { updateProduct } from "@/actions/product";
 import Modal from "@/components/organs/Modal";
 import { getDictionary, Locale } from "@/lib/locale";
-import { newProductFormSchema } from "@/lib/validations";
 import prisma from "@/prisma/client";
+import { ProductFormSchema } from "@/types";
 
 import Wizard from "../../_components/Wizard";
 
@@ -36,7 +35,7 @@ export default async function Page({ params: { productId, lang } }: PropTypes) {
     where: {
       id: +productId,
     },
-  })) as z.infer<typeof newProductFormSchema>;
+  })) as ProductFormSchema;
   if (!product) notFound();
   const dict = await getDictionary(lang);
 

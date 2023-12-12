@@ -3,11 +3,10 @@
 import { Prisma } from "@prisma/client";
 import { UploadApiResponse } from "cloudinary";
 import { revalidatePath } from "next/cache";
-import * as z from "zod";
 
 import { getBuffer, serverActionMiddleware, uploadImages } from "@/lib/helpers";
-import { newProductFormSchema } from "@/lib/validations";
 import prisma from "@/prisma/client";
+import { ProductFormSchema } from "@/types";
 
 export const updateProductVisibile = serverActionMiddleware(
   async (id: number, data: boolean) => {
@@ -28,7 +27,7 @@ export const createProduct = serverActionMiddleware(
     const images = formData.getAll("files") as File[];
     const data = JSON.parse(
       formData.get("data") as string,
-    ) as unknown as z.infer<typeof newProductFormSchema>;
+    ) as unknown as ProductFormSchema;
 
     const buffers = await getBuffer(images);
     const uploadedFiles = await uploadImages(images, buffers);
@@ -74,7 +73,7 @@ export const updateProduct = serverActionMiddleware(
 
     const data = JSON.parse(
       formData.get("data") as string,
-    ) as unknown as z.infer<typeof newProductFormSchema>;
+    ) as unknown as ProductFormSchema;
     const files = formData.getAll("files") as File[];
     let uploadedImages: UploadApiResponse[];
     if (files) {
