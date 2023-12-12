@@ -56,7 +56,9 @@ export default function Navbar({ navMenu }: PropTypes) {
           </ul>
         </div>
         <div className="flex gap-3">
-          <Icon render={PersonIcon} />
+          <Link href="/dashboard">
+            <Icon render={PersonIcon} />
+          </Link>
           <Link href="/cart">
             {cartArr.length !== 0 && <Badge>{cartArr.length}</Badge>}
             <Icon render={CartIcon as FC} />

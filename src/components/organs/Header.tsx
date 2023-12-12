@@ -24,7 +24,6 @@ export default async function Header({ lang, className }: PropTypes) {
     <header className={twMerge(`relative ${className}`)}>
       <Image
         src={HeaderImage}
-        placeholder="blur"
         fill
         sizes="100%"
         alt="background image for candles"
