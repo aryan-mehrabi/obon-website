@@ -48,7 +48,7 @@ export default function Sidebar({ dict }: { dict: typeof en.sidebar }) {
       return (
         <Link key={item.id} href={item.dict.href}>
           <li
-            className={`flex items-center gap-8 rounded-md py-3 px-8 transition-all cursor-pointer hover:bg-accent ${
+            className={`flex items-center gap-8 rounded-md py-2 px-3 sm:py-3 sm:px-8 transition-all cursor-pointer hover:bg-accent ${
               currentPath === itemPath ? "bg-accent" : ""
             }`}
           >
@@ -58,7 +58,9 @@ export default function Sidebar({ dict }: { dict: typeof en.sidebar }) {
                 currentPath === itemPath ? "text-primary" : ""
               }`}
             />
-            <p className="font-medium leading-none">{item.dict.title}</p>
+            <p className="font-medium leading-none hidden sm:block">
+              {item.dict.title}
+            </p>
           </li>
         </Link>
       );

@@ -24,7 +24,9 @@ export default async function page({
   return (
     <div className="space-y-4">
       <div>
-        <Heading type="h3">{title}</Heading>
+        <Heading type="h3" className="text-2xl sm:text-3xl">
+          {title}
+        </Heading>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4">
         <Card>
@@ -46,7 +48,7 @@ export default async function page({
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
+            <div className="text-xl sm:text-2xl font-bold">$45,231.89</div>
             <p className="text-xs text-muted-foreground">
               +20.1%
               {" "}
@@ -75,7 +77,7 @@ export default async function page({
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
+            <div className="text-xl sm:text-2xl font-bold">+2350</div>
             <p className="text-xs text-muted-foreground">
               +180.1%
               {" "}
@@ -101,7 +103,7 @@ export default async function page({
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+12,234</div>
+            <div className="text-xl sm:text-2xl font-bold">+12,234</div>
             <p className="text-xs text-muted-foreground">
               +19%
               {sale.caption}
@@ -127,7 +129,7 @@ export default async function page({
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+573</div>
+            <div className="text-xl sm:text-2xl font-bold">+573</div>
             <p className="text-xs text-muted-foreground">
               +201
               {" "}
