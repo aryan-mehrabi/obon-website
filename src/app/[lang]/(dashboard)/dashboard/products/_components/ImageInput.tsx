@@ -79,7 +79,7 @@ export default function ImageInput({ dict, form }: PropTypes) {
         <FormItem className="col-span-2 ">
           <FormLabel>{imagesDict.title}</FormLabel>
           <FormControl>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {images.map((image) => (
                 <div key={image.id} className="relative">
                   <div className="absolute top-0 right-0 rtl:left-0 m-1 flex items-center gap-1">
