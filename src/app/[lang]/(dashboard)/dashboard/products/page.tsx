@@ -29,9 +29,11 @@ export default async function page({
   } = dict;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2 sm:space-y-4">
       <div className="flex justify-between">
-        <Heading type="h3">{title}</Heading>
+        <Heading type="h3" className="text-2xl sm:text-3xl">
+          {title}
+        </Heading>
         <Link href="/dashboard/products/new">
           <Button className="flex gap-2 items-center">
             <Icon render={PlusIcon} className="w-4 h-4" />

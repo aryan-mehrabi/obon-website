@@ -67,6 +67,8 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const hiddenOnSm = ["is_visible_to_user", "price", "quantity"];
+
   return (
     <div className="space-y-4">
       <div className="rounded-md border">
@@ -75,7 +77,15 @@ export function DataTable<TData, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} colSpan={header.colSpan}>
+                  <TableHead
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    className={
+                      hiddenOnSm.includes(header.id)
+                        ? "hidden sm:table-cell"
+                        : ""
+                    }
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -95,7 +105,14 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className={
+                        hiddenOnSm.includes(cell.column.id)
+                          ? "hidden sm:table-cell"
+                          : ""
+                      }
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

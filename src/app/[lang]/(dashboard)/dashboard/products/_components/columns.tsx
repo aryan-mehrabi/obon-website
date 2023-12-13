@@ -67,7 +67,7 @@ export const columns: ColumnDef<ProductWithImage>[] = [
       const image = row.original.images.find((img) => img.is_default);
       return (
         <div className="flex gap-2 items-center">
-          <div className="h-14 w-24">
+          <div className="h-14 w-24 hidden sm:block">
             <Image
               src={image?.url}
               width={image?.width}
@@ -90,7 +90,7 @@ export const columns: ColumnDef<ProductWithImage>[] = [
     ),
     cell: ({ row }) => <div>{row.getValue("quantity")}</div>,
     enableSorting: true,
-    enableHiding: false,
+    enableHiding: true,
   },
   {
     accessorKey: "price",
@@ -99,7 +99,7 @@ export const columns: ColumnDef<ProductWithImage>[] = [
     ),
     cell: ({ row }) => <div>{formatNumber(row.getValue("price"))}</div>,
     enableSorting: true,
-    enableHiding: false,
+    enableHiding: true,
   },
   {
     accessorKey: "is_visible_to_user",
@@ -108,7 +108,7 @@ export const columns: ColumnDef<ProductWithImage>[] = [
     ),
     cell: ({ row }) => <DataTableSwitch row={row} />,
     enableSorting: true,
-    enableHiding: false,
+    enableHiding: true,
   },
   // {
   //   accessorKey: "status",
