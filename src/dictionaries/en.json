@@ -154,7 +154,11 @@
         "name": { "title": "Name", "placeholder": "Product Name" },
         "price": { "title": "Price", "placeholder": "Price" },
         "quantity": { "title": "Quantity", "placeholder": "Quantity" },
-        "images": { "title": "Images", "placeholder": "Images" },
+        "images": {
+          "title": "Images",
+          "placeholder": "Drop your Image here",
+          "cta": "Add Image"
+        },
         "material": { "title": "Material", "placeholder": "Material" },
         "description": { "title": "Description", "placeholder": "Description" },
         "width": { "title": "Width", "placeholder": "Width", "unit": "cm" },

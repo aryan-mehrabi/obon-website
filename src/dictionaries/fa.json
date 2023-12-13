@@ -154,7 +154,11 @@
         "name": { "title": "نام", "placeholder": "نام محصول" },
         "price": { "title": "قیمت", "placeholder": "قیمت" },
         "quantity": { "title": "تعداد", "placeholder": "تعداد" },
-        "images": { "title": "تصاویر", "placeholder": "تصاویر" },
+        "images": {
+          "title": "تصاویر",
+          "placeholder": "تصویر را اینجا رها کنید",
+          "cta": "اضافه کردن تصویر"
+        },
         "material": { "title": "جنس", "placeholder": "جنس" },
         "description": { "title": "توضیحات", "placeholder": "توضیحات" },
         "width": { "title": "عرض", "placeholder": "عرض", "unit": "سانتی‌متر" },
