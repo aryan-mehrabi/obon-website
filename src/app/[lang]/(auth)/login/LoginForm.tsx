@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -33,6 +33,8 @@ export default function LoginForm({
     errors: { server },
   },
 }: PropType) {
+  const searchParams = useSearchParams();
+  const callbackParam = searchParams.get("callback") || "/";
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const router = useRouter();
@@ -52,7 +54,7 @@ export default function LoginForm({
       });
 
       if (res?.ok) {
-        router.refresh();
+        router.push(callbackParam);
         toast({
           title: login.welcome,
         });

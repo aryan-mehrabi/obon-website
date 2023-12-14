@@ -2,6 +2,7 @@
 
 import { HamburgerMenuIcon, PersonIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import React, { FC, useRef, useState } from "react";
 
 import CartIcon from "@/assets/carticon.svg";
@@ -20,11 +21,13 @@ interface PropTypes {
 }
 
 export default function Navbar({ navMenu }: PropTypes) {
+  const session = useSession();
   const cart = useStore(usePresistStore, (state) => state.cart) || {};
   const cartArr = Object.values(cart);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const ref = useRef<HTMLElement>(null);
   useClickOutside(ref, () => setIsMenuOpen(false));
+  const path = session.data?.user ? "/dashboard" : "/login";
   return (
     <nav ref={ref} className="bg-white fixed w-full z-10 top-0">
       <div className="flex items-center justify-between max-w-5xl md:mx-auto p-7 md:p-6">
@@ -56,7 +59,7 @@ export default function Navbar({ navMenu }: PropTypes) {
           </ul>
         </div>
         <div className="flex gap-3">
-          <Link href="/dashboard">
+          <Link href={path}>
             <Icon render={PersonIcon} />
           </Link>
           <Link href="/cart">

@@ -1,5 +1,6 @@
 "use client";
 
+import { SessionProvider } from "next-auth/react";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
@@ -10,6 +11,8 @@ interface PropTypes {
 export default function Provider({ children }: PropTypes) {
   const queryClient = new QueryClient();
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider>{children}</SessionProvider>
+    </QueryClientProvider>
   );
 }
