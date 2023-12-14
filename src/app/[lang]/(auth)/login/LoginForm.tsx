@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -36,8 +36,6 @@ export default function LoginForm({
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const router = useRouter();
-  const params = useSearchParams();
-  const callbackParam = params.get("callback") || "/";
   const form = useForm<z.infer<typeof credentialsSchema>>({
     resolver: zodResolver(credentialsSchema),
     defaultValues: {
@@ -54,7 +52,7 @@ export default function LoginForm({
       });
 
       if (res?.ok) {
-        router.push(callbackParam);
+        router.refresh();
         toast({
           title: login.welcome,
         });

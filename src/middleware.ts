@@ -35,7 +35,11 @@ export async function middleware(request: NextRequest) {
     guardedRoutes.some((route) => pathnameWithoutLocale.includes(route))
     && !(await getToken({ req: request }))
   ) {
-    return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+    const response = NextResponse.rewrite(
+      new URL(`/${locale}/login`, request.url),
+      { status: 303 },
+    );
+    return response;
   }
 }
 
