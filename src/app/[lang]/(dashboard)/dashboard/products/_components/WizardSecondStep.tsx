@@ -141,7 +141,7 @@ export default function WizardSecondStep({
           />
           <FormField
             control={form.control}
-            name="description_fa"
+            name="description_en"
             render={({ field }) => (
               <FormItem className="col-span-2">
                 <FormLabel>
@@ -158,7 +158,7 @@ export default function WizardSecondStep({
           />
           <FormField
             control={form.control}
-            name="description_en"
+            name="description_fa"
             render={({ field }) => (
               <FormItem className="col-span-2">
                 <FormLabel>
