@@ -1,3 +1,4 @@
+import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 
 import Sidebar from "@/components/organs/Sidebar";
@@ -7,6 +8,20 @@ interface PropTypes {
   children: React.ReactNode;
   params: {
     lang: Locale;
+  };
+}
+
+export async function generateMetadata(
+  { params: { lang } }: PropTypes,
+  parent: ResolvingMetadata,
+): Metadata {
+  const {
+    pages: {
+      dashboard: { metadata },
+    },
+  } = await getDictionary(lang);
+  return {
+    title: `${(await parent).title?.absolute} | ${metadata.title}`,
   };
 }
 

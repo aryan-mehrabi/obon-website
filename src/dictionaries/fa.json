@@ -100,6 +100,9 @@
       }
     },
     "dashboard": {
+      "metadata": {
+        "title": "داشبورد"
+      },
       "title": "داشبورد",
       "revenue": {
         "title": "مجموع سود",
@@ -269,5 +272,8 @@
   },
   "price": {
     "currency": "تومان"
+  },
+  "metadata": {
+    "title": "وبسایت اوبون"
   }
 }
