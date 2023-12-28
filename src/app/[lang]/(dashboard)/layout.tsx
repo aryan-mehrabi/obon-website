@@ -14,7 +14,7 @@ interface PropTypes {
 export async function generateMetadata(
   { params: { lang } }: PropTypes,
   parent: ResolvingMetadata,
-): Metadata {
+): Promise<Metadata> {
   const {
     pages: {
       dashboard: { metadata },
