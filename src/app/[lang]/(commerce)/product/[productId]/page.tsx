@@ -3,6 +3,13 @@ import React from "react";
 
 import Heading from "@/components/atoms/Heading";
 import Image from "@/components/atoms/Image";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { getDictionary, Locale } from "@/lib/locale";
 import { formatNumber } from "@/lib/utils";
 import prisma from "@/prisma/client";
@@ -41,7 +48,11 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     price: { currency },
   } = dict;
 
-  const defaultImage = product.images.find((imageItem) => imageItem.is_default);
+  const sortedImages = product.images.slice().sort((a, b) => {
+    if (a.is_default) return 1;
+    if (b.is_default) return -1;
+    return 0;
+  });
 
   const renderDimensions = () => {
     const {
@@ -74,7 +85,7 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
 
   return (
     <main className="mt-28 mb-10 space-y-5 p-3 md:grid md:grid-cols-2 md:gap-x-12 max-w-5xl mx-auto">
-      <div>
+      {/* <div>
         <Image
           src={defaultImage?.url}
           width={defaultImage?.width}
@@ -82,7 +93,24 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
           alt="sample pic"
           className="w-full h-full mx-auto"
         />
-      </div>
+      </div> */}
+      <Carousel>
+        <CarouselContent>
+          {sortedImages.map((image) => (
+            <CarouselItem key={image.id}>
+              <Image
+                src={image?.url}
+                width={image?.width}
+                height={image?.height}
+                alt="sample pic"
+                className="w-full h-full mx-auto"
+              />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
       <div className="space-y-5 row-span-2">
         <div>
           <Heading type="h3">{product[`title_${lang}`]}</Heading>
