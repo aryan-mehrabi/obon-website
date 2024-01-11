@@ -76,7 +76,7 @@
     "prepare": "husky install",
     "start": "next start",
     "studio": "npx prisma studio",
-    "type-check": "tsc-files --noEmit"
+    "type-check": "npx tsc --noEmit"
   },
   "version": "0.1.0"
 }
