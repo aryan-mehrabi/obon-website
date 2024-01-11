@@ -49,8 +49,8 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
   } = dict;
 
   const sortedImages = product.images.slice().sort((a, b) => {
-    if (a.is_default) return 1;
-    if (b.is_default) return -1;
+    if (a.is_default) return -1;
+    if (b.is_default) return 1;
     return 0;
   });
 
