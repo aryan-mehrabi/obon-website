@@ -63,18 +63,13 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
 
     if (!dimWidth && !dimlength && !dimHeight) return null;
 
-    const {
-      width, height, length, title, unit,
-    } = specifications.dimensions;
+    const { width, height, length, title, unit } = specifications.dimensions;
 
     return (
       <p>
         <strong>
-          {title}
-          (
-          {unit}
-          ):
-          {" "}
+          {title}({unit}
+          ):{" "}
         </strong>
         {dimWidth && `${width}: ${dimWidth} `}
         {dimlength && `${height}: ${dimlength} `}
@@ -94,7 +89,7 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
           className="w-full h-full mx-auto"
         />
       </div> */}
-      <Carousel>
+      <Carousel opts={{ direction: lang === "fa" ? "rtl" : "ltr" }}>
         <CarouselContent>
           {sortedImages.map((image) => (
             <CarouselItem key={image.id}>
@@ -126,11 +121,7 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
             <li>
               {product[`description_${lang}`] && (
                 <>
-                  <strong>
-                    {specifications.description}
-                    :
-                    {" "}
-                  </strong>
+                  <strong>{specifications.description}: </strong>
                   {product[`description_${lang}`]}
                 </>
               )}
@@ -139,11 +130,7 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
             <li>
               {product[`material_${lang}`] && (
                 <>
-                  <strong>
-                    {specifications.material}
-                    :
-                    {" "}
-                  </strong>
+                  <strong>{specifications.material}: </strong>
                   {product[`material_${lang}`]}
                 </>
               )}
