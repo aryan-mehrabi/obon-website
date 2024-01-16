@@ -37,7 +37,7 @@ export default async function RootLayout({
 }: PropTypes) {
   const { nav_menu: navMenu } = await getDictionary(lang);
   return (
-    <html lang={lang} dir={lang === "fa" ? "rtl" : "ltr"}>
+    <html lang={lang} dir={i18n.rtl.some((ln) => ln === lang) ? "rtl" : "ltr"}>
       <body
         className={`${
           lang === "fa" ? vazir.className : inter.className

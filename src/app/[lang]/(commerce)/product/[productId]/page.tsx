@@ -10,7 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { getDictionary, Locale } from "@/lib/locale";
+import { getDictionary, i18n, Locale } from "@/lib/locale";
 import { formatNumber } from "@/lib/utils";
 import prisma from "@/prisma/client";
 import { Dimension } from "@/types";
@@ -80,16 +80,9 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
 
   return (
     <main className="mt-28 mb-10 space-y-5 p-3 md:grid md:grid-cols-2 md:gap-x-12 max-w-5xl mx-auto">
-      {/* <div>
-        <Image
-          src={defaultImage?.url}
-          width={defaultImage?.width}
-          height={defaultImage?.height}
-          alt="sample pic"
-          className="w-full h-full mx-auto"
-        />
-      </div> */}
-      <Carousel opts={{ direction: lang === "fa" ? "rtl" : "ltr" }}>
+      <Carousel
+        opts={{ direction: i18n.rtl.some((ln) => ln === lang) ? "rtl" : "ltr" }}
+      >
         <CarouselContent>
           {sortedImages.map((image) => (
             <CarouselItem key={image.id}>

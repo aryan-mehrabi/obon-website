@@ -1,18 +1,19 @@
-import type { NextRequest } from "next/server";
+import "server-only";
+
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
-import "server-only";
+import type { NextRequest } from "next/server";
 
 export const i18n = {
   defaultLocale: "fa",
   locales: ["fa", "en"],
+  rtl: ["fa"],
 } as const;
 
 export type Locale = (typeof i18n)["locales"][number];
 
-const firstPathname = (url: URL): string | undefined => {
-  return url.pathname.split("/").filter(el => el)[0];
-};
+const firstPathname = (url: URL): string | undefined =>
+  url.pathname.split("/").filter((el) => el)[0];
 
 type LocaleType = (typeof i18n.locales)[number];
 const isInLocales = (x: string | undefined): x is LocaleType =>
@@ -31,10 +32,10 @@ export function getLocale(request: NextRequest): Locale {
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
   // @ts-ignore locales are readonly
-  const locales: string[] = i18n.locales;
+  const { locales }: string[] = i18n;
 
-  let languages = new Negotiator({ headers: negotiatorHeaders }).languages(
-    locales
+  const languages = new Negotiator({ headers: negotiatorHeaders }).languages(
+    locales,
   );
 
   const locale = matchLocale(languages, locales, i18n.defaultLocale) as Locale;
@@ -43,8 +44,8 @@ export function getLocale(request: NextRequest): Locale {
 }
 
 const dictionaries = {
-  fa: () => import("../dictionaries/fa.json").then(module => module.default),
-  en: () => import("../dictionaries/en.json").then(module => module.default),
+  fa: () => import("../dictionaries/fa.json").then((module) => module.default),
+  en: () => import("../dictionaries/en.json").then((module) => module.default),
 };
 
 export const getDictionary = async (locale: Locale) =>
