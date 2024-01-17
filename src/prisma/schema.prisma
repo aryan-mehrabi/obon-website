@@ -39,17 +39,13 @@ model Product {
   id                  Int    @id @default(autoincrement())
   title_en            String
   title_fa            String
-  material_en         String
-  material_fa         String
   is_available        Boolean @default(true)
   is_visible_to_user  Boolean @default(true)
-  dimensions          Json?
-  description_en      String?
-  description_fa      String?
   quantity            Int @default(1)
   price               Int @default(0)
   images              Image[]
   categories          Category[]
+  metadata            Metadata[]
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 }
@@ -74,6 +70,25 @@ model Category {
   title_fa      String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model Attribute {
+  id            Int    @id @default(autoincrement())
+  title         String
+  key           String
+  required      Boolean
+  metadata      Metadata[]
+}
+
+model Metadata {
+  id            Int         @id @default(autoincrement())
+  value         String
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId     Int
+  attribute     Attribute   @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  attributeId   Int
+
+  @@unique([productId, attributeId])
 }
 
 enum Role {
