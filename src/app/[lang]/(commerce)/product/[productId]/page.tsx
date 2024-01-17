@@ -10,10 +10,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { getProduct } from "@/data/product";
 import { getDictionary, i18n, Locale } from "@/lib/locale";
 import { formatNumber } from "@/lib/utils";
-import prisma from "@/prisma/client";
-import { Dimension } from "@/types";
+import { Dimension, ProductWithImage } from "@/types";
 
 import AddToCart from "./AddToCart";
 
@@ -27,14 +27,14 @@ interface PropTypes {
 export default async function Page({ params: { lang, productId } }: PropTypes) {
   const [dict, product] = await Promise.all([
     getDictionary(lang),
-    prisma.product.findUnique({
+    getProduct({
       where: {
         id: +productId,
       },
       include: {
         images: true,
       },
-    }),
+    }) as unknown as ProductWithImage,
   ]);
 
   if (!product || !product.is_visible_to_user) {
@@ -63,13 +63,18 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
 
     if (!dimWidth && !dimlength && !dimHeight) return null;
 
-    const { width, height, length, title, unit } = specifications.dimensions;
+    const {
+      width, height, length, title, unit,
+    } = specifications.dimensions;
 
     return (
       <p>
         <strong>
-          {title}({unit}
-          ):{" "}
+          {title}
+          (
+          {unit}
+          ):
+          {" "}
         </strong>
         {dimWidth && `${width}: ${dimWidth} `}
         {dimlength && `${height}: ${dimlength} `}
@@ -114,7 +119,11 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
             <li>
               {product[`description_${lang}`] && (
                 <>
-                  <strong>{specifications.description}: </strong>
+                  <strong>
+                    {specifications.description}
+                    :
+                    {" "}
+                  </strong>
                   {product[`description_${lang}`]}
                 </>
               )}
@@ -123,7 +132,11 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
             <li>
               {product[`material_${lang}`] && (
                 <>
-                  <strong>{specifications.material}: </strong>
+                  <strong>
+                    {specifications.material}
+                    :
+                    {" "}
+                  </strong>
                   {product[`material_${lang}`]}
                 </>
               )}
@@ -137,5 +150,3 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     </main>
   );
 }
-
-export const dynamic = "force-dynamic";

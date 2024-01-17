@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-import prisma from "@/prisma/client";
+import { getProducts } from "@/data/product";
 
 export const GET = async (req: NextRequest) => {
   const id = req.nextUrl.searchParams
@@ -9,7 +9,7 @@ export const GET = async (req: NextRequest) => {
     .filter((prodId) => prodId)
     .map((prodId) => +prodId);
 
-  const res = await prisma.product.findMany({
+  const res = await getProducts({
     where: {
       id: {
         in: id,

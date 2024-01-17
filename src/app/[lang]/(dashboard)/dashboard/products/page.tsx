@@ -6,8 +6,9 @@ import Heading from "@/components/atoms/Heading";
 import Icon from "@/components/atoms/Icon";
 import { DataTable } from "@/components/organs/DataTable";
 import { Button } from "@/components/ui/button";
+import { getProducts } from "@/data/product";
 import { getDictionary, Locale } from "@/lib/locale";
-import prisma from "@/prisma/client";
+import { ProductWithImage } from "@/types";
 
 import { columns } from "./_components/columns";
 
@@ -16,11 +17,11 @@ export default async function page({
 }: {
   params: { lang: Locale };
 }) {
-  const products = await prisma.product.findMany({
+  const products = (await getProducts({
     include: {
       images: true,
     },
-  });
+  })) as ProductWithImage[];
   const dict = await getDictionary(lang);
   const {
     pages: {
@@ -45,5 +46,3 @@ export default async function page({
     </div>
   );
 }
-
-export const dynamic = "force-dynamic";

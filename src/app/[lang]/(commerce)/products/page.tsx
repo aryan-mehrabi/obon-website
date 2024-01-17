@@ -2,8 +2,9 @@ import React from "react";
 
 import Heading from "@/components/atoms/Heading";
 import Products from "@/components/organs/Products";
+import { getProducts } from "@/data/product";
 import { getDictionary, type Locale } from "@/lib/locale";
-import prisma from "@/prisma/client";
+import { ProductWithImage } from "@/types";
 
 interface PropTypes {
   params: {
@@ -14,14 +15,14 @@ interface PropTypes {
 export default async function page({ params: { lang } }: PropTypes) {
   const [dict, products] = await Promise.all([
     getDictionary(lang),
-    prisma.product.findMany({
+    getProducts({
       where: {
         is_visible_to_user: true,
       },
       include: {
         images: true,
       },
-    }),
+    }) as unknown as ProductWithImage[],
   ]);
 
   const {
@@ -40,5 +41,3 @@ export default async function page({ params: { lang } }: PropTypes) {
     </section>
   );
 }
-
-export const dynamic = "force-dynamic";

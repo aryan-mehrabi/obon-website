@@ -3,8 +3,8 @@ import React from "react";
 
 import { updateProduct } from "@/actions/product";
 import Modal from "@/components/organs/Modal";
+import { getProduct } from "@/data/product";
 import { getDictionary, Locale } from "@/lib/locale";
-import prisma from "@/prisma/client";
 import { ProductFormSchema } from "@/types";
 
 import Wizard from "../../_components/Wizard";
@@ -17,7 +17,7 @@ interface PropTypes {
 }
 
 export default async function Page({ params: { productId, lang } }: PropTypes) {
-  const product = (await prisma.product.findUnique({
+  const product = (await getProduct({
     select: {
       title_en: true,
       title_fa: true,
@@ -35,7 +35,7 @@ export default async function Page({ params: { productId, lang } }: PropTypes) {
     where: {
       id: +productId,
     },
-  })) as ProductFormSchema;
+  })) as unknown as ProductFormSchema;
   if (!product) notFound();
   const dict = await getDictionary(lang);
 
@@ -45,5 +45,3 @@ export default async function Page({ params: { productId, lang } }: PropTypes) {
     </Modal>
   );
 }
-
-export const dynamic = "force-dynamic";

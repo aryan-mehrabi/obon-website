@@ -2,7 +2,7 @@
 
 import { Prisma } from "@prisma/client";
 import { UploadApiResponse } from "cloudinary";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 import { getBuffer, serverActionMiddleware, uploadImages } from "@/lib/helpers";
 import prisma from "@/prisma/client";
@@ -18,7 +18,7 @@ export const updateProductVisibile = serverActionMiddleware(
         is_visible_to_user: data,
       },
     });
-    revalidatePath("/dashboard/products");
+    revalidateTag("products");
   },
 );
 
@@ -53,6 +53,7 @@ export const createProduct = serverActionMiddleware(
         },
       },
     });
+    revalidateTag("products");
   },
 );
 
@@ -63,7 +64,7 @@ export const deleteProduct = serverActionMiddleware(
         id: productId,
       },
     });
-    revalidatePath("/dashboard/products");
+    revalidateTag("products");
   },
 );
 
@@ -138,6 +139,6 @@ export const updateProduct = serverActionMiddleware(
         images: true,
       },
     });
-    revalidatePath(`/dashboard/${id}/edit`);
+    revalidateTag("products");
   },
 );

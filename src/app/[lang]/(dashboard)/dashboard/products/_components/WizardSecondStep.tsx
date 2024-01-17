@@ -93,7 +93,6 @@ export default function WizardSecondStep({
       if (res.success) {
         toast({ title: "Product Created Successfully" });
         router.push("/dashboard/products");
-        router.refresh();
       } else {
         toast({ title: res.message, variant: "destructive" });
       }

@@ -8,8 +8,9 @@ import Image from "@/components/atoms/Image";
 import List from "@/components/atoms/List";
 import Header from "@/components/organs/Header";
 import Products from "@/components/organs/Products";
+import { getProducts } from "@/data/product";
 import { getDictionary, type Locale } from "@/lib/locale";
-import prisma from "@/prisma/client";
+import { ProductWithImage } from "@/types";
 
 export default async function Home({
   params: { lang },
@@ -18,7 +19,7 @@ export default async function Home({
 }) {
   const [dict, products] = await Promise.all([
     getDictionary(lang),
-    prisma.product.findMany({
+    getProducts({
       take: 4,
       where: {
         is_visible_to_user: true,
@@ -26,7 +27,7 @@ export default async function Home({
       include: {
         images: true,
       },
-    }),
+    }) as unknown as ProductWithImage[],
   ]);
 
   const {
