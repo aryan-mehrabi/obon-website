@@ -75,7 +75,7 @@ model Category {
 model Attribute {
   id            Int    @id @default(autoincrement())
   title         String
-  key           String
+  key           String @unique
   required      Boolean
   metadata      Metadata[]
 }
