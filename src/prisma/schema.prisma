@@ -77,6 +77,7 @@ model Attribute {
   title         String
   key           String @unique
   required      Boolean
+  locale        Locale @default(fa)
   metadata      Metadata[]
 }
 
@@ -95,4 +96,9 @@ enum Role {
   USER
   ADMIN
   OWNER
+}
+
+enum Locale {
+  fa
+  en
 }
