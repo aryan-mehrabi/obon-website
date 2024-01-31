@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
+import { Attribute } from "@prisma/client";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 
@@ -15,10 +16,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import en from "@/dictionaries/en.json";
-import { productSecondStepFormSchema } from "@/lib/validations";
+import { Locale } from "@/lib/locale";
+import {
+  // attributesFormSchema,
+  productSecondStepFormSchema,
+} from "@/lib/validations";
 import {
   ErrorResponse,
   FormSteps,
@@ -28,6 +32,7 @@ import {
 } from "@/types";
 
 interface PropTypes {
+  attributes: Attribute[];
   dict: typeof en;
   formData: ProductFormSchema;
   onSubmit: (
@@ -39,6 +44,7 @@ interface PropTypes {
 }
 
 export default function WizardSecondStep({
+  attributes,
   formData,
   setFormData,
   setStep,
@@ -49,32 +55,22 @@ export default function WizardSecondStep({
     pages: {
       dashboardProducts: {
         newProductModal: { buttons },
-        productForm: {
-          available,
-          visible,
-          material,
-          width,
-          length,
-          height,
-          description,
-        },
+        productForm: { available, visible },
       },
     },
   } = dict;
+  const { lang }: { lang: Locale } = useParams();
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const router = useRouter();
   const pathname = usePathname();
+  // const attributesSchema = attributesFormSchema(attributes);
   const form = useForm<ProductSecondStepFormSchema>({
     resolver: zodResolver(productSecondStepFormSchema),
     defaultValues: {
-      material_en: formData.material_en,
-      material_fa: formData.material_fa,
-      description_en: formData.description_en,
-      description_fa: formData.description_fa,
-      dimensions: formData.dimensions,
       is_available: formData.is_available,
       is_visible_to_user: formData.is_visible_to_user,
+      metadata: formData.metadata,
     },
   });
 
@@ -89,7 +85,7 @@ export default function WizardSecondStep({
     });
     data.append("data", JSON.stringify({ ...formData, ...values }));
     startTransition(async () => {
-      const res = await onSubmit(data, Number.isNaN(id) ? undefined : id);
+      const res = await onSubmit(data, Number.isNaN(+id) ? undefined : +id);
       if (res.success) {
         toast({ title: "Product Created Successfully" });
         router.push("/dashboard/products");
@@ -104,151 +100,54 @@ export default function WizardSecondStep({
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={form.handleSubmit(onSubmitForm)} className="space-y-8">
         <div className="grid grid-cols-2 gap-x-2 gap-y-6">
-          <FormField
-            control={form.control}
-            name="material_en"
-            render={({ field }) => (
-              <FormItem className="grow">
-                <FormLabel>
-                  {material.title}
-                  {" "}
-                  (EN)
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder={material.placeholder} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="material_fa"
-            render={({ field }) => (
-              <FormItem className="grow">
-                <FormLabel>
-                  {material.title}
-                  {" "}
-                  (FA)
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder={material.placeholder} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description_en"
-            render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>
-                  {description.title}
-                  {" "}
-                  (EN)
-                </FormLabel>
-                <FormControl>
-                  <Textarea placeholder={description.placeholder} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description_fa"
-            render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>
-                  {description.title}
-                  {" "}
-                  (FA)
-                </FormLabel>
-                <FormControl>
-                  <Textarea placeholder={description.placeholder} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="col-span-2 grid grid-cols-3 gap-2">
+          {attributes.map((attribute) => (
             <FormField
+              key={attribute.id}
               control={form.control}
-              name="dimensions.width"
-              render={() => (
-                <FormItem>
+              name="metadata"
+              render={({ field: { value, onChange, ...field } }) => (
+                <FormItem className="grow">
                   <FormLabel>
-                    {width.title}
-                    {" "}
-                    (
-                    {width.unit}
-                    )
+                    {attribute[`title_${lang}`]}({attribute.locale})
                   </FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
-                      placeholder={width.placeholder}
-                      {...form.register("dimensions.width", {
-                        valueAsNumber: true,
-                      })}
+                      onChange={(e) => {
+                        let newMetadata;
+                        if (
+                          value.some(
+                            ({ attributeId }) => attributeId === attribute.id,
+                          )
+                        ) {
+                          newMetadata = value.map((attr) =>
+                            attr.attributeId === attribute.id
+                              ? { ...attr, value: e.target.value }
+                              : attr,
+                          );
+                        } else {
+                          newMetadata = [
+                            ...value,
+                            {
+                              attributeId: attribute.id,
+                              value: e.target.value,
+                            },
+                          ];
+                        }
+                        onChange(newMetadata);
+                      }}
+                      value={
+                        value.find(
+                          ({ attributeId }) => attributeId === attribute.id,
+                        )?.value
+                      }
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="dimensions.height"
-              render={() => (
-                <FormItem>
-                  <FormLabel>
-                    {height.title}
-                    {" "}
-                    (
-                    {height.unit}
-                    )
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder={height.placeholder}
-                      {...form.register("dimensions.height", {
-                        valueAsNumber: true,
-                      })}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="dimensions.length"
-              render={() => (
-                <FormItem>
-                  <FormLabel>
-                    {length.title}
-                    {" "}
-                    (
-                    {length.unit}
-                    )
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder={length.placeholder}
-                      {...form.register("dimensions.length", {
-                        valueAsNumber: true,
-                      })}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          ))}
           <FormField
             control={form.control}
             name="is_available"

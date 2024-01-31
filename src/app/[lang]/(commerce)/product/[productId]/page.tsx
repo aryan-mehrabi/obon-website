@@ -13,7 +13,7 @@ import {
 import { getProduct } from "@/data/product";
 import { getDictionary, i18n, Locale } from "@/lib/locale";
 import { formatNumber } from "@/lib/utils";
-import { Dimension, ProductWithImage } from "@/types";
+import { TAttribute, TImage, TMetadata, TProduct } from "@/types";
 
 import AddToCart from "./AddToCart";
 
@@ -33,8 +33,13 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
       },
       include: {
         images: true,
+        metadata: {
+          include: {
+            attribute: true,
+          },
+        },
       },
-    }) as unknown as ProductWithImage,
+    }) as unknown as TProduct<TImage & TMetadata<TAttribute>>,
   ]);
 
   if (!product || !product.is_visible_to_user) {
@@ -43,7 +48,7 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
 
   const {
     pages: {
-      productDetail: { disclaimer, specifications },
+      productDetail: { disclaimer },
     },
     price: { currency },
   } = dict;
@@ -54,34 +59,17 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     return 0;
   });
 
-  const renderDimensions = () => {
-    const {
-      width: dimWidth,
-      length: dimlength,
-      height: dimHeight,
-    } = (product.dimensions || {}) as Dimension;
-
-    if (!dimWidth && !dimlength && !dimHeight) return null;
-
-    const {
-      width, height, length, title, unit,
-    } = specifications.dimensions;
-
-    return (
-      <p>
-        <strong>
-          {title}
-          (
-          {unit}
-          ):
-          {" "}
-        </strong>
-        {dimWidth && `${width}: ${dimWidth} `}
-        {dimlength && `${height}: ${dimlength} `}
-        {dimHeight && `${length}: ${dimHeight}`}
-      </p>
-    );
-  };
+  const renderSpecificaitons = () =>
+    product.metadata
+      .filter(
+        (metadata) => metadata.attribute.locale === lang && metadata.value,
+      )
+      .map((metadata) => (
+        <li key={metadata.id}>
+          <strong>{metadata.attribute[`title_${lang}`]}:</strong>
+          {metadata.value}
+        </li>
+      ));
 
   return (
     <main className="mt-28 mb-10 space-y-5 p-3 md:grid md:grid-cols-2 md:gap-x-12 max-w-5xl mx-auto">
@@ -115,33 +103,7 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
         </div>
         <AddToCart dict={dict} availableQuantity={product.quantity} />
         <div className="border border-neutral-200 p-5 rounded-sm ">
-          <ul className="space-y-2">
-            <li>
-              {product[`description_${lang}`] && (
-                <>
-                  <strong>
-                    {specifications.description}
-                    :
-                    {" "}
-                  </strong>
-                  {product[`description_${lang}`]}
-                </>
-              )}
-            </li>
-            <li>{renderDimensions()}</li>
-            <li>
-              {product[`material_${lang}`] && (
-                <>
-                  <strong>
-                    {specifications.material}
-                    :
-                    {" "}
-                  </strong>
-                  {product[`material_${lang}`]}
-                </>
-              )}
-            </li>
-          </ul>
+          <ul className="space-y-2">{renderSpecificaitons()}</ul>
         </div>
       </div>
       <div className="text-center">

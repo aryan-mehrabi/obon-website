@@ -1,3 +1,4 @@
+import { Attribute } from "@prisma/client";
 import * as z from "zod";
 
 export const credentialsSchema = z.object({
@@ -35,21 +36,33 @@ export const productFirstStepFormSchema = z.object({
 });
 
 export const productSecondStepFormSchema = z.object({
-  material_en: z.string().min(1),
-  material_fa: z.string().min(1),
-  description_fa: z.string(),
-  description_en: z.string(),
-  dimensions: z
-    .object({
-      width: z.number().nullish(),
-      height: z.number().nullish(),
-      length: z.number().nullish(),
-    })
-    .nullish(),
   is_available: z.boolean(),
   is_visible_to_user: z.boolean(),
+  metadata: z.array(
+    z.object({
+      id: z.number().optional(),
+      value: z.string(),
+      attributeId: z.number(),
+    }),
+  ),
 });
 
 export const productFormSchema = productFirstStepFormSchema.merge(
   productSecondStepFormSchema,
 );
+
+export const attributesFormSchema = (attr: Attribute[]) =>
+  z.object({
+    specifications: z.object(
+      attr.reduce(
+        (acc, curr) => ({
+          ...acc,
+          [curr.key]: z.object({
+            attributeId: z.number(),
+            value: curr.required ? z.string().min(1) : z.string(),
+          }),
+        }),
+        {},
+      ),
+    ),
+  });

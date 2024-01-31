@@ -1,6 +1,5 @@
 "use server";
 
-import { Prisma } from "@prisma/client";
 import { UploadApiResponse } from "cloudinary";
 import { revalidateTag } from "next/cache";
 
@@ -41,13 +40,15 @@ export const createProduct = serverActionMiddleware(
         is_default: image.is_default,
       };
     });
-
+    const { metadata, ...productData } = data;
     await prisma.product.create({
       data: {
-        ...data,
-        dimensions: data.dimensions as
-          | Prisma.InputJsonValue
-          | Prisma.NullableJsonNullValueInput,
+        ...productData,
+        metadata: {
+          createMany: {
+            data: metadata,
+          },
+        },
         images: {
           create: imagesData,
         },
@@ -82,8 +83,9 @@ export const updateProduct = serverActionMiddleware(
       uploadedImages = await uploadImages(files, buffers);
     }
 
-    const filterNumbers = (imageId: number | string): imageId is number => typeof imageId === "number";
-    const { images, ...otherData } = data;
+    const filterNumbers = (imageId: number | string): imageId is number =>
+      typeof imageId === "number";
+    const { images, ...productData } = data;
     const imagesId = images.map((image) => image.id).filter(filterNumbers);
 
     const defaultImage = images.find((image) => image.is_default);
@@ -101,10 +103,7 @@ export const updateProduct = serverActionMiddleware(
         id,
       },
       data: {
-        ...otherData,
-        dimensions: otherData.dimensions as
-          | Prisma.InputJsonValue
-          | Prisma.NullableJsonNullValueInput,
+        ...productData,
         images: {
           deleteMany: {
             id: {
