@@ -74,7 +74,8 @@ model Category {
 
 model Attribute {
   id            Int    @id @default(autoincrement())
-  title         String
+  title_en      String
+  title_fa      String
   key           String @unique
   required      Boolean
   locale        Locale @default(fa)
