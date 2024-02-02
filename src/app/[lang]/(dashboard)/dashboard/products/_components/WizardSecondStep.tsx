@@ -108,7 +108,10 @@ export default function WizardSecondStep({
               render={({ field: { value, onChange, ...field } }) => (
                 <FormItem className="grow">
                   <FormLabel>
-                    {attribute[`title_${lang}`]}({attribute.locale})
+                    {attribute[`title_${lang}`]}
+                    (
+                    {attribute.locale}
+                    )
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -119,11 +122,9 @@ export default function WizardSecondStep({
                             ({ attributeId }) => attributeId === attribute.id,
                           )
                         ) {
-                          newMetadata = value.map((attr) =>
-                            attr.attributeId === attribute.id
-                              ? { ...attr, value: e.target.value }
-                              : attr,
-                          );
+                          newMetadata = value.map((attr) => (attr.attributeId === attribute.id
+                            ? { ...attr, value: e.target.value }
+                            : attr));
                         } else {
                           newMetadata = [
                             ...value,
@@ -138,7 +139,7 @@ export default function WizardSecondStep({
                       value={
                         value.find(
                           ({ attributeId }) => attributeId === attribute.id,
-                        )?.value
+                        )?.value || ""
                       }
                       {...field}
                     />
