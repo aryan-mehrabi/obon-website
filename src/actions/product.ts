@@ -4,7 +4,7 @@ import { UploadApiResponse } from "cloudinary";
 import { revalidateTag } from "next/cache";
 
 import { getBuffer, serverActionMiddleware, uploadImages } from "@/lib/helpers";
-import prisma from "@/prisma/client";
+import prisma, { bulkUpdate } from "@/prisma/client";
 import { ProductFormSchema } from "@/types";
 
 export const updateProductVisibile = serverActionMiddleware(
@@ -69,6 +69,9 @@ export const deleteProduct = serverActionMiddleware(
   },
 );
 
+type ItemWithId<T> = T & { id: number };
+const doesIncludeId = <T>(item: T): item is ItemWithId<T> => !!(item as ItemWithId<T>).id;
+
 export const updateProduct = serverActionMiddleware(
   async (formData: FormData, id?: number) => {
     if (!id) throw new Error("Wrong Id");
@@ -76,6 +79,7 @@ export const updateProduct = serverActionMiddleware(
     const data = JSON.parse(
       formData.get("data") as string,
     ) as unknown as ProductFormSchema;
+
     const files = formData.getAll("files") as File[];
     let uploadedImages: UploadApiResponse[];
     if (files) {
@@ -83,9 +87,8 @@ export const updateProduct = serverActionMiddleware(
       uploadedImages = await uploadImages(files, buffers);
     }
 
-    const filterNumbers = (imageId: number | string): imageId is number =>
-      typeof imageId === "number";
-    const { images, ...productData } = data;
+    const filterNumbers = (imageId: number | string): imageId is number => typeof imageId === "number";
+    const { images, metadata, ...productData } = data;
     const imagesId = images.map((image) => image.id).filter(filterNumbers);
 
     const defaultImage = images.find((image) => image.is_default);
@@ -98,7 +101,8 @@ export const updateProduct = serverActionMiddleware(
         width: uploadedImages[i].width,
         height: uploadedImages[i].height,
       }));
-    await prisma.product.update({
+
+    const productUpdate = prisma.product.update({
       where: {
         id,
       },
@@ -133,11 +137,24 @@ export const updateProduct = serverActionMiddleware(
               }
               : undefined,
         },
+        metadata: {
+          createMany: metadata.filter((curr) => !doesIncludeId(curr)).length
+            ? {
+              data: metadata.filter((curr) => !doesIncludeId(curr)),
+            }
+            : undefined,
+        },
       },
       include: {
         images: true,
+        metadata: true,
       },
     });
+    const metadataUpdate = bulkUpdate(
+      "Metadata",
+      metadata.filter(doesIncludeId),
+    );
+    await Promise.all([productUpdate, metadataUpdate]);
     revalidateTag("products");
   },
 );
