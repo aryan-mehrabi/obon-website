@@ -9,6 +9,7 @@ import {
   FormSteps,
   ProductFormSchema,
   SuccessResponse,
+  TFormData,
 } from "@/types";
 
 import WizardFirstStep from "./WizardFirstStep";
@@ -41,7 +42,10 @@ export default function Wizard({
   onSubmit,
   attributes,
 }: PropTypes) {
-  const [formData, setFormData] = useState(defaultValues);
+  const [formData, setFormData] = useState<TFormData>({
+    dirtyFields: [],
+    fields: defaultValues,
+  });
   const [step, setStep] = useState(FormSteps.first);
 
   return step === FormSteps.first ? (

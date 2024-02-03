@@ -26,26 +26,31 @@ import {
 import {
   ErrorResponse,
   FormSteps,
-  ProductFormSchema,
   ProductSecondStepFormSchema,
   SuccessResponse,
+  TFormData,
 } from "@/types";
 
 interface PropTypes {
   attributes: Attribute[];
   dict: typeof en;
-  formData: ProductFormSchema;
+  formData: TFormData;
   onSubmit: (
     values: FormData,
     id?: number,
   ) => Promise<SuccessResponse | ErrorResponse>;
-  setFormData: React.Dispatch<React.SetStateAction<ProductFormSchema>>;
+  setFormData: React.Dispatch<React.SetStateAction<TFormData>>;
   setStep: React.Dispatch<React.SetStateAction<FormSteps>>;
 }
 
+const filterFields = (
+  fields: TFormData["fields"],
+  dirtyFields: TFormData["dirtyFields"],
+) => dirtyFields.reduce((acc, curr) => ({ ...acc, [curr]: fields[curr] }), {});
+
 export default function WizardSecondStep({
   attributes,
-  formData,
+  formData: { fields, dirtyFields },
   setFormData,
   setStep,
   dict,
@@ -68,24 +73,45 @@ export default function WizardSecondStep({
   const form = useForm<ProductSecondStepFormSchema>({
     resolver: zodResolver(productSecondStepFormSchema),
     defaultValues: {
-      is_available: formData.is_available,
-      is_visible_to_user: formData.is_visible_to_user,
-      metadata: formData.metadata,
+      is_available: fields.is_available,
+      is_visible_to_user: fields.is_visible_to_user,
+      metadata: fields.metadata,
     },
   });
 
   const onSubmitForm = (values: ProductSecondStepFormSchema) => {
-    const id = +pathname.split("/").filter((path) => path)[3];
-    setFormData((state) => ({ ...state, ...values }));
     const data = new FormData();
-    formData.images.forEach(({ file }) => {
+    const productId = +pathname.split("/").filter((path) => path)[3];
+    const isEditingSubmit = !Number.isNaN(productId);
+    const allFields = { ...fields, ...values };
+    const allDirtyFields: TFormData["dirtyFields"] = [
+      ...dirtyFields,
+      ...(Object.keys(form.formState.dirtyFields) as TFormData["dirtyFields"]),
+    ];
+
+    setFormData({
+      fields: allFields,
+      dirtyFields: allDirtyFields,
+    });
+
+    fields.images.forEach(({ file }) => {
       if (file) {
         data.append("files", file, file.name);
       }
     });
-    data.append("data", JSON.stringify({ ...formData, ...values }));
+
+    data.append(
+      "data",
+      JSON.stringify(
+        isEditingSubmit ? filterFields(allFields, allDirtyFields) : allFields,
+      ),
+    );
+
     startTransition(async () => {
-      const res = await onSubmit(data, Number.isNaN(+id) ? undefined : +id);
+      const res = await onSubmit(
+        data,
+        Number.isNaN(productId) ? undefined : productId,
+      );
       if (res.success) {
         toast({ title: "Product Created Successfully" });
         router.push("/dashboard/products");

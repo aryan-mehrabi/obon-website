@@ -7,19 +7,11 @@ import { getBuffer, serverActionMiddleware, uploadImages } from "@/lib/helpers";
 import prisma, { bulkUpdate } from "@/prisma/client";
 import { ProductFormSchema } from "@/types";
 
-export const updateProductVisibile = serverActionMiddleware(
-  async (id: number, data: boolean) => {
-    await prisma.product.update({
-      where: {
-        id,
-      },
-      data: {
-        is_visible_to_user: data,
-      },
-    });
-    revalidateTag("products");
-  },
-);
+type ItemWithId<T> = T & { id: number };
+
+const doesIncludeId = <T>(item: T): item is ItemWithId<T> => !!(item as ItemWithId<T>).id;
+
+const filterNumbers = (imageId: number | string): imageId is number => typeof imageId === "number";
 
 export const createProduct = serverActionMiddleware(
   async (formData: FormData) => {
@@ -58,28 +50,16 @@ export const createProduct = serverActionMiddleware(
   },
 );
 
-export const deleteProduct = serverActionMiddleware(
-  async (productId: number) => {
-    await prisma.product.delete({
-      where: {
-        id: productId,
-      },
-    });
-    revalidateTag("products");
-  },
-);
-
-type ItemWithId<T> = T & { id: number };
-const doesIncludeId = <T>(item: T): item is ItemWithId<T> => !!(item as ItemWithId<T>).id;
-
 export const updateProduct = serverActionMiddleware(
   async (formData: FormData, id?: number) => {
-    if (!id) throw new Error("Wrong Id");
+    if (!id) throw new Error("no id provided");
 
+    // Parse form data
     const data = JSON.parse(
       formData.get("data") as string,
-    ) as unknown as ProductFormSchema;
+    ) as unknown as Partial<ProductFormSchema>;
 
+    // Upload images if any exists
     const files = formData.getAll("files") as File[];
     let uploadedImages: UploadApiResponse[];
     if (files) {
@@ -87,14 +67,15 @@ export const updateProduct = serverActionMiddleware(
       uploadedImages = await uploadImages(files, buffers);
     }
 
-    const filterNumbers = (imageId: number | string): imageId is number => typeof imageId === "number";
     const { images, metadata, ...productData } = data;
-    const imagesId = images.map((image) => image.id).filter(filterNumbers);
 
-    const defaultImage = images.find((image) => image.is_default);
-
+    // Filter images that has id (meaning exists in db)
+    const imagesId = images?.map((image) => image.id).filter(filterNumbers);
+    // Find the default image
+    const defaultImage = images?.find((image) => image.is_default);
+    // Filter images that doesn't have id (doesn't exist in db)
     const newImages = images
-      .filter((image) => !filterNumbers(image.id))
+      ?.filter((image) => !filterNumbers(image.id))
       .map((image, i) => ({
         is_default: image.is_default,
         url: uploadedImages[i].url,
@@ -102,59 +83,91 @@ export const updateProduct = serverActionMiddleware(
         height: uploadedImages[i].height,
       }));
 
+    // Update the product data and images and metadata(if its creation of metadata)
     const productUpdate = prisma.product.update({
       where: {
         id,
       },
       data: {
         ...productData,
-        images: {
-          deleteMany: {
-            id: {
-              notIn: imagesId,
+        images: images?.length
+          ? {
+            deleteMany: {
+              id: {
+                notIn: imagesId,
+              },
             },
-          },
-          updateMany: {
-            where: {
-              is_default: true,
+            updateMany: {
+              where: {
+                is_default: true,
+              },
+              data: {
+                is_default: false,
+              },
             },
-            data: {
-              is_default: false,
+            createMany: {
+              data: newImages!,
             },
-          },
-          createMany: {
-            data: newImages,
-          },
-          update:
-            defaultImage && typeof defaultImage.id === "number"
-              ? {
-                where: {
-                  id: defaultImage.id,
-                },
-                data: {
-                  is_default: true,
-                },
-              }
-              : undefined,
-        },
-        metadata: {
-          createMany: metadata.filter((curr) => !doesIncludeId(curr)).length
+            update:
+                defaultImage && typeof defaultImage.id === "number"
+                  ? {
+                    where: {
+                      id: defaultImage.id,
+                    },
+                    data: {
+                      is_default: true,
+                    },
+                  }
+                  : undefined,
+          }
+          : undefined,
+        metadata:
+          metadata && metadata.filter((curr) => !doesIncludeId(curr)).length
             ? {
-              data: metadata.filter((curr) => !doesIncludeId(curr)),
+              createMany: {
+                data: metadata?.filter((curr) => !doesIncludeId(curr)),
+              },
             }
             : undefined,
-        },
       },
       include: {
         images: true,
         metadata: true,
       },
     });
-    const metadataUpdate = bulkUpdate(
-      "Metadata",
-      metadata.filter(doesIncludeId),
-    );
-    await Promise.all([productUpdate, metadataUpdate]);
+
+    // Filter metadata that exists in db
+    const metadataUpdates = metadata?.filter(doesIncludeId);
+    const promises: Promise<unknown>[] = [productUpdate];
+    if (metadataUpdates?.length) {
+      promises.push(bulkUpdate("Metadata", metadataUpdates));
+    }
+    await Promise.all(promises);
+    revalidateTag("products");
+  },
+);
+
+export const updateProductVisibile = serverActionMiddleware(
+  async (id: number, data: boolean) => {
+    await prisma.product.update({
+      where: {
+        id,
+      },
+      data: {
+        is_visible_to_user: data,
+      },
+    });
+    revalidateTag("products");
+  },
+);
+
+export const deleteProduct = serverActionMiddleware(
+  async (productId: number) => {
+    await prisma.product.delete({
+      where: {
+        id: productId,
+      },
+    });
     revalidateTag("products");
   },
 );

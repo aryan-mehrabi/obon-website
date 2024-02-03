@@ -58,3 +58,8 @@ export type ProductSecondStepFormSchema = z.infer<
   typeof productSecondStepFormSchema
 >;
 export type ProductFormSchema = z.infer<typeof productFormSchema>;
+
+export type TFormData = {
+  dirtyFields: (keyof ProductFormSchema)[];
+  fields: ProductFormSchema;
+};
