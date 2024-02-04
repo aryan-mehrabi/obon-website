@@ -173,10 +173,26 @@
         "length": { "title": "طول", "placeholder": "طول", "unit": "سانتی‌متر" },
         "available": { "title": "موجود", "placeholder": "موجود" },
         "visible": { "title": "نمایش دادن", "placeholder": "نمایش دادن" }
-      }
+      },
+      "productRoutes": [
+        {
+          "title": "محصولات",
+          "href": "/dashboard/products",
+          "path": "/"
+        },
+        {
+          "title": "ویژگی‌ها",
+          "href": "/dashboard/products/attributes",
+          "path": "attributes"
+        }
+      ]
     },
     "dashboardProductsEdit": {
       "title": "تغییر محصول"
+    },
+    "dashboardAttributes": {
+      "title": "ویژگی‌ها",
+      "newAttributeButton": "ویژگی جدید"
     }
   },
   "form": {

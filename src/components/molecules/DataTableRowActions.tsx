@@ -1,11 +1,7 @@
-"use client";
-
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
-import Link from "next/link";
-import React, { useTransition } from "react";
+import React from "react";
 
-import { deleteProduct } from "@/actions/product";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,27 +21,24 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useToast } from "@/components/ui/use-toast";
 
 interface DataTableRowActionsProps<TData> {
+  onDelete: (id: number) => unknown;
+  onEdit: (id: number) => unknown;
   row: Row<TData>;
 }
 
 export function DataTableRowActions<TData extends { id: number }>({
+  onDelete,
+  onEdit,
   row,
 }: DataTableRowActionsProps<TData>) {
-  const [, startTransition] = useTransition();
-  const { toast } = useToast();
   const onClickDelete = () => {
-    const productId = row.original.id;
-    startTransition(async () => {
-      const res = await deleteProduct(productId);
-      if (res.success) {
-        toast({ title: "Product deleted Successfully" });
-      } else {
-        toast({ title: res.message, variant: "destructive" });
-      }
-    });
+    onDelete(row.original.id);
+  };
+
+  const onClickEdit = () => {
+    onEdit(row.original.id);
   };
 
   return (
@@ -61,9 +54,7 @@ export function DataTableRowActions<TData extends { id: number }>({
       </DropdownMenuTrigger>
       <AlertDialog>
         <DropdownMenuContent align="end" className="w-[160px]">
-          <Link href={`/dashboard/products/${row.original.id}/edit`}>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-          </Link>
+          <DropdownMenuItem onClick={onClickEdit}>Edit</DropdownMenuItem>
           <AlertDialogTrigger asChild>
             <DropdownMenuItem className="text-destructive">
               Delete

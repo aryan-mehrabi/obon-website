@@ -1,18 +1,39 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
+import { deleteProduct } from "@/actions/product";
 import Image from "@/components/atoms/Image";
 import { DataTableColumnHeader } from "@/components/molecules/DataTableColumnHeader";
 import { DataTableRowActions } from "@/components/molecules/DataTableRowActions";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/components/ui/use-toast";
 import { formatNumber } from "@/lib/utils";
 import { ProductWithImage } from "@/types";
 
 import DataTableSwitch from "./DataTableSwitch";
+
+function ProductActions({ row }: { row: Row<ProductWithImage> }) {
+  const { toast } = useToast();
+  const router = useRouter();
+  const onEdit = (id: number) => {
+    router.push(`/dashboard/products/${id}/edit`);
+  };
+
+  const onDelete = async (id: number) => {
+    const res = await deleteProduct(id);
+    if (res.success) {
+      toast({ title: "Product deleted Successfully" });
+    } else {
+      toast({ title: res.message, variant: "destructive" });
+    }
+  };
+  return <DataTableRowActions row={row} onEdit={onEdit} onDelete={onDelete} />;
+}
 
 export const columns: ColumnDef<ProductWithImage>[] = [
   {
@@ -166,6 +187,6 @@ export const columns: ColumnDef<ProductWithImage>[] = [
   // },
   {
     id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ProductActions,
   },
 ];

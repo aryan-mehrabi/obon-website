@@ -169,10 +169,26 @@
         "length": { "title": "Length", "placeholder": "Length", "unit": "cm" },
         "available": { "title": "Available", "placeholder": "Available" },
         "visible": { "title": "Visible", "placeholder": "Visible" }
-      }
+      },
+      "productRoutes": [
+        {
+          "title": "Products",
+          "href": "/dashboard/products",
+          "path": "/"
+        },
+        {
+          "title": "Attributes",
+          "href": "/dashboard/products/attributes",
+          "path": "attributes"
+        }
+      ]
     },
     "dashboardProductsEdit": {
       "title": "Edit Product"
+    },
+    "dashboardAttributes": {
+      "title": "Attribtues",
+      "newAttributeButton": "New Attribute"
     }
   },
   "form": {
