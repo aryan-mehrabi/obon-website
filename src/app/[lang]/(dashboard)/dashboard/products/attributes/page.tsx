@@ -1,4 +1,5 @@
 import { PlusIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import React from "react";
 
 import Heading from "@/components/atoms/Heading";
@@ -28,10 +29,12 @@ export default async function Page({
     <div className="space-y-2 sm:space-y-4">
       <div className="flex justify-between">
         <Heading type="h1">{title}</Heading>
-        <Button className="flex gap-2 items-center">
-          <Icon render={PlusIcon} className="w-4 h-4" />
-          <span>{newAttributeButton}</span>
-        </Button>
+        <Link href="/dashboard/products/attributes/new">
+          <Button className="flex gap-2 items-center">
+            <Icon render={PlusIcon} className="w-4 h-4" />
+            <span>{newAttributeButton}</span>
+          </Button>
+        </Link>
       </div>
       <DataTable columns={columns} data={attributes} />
     </div>

@@ -5,19 +5,27 @@ import { ColumnDef, Row } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import React from "react";
 
+import { deleteAttribute } from "@/actions/attribute";
 import { DataTableColumnHeader } from "@/components/molecules/DataTableColumnHeader";
 import { DataTableRowActions } from "@/components/molecules/DataTableRowActions";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/components/ui/use-toast";
 import { formatNumber } from "@/lib/utils";
 
 function AttributeAction({ row }: { row: Row<Attribute> }) {
   const router = useRouter();
+  const { toast } = useToast();
 
   const onEdit = (id: number) => {
     router.push(`/dashboard/products/attributes/${id}/edit`);
   };
 
-  const onDelete = () => {};
+  const onDelete = async (id: number) => {
+    const res = await deleteAttribute(id);
+    if (res.success) {
+      toast({ title: "deleted successfully" });
+    }
+  };
 
   return <DataTableRowActions row={row} onEdit={onEdit} onDelete={onDelete} />;
 }

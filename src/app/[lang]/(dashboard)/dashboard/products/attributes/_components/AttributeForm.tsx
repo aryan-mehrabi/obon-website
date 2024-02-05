@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Locale } from "@prisma/client";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -54,6 +54,7 @@ export default function AttributeForm({
       dashboardAttributesEdit: { submit, dismiss },
     },
   } = dict;
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const { toast } = useToast();
   const pathname = usePathname();
@@ -69,21 +70,23 @@ export default function AttributeForm({
     },
   });
 
-  const onSubmitForm = async (values: AttributeFormSchema) => {
+  const onSubmitForm = (values: AttributeFormSchema) => {
     const attributeId = +pathname.split("/").filter((path) => path)[4];
     const dirtyFields = Object.keys(form.formState.dirtyFields);
-    const res = await onSubmit(
-      Number.isNaN(attributeId)
-        ? values
-        : (filterDirtyFields(values, dirtyFields) as AttributeFormSchema),
-      attributeId,
-    );
-    if (res.success) {
-      toast({ title: res?.message });
-      router.push("/dashboard/products/attributes");
-    } else {
-      toast({ title: res?.message, variant: "destructive" });
-    }
+    startTransition(async () => {
+      const res = await onSubmit(
+        Number.isNaN(attributeId)
+          ? values
+          : (filterDirtyFields(values, dirtyFields) as AttributeFormSchema),
+        attributeId,
+      );
+      if (res.success) {
+        toast({ title: res?.message });
+        router.push("/dashboard/products/attributes");
+      } else {
+        toast({ title: res?.message, variant: "destructive" });
+      }
+    });
   };
 
   return (
@@ -197,7 +200,7 @@ export default function AttributeForm({
           <DialogClose asChild>
             <Button variant="outline">{dismiss}</Button>
           </DialogClose>
-          <Button>{submit}</Button>
+          <Button disabled={isPending}>{submit}</Button>
         </DialogFooter>
       </form>
     </Form>
