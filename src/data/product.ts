@@ -20,9 +20,16 @@ export const getProduct = unstableCache(
 );
 
 export const getAttributes = unstableCache(
-  async (opt: Prisma.AttributeFindManyArgs = {}) =>
-    prisma.attribute.findMany(opt),
+  async (opt: Prisma.AttributeFindManyArgs = {}) => prisma.attribute.findMany(opt),
   ["attributes"],
+  {
+    tags: ["attributes"],
+  },
+);
+
+export const getAttribute = unstableCache(
+  async (opt: Prisma.AttributeFindUniqueArgs) => prisma.attribute.findUnique(opt),
+  ["attribute"],
   {
     tags: ["attributes"],
   },

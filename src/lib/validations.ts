@@ -1,4 +1,4 @@
-import { Attribute } from "@prisma/client";
+import { Attribute, Locale } from "@prisma/client";
 import * as z from "zod";
 
 export const credentialsSchema = z.object({
@@ -51,18 +51,28 @@ export const productFormSchema = productFirstStepFormSchema.merge(
   productSecondStepFormSchema,
 );
 
-export const attributesFormSchema = (attr: Attribute[]) =>
-  z.object({
-    specifications: z.object(
-      attr.reduce(
-        (acc, curr) => ({
-          ...acc,
-          [curr.key]: z.object({
-            attributeId: z.number(),
-            value: curr.required ? z.string().min(1) : z.string(),
-          }),
+export const attributesFormSchema = (attr: Attribute[]) => z.object({
+  specifications: z.object(
+    attr.reduce(
+      (acc, curr) => ({
+        ...acc,
+        [curr.key]: z.object({
+          attributeId: z.number(),
+          value: curr.required ? z.string().min(1) : z.string(),
         }),
-        {},
-      ),
+      }),
+      {},
     ),
-  });
+  ),
+});
+
+export const attributeFormSchema = z.object({
+  title_fa: z.string().min(1),
+  title_en: z.string().min(1),
+  key: z
+    .string()
+    .min(1)
+    .regex(/^[a-z]+(_|[a-z]+)*$/, { message: "only small english characters" }),
+  required: z.boolean(),
+  locale: z.nativeEnum(Locale),
+});

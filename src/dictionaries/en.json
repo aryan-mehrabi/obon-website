@@ -188,7 +188,28 @@
     },
     "dashboardAttributes": {
       "title": "Attribtues",
-      "newAttributeButton": "New Attribute"
+      "newAttributeButton": "New Attribute",
+      "attributeForm": {
+        "title": {
+          "title": "Title",
+          "placeholder": "Enter Attribute Title"
+        },
+        "required": {
+          "title": "Required"
+        },
+        "key": {
+          "title": "Key",
+          "placeholder": "Enter a unique key for attribute"
+        },
+        "locale": {
+          "title": "Language"
+        }
+      }
+    },
+    "dashboardAttributesEdit": {
+      "title": "Edit Attribute",
+      "submit": "Submit",
+      "dismiss": "Cancel"
     }
   },
   "form": {

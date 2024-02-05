@@ -8,6 +8,7 @@ import {
 import * as z from "zod";
 
 import {
+  attributeFormSchema,
   productFirstStepFormSchema,
   productFormSchema,
   productSecondStepFormSchema,
@@ -43,6 +44,7 @@ export interface ErrorResponse {
 
 export interface SuccessResponse {
   data?: unknown;
+  message?: string;
   success: true;
 }
 
@@ -63,3 +65,5 @@ export type TFormData = {
   dirtyFields: (keyof ProductFormSchema)[];
   fields: ProductFormSchema;
 };
+
+export type AttributeFormSchema = z.infer<typeof attributeFormSchema>;
