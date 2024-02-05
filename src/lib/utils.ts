@@ -16,3 +16,11 @@ export const convertToNumber = (str: string): number => parseInt(
     .replace(/[^0-9]/g, ""),
   10,
 );
+
+export const filterDirtyFields = <
+  T extends Record<string, unknown>,
+  U extends string[],
+>(
+    fields: T,
+    dirtyFields: U,
+  ): Partial<T> => dirtyFields.reduce((acc, curr) => ({ ...acc, [curr]: fields[curr] }), {});

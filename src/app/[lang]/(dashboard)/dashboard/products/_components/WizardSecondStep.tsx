@@ -19,6 +19,7 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/components/ui/use-toast";
 import en from "@/dictionaries/en.json";
 import { Locale } from "@/lib/locale";
+import { filterDirtyFields } from "@/lib/utils";
 import {
   // attributesFormSchema,
   productSecondStepFormSchema,
@@ -42,11 +43,6 @@ interface PropTypes {
   setFormData: React.Dispatch<React.SetStateAction<TFormData>>;
   setStep: React.Dispatch<React.SetStateAction<FormSteps>>;
 }
-
-const filterFields = (
-  fields: TFormData["fields"],
-  dirtyFields: TFormData["dirtyFields"],
-) => dirtyFields.reduce((acc, curr) => ({ ...acc, [curr]: fields[curr] }), {});
 
 export default function WizardSecondStep({
   attributes,
@@ -99,11 +95,12 @@ export default function WizardSecondStep({
         data.append("files", file, file.name);
       }
     });
-
     data.append(
       "data",
       JSON.stringify(
-        isEditingSubmit ? filterFields(allFields, allDirtyFields) : allFields,
+        isEditingSubmit
+          ? filterDirtyFields(allFields, allDirtyFields)
+          : allFields,
       ),
     );
 
