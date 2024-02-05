@@ -1,24 +1,23 @@
 import "server-only";
 
 import { match as matchLocale } from "@formatjs/intl-localematcher";
+import { Locale as PrismaLocale } from "@prisma/client";
 import Negotiator from "negotiator";
 import type { NextRequest } from "next/server";
-import { Locale } from "@prisma/client";
 
 export const i18n = {
-  defaultLocale: Locale.fa,
-  locales: Object.values(Locale),
-  rtl: [Locale.fa],
+  defaultLocale: PrismaLocale.fa,
+  locales: Object.values(PrismaLocale),
+  rtl: [PrismaLocale.fa],
 } as const;
 
-export type Locale = (typeof i18n)["locales"][number];
+export type Locale = PrismaLocale;
 
 const firstPathname = (url: URL): string | undefined =>
   url.pathname.split("/").filter((el) => el)[0];
 
-type LocaleType = (typeof i18n.locales)[number];
-const isInLocales = (x: string | undefined): x is LocaleType =>
-  i18n.locales.includes(x as LocaleType);
+const isInLocales = (x: string | undefined): x is Locale =>
+  i18n.locales.includes(x as Locale);
 
 export function getLocale(request: NextRequest): Locale {
   const referer = request.headers.get("referer");
