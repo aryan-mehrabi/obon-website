@@ -3,11 +3,12 @@ import "server-only";
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 import type { NextRequest } from "next/server";
+import { Locale } from "@prisma/client";
 
 export const i18n = {
-  defaultLocale: "fa",
-  locales: ["fa", "en"],
-  rtl: ["fa"],
+  defaultLocale: Locale.fa,
+  locales: Object.values(Locale),
+  rtl: [Locale.fa],
 } as const;
 
 export type Locale = (typeof i18n)["locales"][number];
