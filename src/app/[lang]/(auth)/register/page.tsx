@@ -2,7 +2,7 @@ import React from "react";
 
 import { getDictionary, type Locale } from "@/lib/locale";
 
-import RegisterForm from "./RegisterForm";
+import RegisterForm from "./_components/RegisterForm";
 
 interface PropType {
   params: {
