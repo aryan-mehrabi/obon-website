@@ -1,4 +1,3 @@
-import { Locale } from "@prisma/client";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -17,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { i18n } from "@/lib/utils";
 
 import Icon from "../atoms/Icon";
 
@@ -43,7 +43,7 @@ export function DataTablePagination<TData>({
         <div className="flex items-center gap-2">
           <p className="text-sm font-medium">Rows per page</p>
           <Select
-            dir={lang === Locale.fa ? "rtl" : "ltr"}
+            dir={i18n.rtl.some((locale) => locale === lang) ? "rtl" : "ltr"}
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
               table.setPageSize(Number(value));
