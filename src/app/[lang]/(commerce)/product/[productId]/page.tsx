@@ -62,19 +62,27 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     return 0;
   });
 
-  const renderSpecificaitons = () => product.metadata
-    .filter(
+  const renderAttributes = () => {
+    const productMetdata = product.metadata.filter(
       (metadata) => metadata.attribute.locale === lang && metadata.value,
-    )
-    .map((metadata) => (
-      <li key={metadata.id}>
-        <strong>
-          {metadata.attribute[`title_${lang}`]}
-          :
-        </strong>
-        {metadata.value}
-      </li>
-    ));
+    );
+    if (!productMetdata.length) return null;
+    return (
+      <div className="border border-neutral-200 p-5 rounded-sm ">
+        <ul className="space-y-2">
+          {productMetdata.map((metadata) => (
+            <li key={metadata.id}>
+              <strong>
+                {metadata.attribute[`title_${lang}`]}
+                :
+              </strong>
+              {metadata.value}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
 
   return (
     <main className="mt-28 mb-10 space-y-5 p-3 md:grid md:grid-cols-2 md:gap-x-12 max-w-5xl mx-auto">
@@ -107,9 +115,7 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
           </p>
         </div>
         <AddToCart dict={dict} availableQuantity={product.quantity} />
-        <div className="border border-neutral-200 p-5 rounded-sm ">
-          <ul className="space-y-2">{renderSpecificaitons()}</ul>
-        </div>
+        {renderAttributes()}
       </div>
       <div className="text-center">
         <Heading type="h4">{disclaimer}</Heading>
