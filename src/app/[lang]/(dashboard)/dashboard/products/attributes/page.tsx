@@ -25,9 +25,12 @@ export default async function Page({
       dashboardAttributes: { title, newAttributeButton },
     },
   } = dict;
+
+  const hiddenOnSm = ["required", "locale", "key"];
+
   return (
     <div className="space-y-2 sm:space-y-4">
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <Heading type="h1">{title}</Heading>
         <Link href="/dashboard/products/attributes/new">
           <Button className="flex gap-2 items-center">
@@ -36,7 +39,7 @@ export default async function Page({
           </Button>
         </Link>
       </div>
-      <DataTable columns={columns} data={attributes} />
+      <DataTable columns={columns} data={attributes} hiddenOnSm={hiddenOnSm} />
     </div>
   );
 }

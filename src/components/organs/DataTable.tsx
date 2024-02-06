@@ -30,11 +30,13 @@ import { DataTablePagination } from "../molecules/DataTablePagination";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  hiddenOnSm?: string[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  hiddenOnSm = [],
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -66,8 +68,6 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
-
-  const hiddenOnSm = ["is_visible_to_user", "price", "quantity"];
 
   return (
     <div className="space-y-4">

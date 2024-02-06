@@ -28,10 +28,10 @@ export default async function page({
       dashboardProducts: { title, newProductButton },
     },
   } = dict;
-
+  const hiddenOnSm = ["is_visible_to_user", "price", "quantity"];
   return (
     <div className="space-y-2 sm:space-y-4">
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <Heading type="h3" className="text-2xl sm:text-3xl">
           {title}
         </Heading>
@@ -42,7 +42,7 @@ export default async function page({
           </Button>
         </Link>
       </div>
-      <DataTable data={products} columns={columns} />
+      <DataTable data={products} columns={columns} hiddenOnSm={hiddenOnSm} />
     </div>
   );
 }
