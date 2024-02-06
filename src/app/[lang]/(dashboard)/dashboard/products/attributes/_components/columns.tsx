@@ -1,16 +1,17 @@
 "use client";
 
 import { Attribute } from "@prisma/client";
+import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 import { deleteAttribute } from "@/actions/attribute";
+import Icon from "@/components/atoms/Icon";
 import { DataTableColumnHeader } from "@/components/molecules/DataTableColumnHeader";
 import { DataTableRowActions } from "@/components/molecules/DataTableRowActions";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
-import { formatNumber } from "@/lib/utils";
 
 function AttributeAction({ row }: { row: Row<Attribute> }) {
   const router = useRouter();
@@ -85,9 +86,24 @@ export const columns: ColumnDef<Attribute>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Key" />
     ),
-    cell: ({ row }) => <div>{formatNumber(row.getValue("key"))}</div>,
+    cell: ({ row }) => <div>{row.getValue("key")}</div>,
     enableSorting: true,
     enableHiding: true,
+  },
+  {
+    accessorKey: "required",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Required" />
+    ),
+    cell: ({ row }) => (
+      <div>
+        {row.getValue("required") ? (
+          <Icon className="w-6 h-6" render={CheckIcon} />
+        ) : (
+          <Icon className="w-6 h-6" render={Cross2Icon} />
+        )}
+      </div>
+    ),
   },
   {
     id: "actions",
