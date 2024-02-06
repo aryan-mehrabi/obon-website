@@ -1,10 +1,11 @@
+import { Locale } from "@prisma/client";
 import React from "react";
 
 import Heading from "@/components/atoms/Heading";
 import {
   Card, CardContent, CardHeader, CardTitle,
 } from "@/components/ui/card";
-import { getDictionary, Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 
 import { Overview } from "./Overview";
 

@@ -1,6 +1,7 @@
+import { Locale } from "@prisma/client";
 import React from "react";
 
-import { getDictionary, type Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 
 import RegisterForm from "./_components/RegisterForm";
 

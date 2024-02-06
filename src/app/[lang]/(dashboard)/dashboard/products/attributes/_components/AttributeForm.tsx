@@ -27,27 +27,20 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/components/ui/use-toast";
 import en from "@/dictionaries/en.json";
-import { i18n as i18nType } from "@/lib/locale";
-import { filterDirtyFields } from "@/lib/utils";
+import { filterDirtyFields, i18n } from "@/lib/utils";
 import { attributeFormSchema } from "@/lib/validations";
 import { AttributeFormSchema, ErrorResponse, SuccessResponse } from "@/types";
 
 interface PropTypes {
   dict: typeof en;
   formData: AttributeFormSchema;
-  i18n: typeof i18nType;
   onSubmit: (
     values: AttributeFormSchema,
     attributeId: number,
   ) => Promise<SuccessResponse | ErrorResponse>;
 }
 
-export default function AttributeForm({
-  dict,
-  formData,
-  onSubmit,
-  i18n,
-}: PropTypes) {
+export default function AttributeForm({ dict, formData, onSubmit }: PropTypes) {
   const {
     pages: {
       dashboardAttributes: { attributeForm },

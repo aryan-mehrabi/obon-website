@@ -1,10 +1,11 @@
+import { Locale } from "@prisma/client";
 import { notFound } from "next/navigation";
 import React from "react";
 
 import { updateProduct } from "@/actions/product";
 import Modal from "@/components/organs/Modal";
 import { getAttributes, getProduct } from "@/data/product";
-import { getDictionary, Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 import { TImage, TMetadata, TProduct } from "@/types";
 
 import Wizard from "../../_components/Wizard";

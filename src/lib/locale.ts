@@ -1,23 +1,19 @@
 import "server-only";
 
 import { match as matchLocale } from "@formatjs/intl-localematcher";
-import { Locale as PrismaLocale } from "@prisma/client";
+import { Locale } from "@prisma/client";
 import Negotiator from "negotiator";
 import type { NextRequest } from "next/server";
 
-export const i18n = {
-  defaultLocale: PrismaLocale.fa,
-  locales: Object.values(PrismaLocale),
-  rtl: [PrismaLocale.fa],
-} as const;
+import { i18n } from "./utils";
 
-export type Locale = PrismaLocale;
+// prettier-ignore
+const firstPathname = (url: URL): string | undefined => (
+  url.pathname.split("/").filter((el) => el)[0]);
 
-const firstPathname = (url: URL): string | undefined =>
-  url.pathname.split("/").filter((el) => el)[0];
-
-const isInLocales = (x: string | undefined): x is Locale =>
-  i18n.locales.includes(x as Locale);
+// prettier-ignore
+const isInLocales = (x: string | undefined): x is Locale => (
+  i18n.locales.includes(x as Locale));
 
 export function getLocale(request: NextRequest): Locale {
   const referer = request.headers.get("referer");
@@ -29,10 +25,11 @@ export function getLocale(request: NextRequest): Locale {
   }
 
   const negotiatorHeaders: Record<string, string> = {};
-  request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
+  request.headers.forEach((value, key) => {
+    negotiatorHeaders[key] = value;
+  });
 
-  // @ts-ignore locales are readonly
-  const { locales }: string[] = i18n;
+  const { locales } = i18n;
 
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages(
     locales,
@@ -48,5 +45,6 @@ const dictionaries = {
   en: () => import("../dictionaries/en.json").then((module) => module.default),
 };
 
-export const getDictionary = async (locale: Locale) =>
-  dictionaries[locale]?.() ?? dictionaries.fa();
+// prettier-ignore
+export const getDictionary = async (locale: Locale) => (
+  dictionaries[locale]?.() ?? dictionaries.fa());

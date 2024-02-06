@@ -1,5 +1,6 @@
 import "@/styles/tailwind.css";
 
+import { Locale } from "@prisma/client";
 import type { Metadata } from "next";
 import { Inter, Vazirmatn } from "next/font/google";
 import React from "react";
@@ -7,7 +8,8 @@ import React from "react";
 import Navbar from "@/components/organs/Navbar";
 import Provider from "@/components/Provider";
 import { Toaster } from "@/components/ui/toaster";
-import { getDictionary, i18n, type Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
+import { i18n } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 const vazir = Vazirmatn({ subsets: ["arabic"] });

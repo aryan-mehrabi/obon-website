@@ -1,3 +1,4 @@
+import { Locale } from "@prisma/client";
 import { notFound } from "next/navigation";
 import React from "react";
 
@@ -11,9 +12,11 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { getProduct } from "@/data/product";
-import { getDictionary, i18n, Locale } from "@/lib/locale";
-import { formatNumber } from "@/lib/utils";
-import { TAttribute, TImage, TMetadata, TProduct } from "@/types";
+import { getDictionary } from "@/lib/locale";
+import { formatNumber, i18n } from "@/lib/utils";
+import {
+  TAttribute, TImage, TMetadata, TProduct,
+} from "@/types";
 
 import AddToCart from "./AddToCart";
 
@@ -59,17 +62,19 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     return 0;
   });
 
-  const renderSpecificaitons = () =>
-    product.metadata
-      .filter(
-        (metadata) => metadata.attribute.locale === lang && metadata.value,
-      )
-      .map((metadata) => (
-        <li key={metadata.id}>
-          <strong>{metadata.attribute[`title_${lang}`]}:</strong>
-          {metadata.value}
-        </li>
-      ));
+  const renderSpecificaitons = () => product.metadata
+    .filter(
+      (metadata) => metadata.attribute.locale === lang && metadata.value,
+    )
+    .map((metadata) => (
+      <li key={metadata.id}>
+        <strong>
+          {metadata.attribute[`title_${lang}`]}
+          :
+        </strong>
+        {metadata.value}
+      </li>
+    ));
 
   return (
     <main className="mt-28 mb-10 space-y-5 p-3 md:grid md:grid-cols-2 md:gap-x-12 max-w-5xl mx-auto">

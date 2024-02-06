@@ -1,9 +1,10 @@
+import { Locale } from "@prisma/client";
 import React from "react";
 
 import Heading from "@/components/atoms/Heading";
 import Products from "@/components/organs/Products";
 import { getProducts } from "@/data/product";
-import { getDictionary, type Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 import { ProductWithImage } from "@/types";
 
 interface PropTypes {

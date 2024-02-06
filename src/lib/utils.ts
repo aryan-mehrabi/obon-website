@@ -1,7 +1,12 @@
+import { Locale } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { Locale } from "./locale";
+export const i18n = {
+  defaultLocale: Locale.fa,
+  locales: Object.values(Locale),
+  rtl: [Locale.fa],
+} as const;
 
 // eslint-disable-next-line
 export function cn(...inputs: ClassValue[]) {

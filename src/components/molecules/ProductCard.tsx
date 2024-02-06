@@ -1,8 +1,9 @@
+import { Locale } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
 
 import Image from "@/components/atoms/Image";
-import { getDictionary, type Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 import { formatNumber } from "@/lib/utils";
 import { ProductWithImage } from "@/types";
 

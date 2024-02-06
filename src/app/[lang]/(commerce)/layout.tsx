@@ -1,7 +1,7 @@
+import { Locale } from "@prisma/client";
 import React from "react";
 
 import Footer from "@/components/organs/Footer";
-import { Locale } from "@/lib/locale";
 
 export default function DashboardLayout({
   children,

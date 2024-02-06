@@ -3,7 +3,7 @@ import React from "react";
 
 import { createAttribute } from "@/actions/attribute";
 import Modal from "@/components/organs/Modal";
-import { getDictionary, i18n } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 import { AttributeFormSchema } from "@/types";
 
 import AttributeForm from "../_components/AttributeForm";
@@ -26,7 +26,6 @@ export default async function Page({
     <div>
       <Modal title={dict.pages.dashboardAttributes.newAttributeButton}>
         <AttributeForm
-          i18n={i18n}
           dict={dict}
           formData={initValue}
           onSubmit={createAttribute}

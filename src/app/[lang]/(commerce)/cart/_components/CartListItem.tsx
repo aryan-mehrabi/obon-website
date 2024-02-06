@@ -1,10 +1,10 @@
+import { Locale } from "@prisma/client";
 import { useParams } from "next/navigation";
 import React from "react";
 
 import Image from "@/components/atoms/Image";
 import QuantityInput from "@/components/atoms/QuantityInput";
 import useStore from "@/hooks/useStore";
-import { Locale } from "@/lib/locale";
 import { formatNumber } from "@/lib/utils";
 import { usePresistStore } from "@/store";
 import { CartItem, ProductWithImage } from "@/types";

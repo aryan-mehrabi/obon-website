@@ -1,9 +1,10 @@
+import { Locale } from "@prisma/client";
 import React from "react";
 
 import { createProduct } from "@/actions/product";
 import Modal from "@/components/organs/Modal";
 import { getAttributes } from "@/data/product";
-import { getDictionary, Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 
 import Wizard from "../_components/Wizard";
 

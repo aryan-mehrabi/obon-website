@@ -1,8 +1,9 @@
+import { Locale } from "@prisma/client";
 import { headers } from "next/headers";
 import Link from "next/link";
 import React from "react";
 
-import { getDictionary, Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 import { cn } from "@/lib/utils";
 
 export default async function Layout({

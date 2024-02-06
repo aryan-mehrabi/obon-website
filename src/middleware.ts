@@ -1,7 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-import { getLocale, i18n } from "./lib/locale";
+import { getLocale } from "./lib/locale";
+import { i18n } from "./lib/utils";
 
 const guardedRoutes = ["dashboard"];
 

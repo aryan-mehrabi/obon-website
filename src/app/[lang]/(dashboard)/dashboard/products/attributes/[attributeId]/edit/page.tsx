@@ -1,10 +1,11 @@
+import { Locale } from "@prisma/client";
 import { notFound } from "next/navigation";
 import React from "react";
 
 import { updateAttribute } from "@/actions/attribute";
 import Modal from "@/components/organs/Modal";
 import { getAttribute } from "@/data/product";
-import { getDictionary, i18n, Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 
 import AttributeForm from "../../_components/AttributeForm";
 
@@ -24,7 +25,6 @@ export default async function Page({
         <AttributeForm
           dict={dict}
           formData={attribute}
-          i18n={i18n}
           onSubmit={updateAttribute}
         />
       </Modal>

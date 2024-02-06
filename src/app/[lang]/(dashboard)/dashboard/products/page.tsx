@@ -1,3 +1,4 @@
+import { Locale } from "@prisma/client";
 import { PlusIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import React from "react";
@@ -7,7 +8,7 @@ import Icon from "@/components/atoms/Icon";
 import { DataTable } from "@/components/organs/DataTable";
 import { Button } from "@/components/ui/button";
 import { getProducts } from "@/data/product";
-import { getDictionary, Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 import { ProductWithImage } from "@/types";
 
 import { columns } from "./_components/columns";

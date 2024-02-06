@@ -1,8 +1,9 @@
+import { Locale } from "@prisma/client";
 import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 
 import Sidebar from "@/components/organs/Sidebar";
-import { getDictionary, Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 
 interface PropTypes {
   children: React.ReactNode;
