@@ -38,28 +38,33 @@ export const productFirstStepFormSchema = z.object({
 export const productSecondStepFormSchema = z.object({
   is_available: z.boolean(),
   is_visible_to_user: z.boolean(),
-  metadata: z.array(
-    z.object({
-      id: z.number().optional(),
-      value: z.string(),
-      attributeId: z.number(),
-    }),
-  ),
+  metadata: z
+    .record(
+      z.object({
+        id: z.number().optional(),
+        value: z.string(),
+        attributeId: z.number(),
+      }),
+    )
+    .or(z.record(z.never())),
 });
 
 export const productFormSchema = productFirstStepFormSchema.merge(
   productSecondStepFormSchema,
 );
 
-export const attributesFormSchema = (attr: Attribute[]) => z.object({
-  specifications: z.object(
+const metadata = z.object({
+  id: z.number().optional(),
+  attributeId: z.number(),
+  value: z.string(),
+});
+
+export const productMetadataFormSchema = (attr: Attribute[]) => z.object({
+  metadata: z.object(
     attr.reduce(
-      (acc, curr) => ({
+      (acc, { key, required }) => ({
         ...acc,
-        [curr.key]: z.object({
-          attributeId: z.number(),
-          value: curr.required ? z.string().min(1) : z.string(),
-        }),
+        [key]: required ? metadata : metadata.optional(),
       }),
       {},
     ),

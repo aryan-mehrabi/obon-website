@@ -23,7 +23,7 @@ const initVal = {
   images: [],
   is_available: true,
   is_visible_to_user: true,
-  metadata: [],
+  metadata: {},
 };
 
 interface PropTypes {

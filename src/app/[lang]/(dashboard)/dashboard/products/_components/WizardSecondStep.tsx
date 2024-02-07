@@ -20,7 +20,7 @@ import { useToast } from "@/components/ui/use-toast";
 import en from "@/dictionaries/en.json";
 import { filterDirtyFields } from "@/lib/utils";
 import {
-  // attributesFormSchema,
+  productMetadataFormSchema,
   productSecondStepFormSchema,
 } from "@/lib/validations";
 import {
@@ -64,9 +64,9 @@ export default function WizardSecondStep({
   const { toast } = useToast();
   const router = useRouter();
   const pathname = usePathname();
-  // const attributesSchema = attributesFormSchema(attributes);
+  const attributesSchema = productMetadataFormSchema(attributes);
   const form = useForm<ProductSecondStepFormSchema>({
-    resolver: zodResolver(productSecondStepFormSchema),
+    resolver: zodResolver(productSecondStepFormSchema.merge(attributesSchema)),
     defaultValues: {
       is_available: fields.is_available,
       is_visible_to_user: fields.is_visible_to_user,
@@ -126,7 +126,7 @@ export default function WizardSecondStep({
             <FormField
               key={attribute.id}
               control={form.control}
-              name="metadata"
+              name={`metadata.${attribute.key}`}
               render={({ field: { value, onChange, ...field } }) => (
                 <FormItem className="grow">
                   <FormLabel>
@@ -137,33 +137,17 @@ export default function WizardSecondStep({
                   </FormLabel>
                   <FormControl>
                     <Input
-                      onChange={(e) => {
-                        let newMetadata;
-                        if (
-                          value.some(
-                            ({ attributeId }) => attributeId === attribute.id,
-                          )
-                        ) {
-                          newMetadata = value.map((attr) => (attr.attributeId === attribute.id
-                            ? { ...attr, value: e.target.value }
-                            : attr));
-                        } else {
-                          newMetadata = [
-                            ...value,
-                            {
-                              attributeId: attribute.id,
-                              value: e.target.value,
-                            },
-                          ];
-                        }
-                        onChange(newMetadata);
-                      }}
-                      value={
-                        value.find(
-                          ({ attributeId }) => attributeId === attribute.id,
-                        )?.value || ""
-                      }
                       {...field}
+                      value={value?.value || ""}
+                      onChange={(e) => onChange(
+                        e.target.value
+                          ? {
+                            ...value,
+                            attributeId: attribute.id,
+                            value: e.target.value,
+                          }
+                          : undefined,
+                      )}
                     />
                   </FormControl>
                   <FormMessage />

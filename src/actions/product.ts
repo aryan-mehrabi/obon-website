@@ -38,7 +38,7 @@ export const createProduct = serverActionMiddleware(
         ...productData,
         metadata: {
           createMany: {
-            data: metadata,
+            data: Object.values(metadata),
           },
         },
         images: {
@@ -122,10 +122,13 @@ export const updateProduct = serverActionMiddleware(
           }
           : undefined,
         metadata:
-          metadata && metadata.filter((curr) => !doesIncludeId(curr)).length
+          metadata
+          && Object.values(metadata).filter((curr) => !doesIncludeId(curr)).length
             ? {
               createMany: {
-                data: metadata?.filter((curr) => !doesIncludeId(curr)),
+                data: Object.values(metadata)?.filter(
+                  (curr) => !doesIncludeId(curr),
+                ),
               },
             }
             : undefined,
@@ -137,7 +140,7 @@ export const updateProduct = serverActionMiddleware(
     });
 
     // Filter metadata that exists in db
-    const metadataUpdates = metadata?.filter(doesIncludeId);
+    const metadataUpdates = Object.values(metadata || {}).filter(doesIncludeId);
     const promises: Promise<unknown>[] = [productUpdate];
     if (metadataUpdates?.length) {
       promises.push(bulkUpdate("Metadata", metadataUpdates));
