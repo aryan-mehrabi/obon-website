@@ -34,12 +34,12 @@ export function DataTableColumnHeader<TData, TValue>({
 
   const renderSortIcon = () => {
     if (column.getIsSorted() === "desc") {
-      return <ArrowDownIcon className="ml-2 h-4 w-4" />;
+      return <ArrowDownIcon className="ms-2 h-4 w-4" />;
     }
     if (column.getIsSorted() === "asc") {
-      return <ArrowUpIcon className="ml-2 h-4 w-4" />;
+      return <ArrowUpIcon className="ms-2 h-4 w-4" />;
     }
-    return <CaretSortIcon className="ml-2 h-4 w-4" />;
+    return <CaretSortIcon className="ms-2 h-4 w-4" />;
   };
 
   return (
@@ -49,7 +49,7 @@ export function DataTableColumnHeader<TData, TValue>({
           <Button
             variant="ghost"
             size="sm"
-            className="-ml-3 h-8 data-[state=open]:bg-accent"
+            className="-ms-3 h-8 data-[state=open]:bg-accent"
           >
             <span>{title}</span>
             {renderSortIcon()}
