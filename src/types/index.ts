@@ -7,6 +7,7 @@ import {
 } from "@prisma/client";
 import * as z from "zod";
 
+import { getDictionary } from "@/lib/locale";
 import {
   attributeFormSchema,
   productFirstStepFormSchema,
@@ -67,3 +68,5 @@ export type TFormData = {
 };
 
 export type AttributeFormSchema = z.infer<typeof attributeFormSchema>;
+
+export type TDictionary = Awaited<ReturnType<typeof getDictionary>>;
