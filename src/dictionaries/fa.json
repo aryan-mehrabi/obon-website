@@ -59,17 +59,6 @@
     },
     "productDetail": {
       "addCart": "اضافه به سبد خرید",
-      "specifications": {
-        "description": "توضیحات",
-        "dimensions": {
-          "title": "ابعاد",
-          "width": "عرض",
-          "height": "ارتفاع",
-          "length": "طول",
-          "unit": "سانتی متر"
-        },
-        "material": "متریال"
-      },
       "disclaimer": "Candleaf تماما دست ساز با موم سویا طبیعی برای لحظات لذت بخشی شما ساخته شده است."
     },
     "cart": {
@@ -128,19 +117,19 @@
       "table": {
         "cols": {
           "id": "Id",
-          "title": "تایتل",
-          "quantity": "Quantity",
-          "price": "Price",
-          "visibility": "Visibility"
+          "title": "عنوان",
+          "quantity": "تعداد",
+          "price": "قیمت",
+          "visibility": "نمایش دادن"
         },
         "actions": {
-          "delete": "Delete",
-          "edit": "Edit",
+          "delete": "حذف",
+          "edit": "ویرایش",
           "deleteDialog": {
-            "title": "Are you sure you wanna delete this product?",
-            "disclaimer": "This action cannot be undone. This will permanently delete this product and remove your data from our servers.",
-            "cancel": "Cancel",
-            "delete": "Delete"
+            "title": "آیا از حذف کردن محصول مطمینید؟",
+            "disclaimer": "این عملیات غیر قابل بازگشت است. اطلاعات محصول شما به طور کامل پاک میشوند.",
+            "cancel": "انصراف",
+            "delete": "حذف"
           }
         }
       },
@@ -162,15 +151,6 @@
           "placeholder": "تصویر را اینجا رها کنید",
           "cta": "اضافه کردن تصویر"
         },
-        "material": { "title": "جنس", "placeholder": "جنس" },
-        "description": { "title": "توضیحات", "placeholder": "توضیحات" },
-        "width": { "title": "عرض", "placeholder": "عرض", "unit": "سانتی‌متر" },
-        "height": {
-          "title": "ارتفاع",
-          "placeholder": "ارتفاع",
-          "unit": "سانتی‌متر"
-        },
-        "length": { "title": "طول", "placeholder": "طول", "unit": "سانتی‌متر" },
         "available": { "title": "موجود", "placeholder": "موجود" },
         "visible": { "title": "نمایش دادن", "placeholder": "نمایش دادن" }
       },
@@ -207,6 +187,25 @@
         },
         "locale": {
           "title": "زبان"
+        }
+      },
+      "table": {
+        "cols": {
+          "id": "Id",
+          "title": "عنوان",
+          "key": "کلید",
+          "required": "الزامی",
+          "locale": "زبان"
+        },
+        "actions": {
+          "delete": "حذف",
+          "edit": "ویرایش",
+          "deleteDialog": {
+            "title": "آیا از حذف کردن ویژگی مطمینید؟",
+            "disclaimer": "این عملیات غیر قابل بازگشت است. ویژگی و ویژگی محصول‌ها به طور کامل پاک میشوند.",
+            "cancel": "انصراف",
+            "delete": "حذف"
+          }
         }
       }
     },
@@ -312,5 +311,17 @@
   },
   "metadata": {
     "title": "وبسایت اوبون"
+  },
+  "table": {
+    "header": {
+      "ascending": "صعودی",
+      "descending": "نزولی",
+      "hide": "مخفی‌کردن"
+    },
+    "pagination": {
+      "selected": ["از", "ردیف انتخاب شده"],
+      "perPage": "ردیف در صفحه",
+      "currentPage": ["صفحه", "از"]
+    }
   }
 }

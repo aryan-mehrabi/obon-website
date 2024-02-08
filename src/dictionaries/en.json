@@ -59,17 +59,6 @@
     },
     "productDetail": {
       "addCart": "Add to Cart",
-      "specifications": {
-        "description": "Description",
-        "dimensions": {
-          "title": "Dimensions",
-          "width": "width",
-          "height": "height",
-          "length": "length",
-          "unit": "cm"
-        },
-        "material": "Material"
-      },
       "disclaimer": "All hand-made with natural soy wax, Candleaf is made for your pleasuremoments."
     },
     "cart": {
@@ -162,11 +151,6 @@
           "placeholder": "Drop your Image here",
           "cta": "Add Image"
         },
-        "material": { "title": "Material", "placeholder": "Material" },
-        "description": { "title": "Description", "placeholder": "Description" },
-        "width": { "title": "Width", "placeholder": "Width", "unit": "cm" },
-        "height": { "title": "Height", "placeholder": "Height", "unit": "cm" },
-        "length": { "title": "Length", "placeholder": "Length", "unit": "cm" },
         "available": { "title": "Available", "placeholder": "Available" },
         "visible": { "title": "Visible", "placeholder": "Visible" }
       },
@@ -203,6 +187,25 @@
         },
         "locale": {
           "title": "Language"
+        }
+      },
+      "table": {
+        "cols": {
+          "id": "Id",
+          "title": "Title",
+          "key": "Key",
+          "required": "Required",
+          "locale": "Language"
+        },
+        "actions": {
+          "delete": "Delete",
+          "edit": "Edit",
+          "deleteDialog": {
+            "title": "Are you sure you wanna delete this attribute?",
+            "disclaimer": "This action cannot be undone. This will permanently delete this attribute and products metadata",
+            "cancel": "Cancel",
+            "delete": "Delete"
+          }
         }
       }
     },
@@ -308,5 +311,17 @@
   },
   "metadata": {
     "title": "Obon Website"
+  },
+  "table": {
+    "header": {
+      "ascending": "Asc",
+      "descending": "Desc",
+      "hide": "Hide"
+    },
+    "pagination": {
+      "selected": ["of", "row(s) selected"],
+      "perPage": "Rows per page",
+      "currentPage": ["page", "of"]
+    }
   }
 }

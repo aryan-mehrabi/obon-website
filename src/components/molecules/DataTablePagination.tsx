@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import useTranslation from "@/hooks/useTranslation";
 import { i18n } from "@/lib/utils";
 
 import Icon from "../atoms/Icon";
@@ -28,20 +29,23 @@ export function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
   const { lang } = useParams();
+  const {
+    table: { pagination },
+  } = useTranslation();
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between px-2">
       <div className="flex-1 text-sm text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length}
         {" "}
-        of
+        {pagination.selected[0]}
         {" "}
         {table.getFilteredRowModel().rows.length}
         {" "}
-        row(s) selected.
+        {pagination.selected[1]}
       </div>
       <div className="flex items-center gap-2 sm:gap-6 lg:gap-8">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-medium">Rows per page</p>
+          <p className="text-sm font-medium">{pagination.perPage}</p>
           <Select
             dir={i18n.rtl.some((locale) => locale === lang) ? "rtl" : "ltr"}
             value={`${table.getState().pagination.pageSize}`}
@@ -62,11 +66,11 @@ export function DataTablePagination<TData>({
           </Select>
         </div>
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Page
+          {pagination.currentPage[0]}
           {" "}
           {table.getState().pagination.pageIndex + 1}
           {" "}
-          of
+          {pagination.currentPage[1]}
           {" "}
           {table.getPageCount()}
         </div>

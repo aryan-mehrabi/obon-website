@@ -1,48 +1,25 @@
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { Row } from "@tanstack/react-table";
+import { useParams } from "next/navigation";
 import React from "react";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { AlertDialog } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { i18n } from "@/lib/utils";
 
-interface DataTableRowActionsProps<TData> {
-  onDelete: (id: number) => unknown;
-  onEdit: (id: number) => unknown;
-  row: Row<TData>;
-}
-
-export function DataTableRowActions<TData extends { id: number }>({
-  onDelete,
-  onEdit,
-  row,
-}: DataTableRowActionsProps<TData>) {
-  const onClickDelete = () => {
-    onDelete(row.original.id);
-  };
-
-  const onClickEdit = () => {
-    onEdit(row.original.id);
-  };
-
+export function DataTableRowActions({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { lang } = useParams();
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      dir={i18n.rtl.some((locale) => lang === locale) ? "rtl" : "ltr"}
+    >
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
@@ -52,34 +29,7 @@ export function DataTableRowActions<TData extends { id: number }>({
           <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <AlertDialog>
-        <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem onClick={onClickEdit}>Edit</DropdownMenuItem>
-          <AlertDialogTrigger asChild>
-            <DropdownMenuItem className="text-destructive">
-              Delete
-              <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </AlertDialogTrigger>
-        </DropdownMenuContent>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              Are you sure you wanna delete this product?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete this
-              product and remove your data from our servers.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction variant="destructive" onClick={onClickDelete}>
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <AlertDialog>{children}</AlertDialog>
     </DropdownMenu>
   );
 }

@@ -1,17 +1,33 @@
 "use client";
 
+import { Locale } from "@prisma/client";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import React from "react";
 
 import { deleteProduct } from "@/actions/product";
 import Image from "@/components/atoms/Image";
 import { DataTableColumnHeader } from "@/components/molecules/DataTableColumnHeader";
 import { DataTableRowActions } from "@/components/molecules/DataTableRowActions";
+import {
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
+import useTranslation from "@/hooks/useTranslation";
 import { formatNumber } from "@/lib/utils";
 import { ProductWithImage } from "@/types";
 
@@ -19,20 +35,53 @@ import DataTableSwitch from "./DataTableSwitch";
 
 function ProductActions({ row }: { row: Row<ProductWithImage> }) {
   const { toast } = useToast();
-  const router = useRouter();
-  const onEdit = (id: number) => {
-    router.push(`/dashboard/products/${id}/edit`);
-  };
-
-  const onDelete = async (id: number) => {
-    const res = await deleteProduct(id);
+  const dict = useTranslation();
+  const {
+    pages: {
+      dashboardProducts: {
+        table: {
+          actions: { edit, delete: deleteButton, deleteDialog },
+        },
+      },
+    },
+  } = dict;
+  const onDelete = async () => {
+    const res = await deleteProduct(row.original.id);
     if (res.success) {
       toast({ title: "Product deleted Successfully" });
     } else {
       toast({ title: res.message, variant: "destructive" });
     }
   };
-  return <DataTableRowActions row={row} onEdit={onEdit} onDelete={onDelete} />;
+  return (
+    <DataTableRowActions>
+      <DropdownMenuContent align="end" className="w-[160px]">
+        <Link href={`/dashboard/products/${row.original.id}/edit`}>
+          <DropdownMenuItem>{edit}</DropdownMenuItem>
+        </Link>
+        <AlertDialogTrigger asChild>
+          <DropdownMenuItem className="text-destructive">
+            {deleteButton}
+          </DropdownMenuItem>
+        </AlertDialogTrigger>
+      </DropdownMenuContent>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{deleteDialog.title}</AlertDialogTitle>
+          <AlertDialogDescription>
+            {deleteDialog.disclaimer}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{deleteDialog.cancel}</AlertDialogCancel>
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <AlertDialogAction variant="destructive" onClick={onDelete}>
+            {deleteDialog.delete}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </DataTableRowActions>
+  );
 }
 
 export const columns: ColumnDef<ProductWithImage>[] = [
@@ -62,9 +111,15 @@ export const columns: ColumnDef<ProductWithImage>[] = [
   },
   {
     accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Product Id" />
-    ),
+    header: function Header({ column }) {
+      const dict = useTranslation();
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title={dict.pages.dashboardProducts.table.cols.id}
+        />
+      );
+    },
     cell: ({ row }) => {
       const id: number = row.getValue("id");
       return (
@@ -80,11 +135,18 @@ export const columns: ColumnDef<ProductWithImage>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "title_en",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
-    ),
-    cell: ({ row }) => {
+    accessorKey: "title",
+    header: function Header({ column }) {
+      const dict = useTranslation();
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title={dict.pages.dashboardProducts.table.cols.title}
+        />
+      );
+    },
+    cell: function Cell({ row }) {
+      const { lang }: { lang: Locale } = useParams();
       const image = row.original.images.find((img) => img.is_default);
       return (
         <div className="flex gap-2 items-center">
@@ -98,7 +160,7 @@ export const columns: ColumnDef<ProductWithImage>[] = [
             />
           </div>
           <p className="max-w-[500px] truncate font-medium">
-            {row.getValue("title_en")}
+            {row.original[`title_${lang}`]}
           </p>
         </div>
       );
@@ -106,27 +168,45 @@ export const columns: ColumnDef<ProductWithImage>[] = [
   },
   {
     accessorKey: "quantity",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Quantity" />
-    ),
+    header: function Header({ column }) {
+      const dict = useTranslation();
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title={dict.pages.dashboardProducts.table.cols.quantity}
+        />
+      );
+    },
     cell: ({ row }) => <div>{row.getValue("quantity")}</div>,
     enableSorting: true,
     enableHiding: true,
   },
   {
     accessorKey: "price",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Price" />
-    ),
+    header: function Header({ column }) {
+      const dict = useTranslation();
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title={dict.pages.dashboardProducts.table.cols.price}
+        />
+      );
+    },
     cell: ({ row }) => <div>{formatNumber(row.getValue("price"))}</div>,
     enableSorting: true,
     enableHiding: true,
   },
   {
     accessorKey: "is_visible_to_user",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Visibility" />
-    ),
+    header: function Header({ column }) {
+      const dict = useTranslation();
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title={dict.pages.dashboardProducts.table.cols.visibility}
+        />
+      );
+    },
     cell: ({ row }) => <DataTableSwitch row={row} />,
     enableSorting: true,
     enableHiding: true,
