@@ -8,6 +8,7 @@ import { v2 as cloudinary } from "cloudinary";
 import DatauriParser from "datauri/parser";
 import { isNotFoundError } from "next/dist/client/components/not-found";
 import { isRedirectError } from "next/dist/client/components/redirect";
+import { NextRequest } from "next/server";
 import path from "path";
 import * as z from "zod";
 
@@ -108,3 +109,10 @@ export const uploadImages = async (images: File[], buffers: Buffer[]) => Promise
 export const getBuffer = (images: File[]) => Promise.all(
   images.map(async (image) => Buffer.from(await image.arrayBuffer())),
 );
+
+// prettier-ignore
+export const createNextRequest = (header: Headers, body = {}): NextRequest => new Request(header.get("referer")!, {
+  method: "POST",
+  headers: header,
+  body: JSON.stringify(body),
+}) as NextRequest;
