@@ -323,5 +323,29 @@
       "perPage": "Rows per page",
       "currentPage": ["page", "of"]
     }
+  },
+  "actions": {
+    "product": {
+      "create": {
+        "success": "Product created successfully!"
+      },
+      "update": {
+        "success": "Product updated successfully!"
+      },
+      "delete": {
+        "success": "Product deleted successfully!"
+      }
+    },
+    "attribute": {
+      "create": {
+        "success": "Attribute created successfully!"
+      },
+      "update": {
+        "success": "Attribute updated successfully!"
+      },
+      "delete": {
+        "success": "Attribute deleted successfully!"
+      }
+    }
   }
 }

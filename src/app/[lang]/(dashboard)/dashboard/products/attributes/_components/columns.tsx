@@ -44,7 +44,7 @@ function AttributeAction({ row }: { row: Row<Attribute> }) {
   const onDelete = async () => {
     const res = await deleteAttribute(row.original.id);
     if (res.success) {
-      toast({ title: "deleted successfully" });
+      toast({ title: res.message });
     } else {
       toast({ title: res.message, variant: "destructive" });
     }
