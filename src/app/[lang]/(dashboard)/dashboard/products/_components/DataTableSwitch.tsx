@@ -1,5 +1,5 @@
 import { Row } from "@tanstack/react-table";
-import React, { useOptimistic } from "react";
+import React, { useOptimistic, useTransition } from "react";
 
 import { updateProductVisibile } from "@/actions/product";
 import { Switch } from "@/components/ui/switch";
@@ -7,6 +7,7 @@ import { Switch } from "@/components/ui/switch";
 export default function DataTableSwitch<
   TData extends { id: number; is_visible_to_user: boolean },
 >({ row }: { row: Row<TData> }) {
+  const [, startTranstion] = useTransition();
   const [optimisticState, addOptimisticState] = useOptimistic(
     { isVisibile: row.original.is_visible_to_user, sending: false },
     (state, newState: boolean) => ({
@@ -15,13 +16,14 @@ export default function DataTableSwitch<
       sending: true,
     }),
   );
-  const onChangeSwitch = async () => {
-    addOptimisticState(!optimisticState.isVisibile);
-    await updateProductVisibile(row.original.id, !optimisticState.isVisibile);
+  const onChangeSwitch = () => {
+    startTranstion(async () => {
+      addOptimisticState(!optimisticState.isVisibile);
+      await updateProductVisibile(row.original.id, !optimisticState.isVisibile);
+    });
   };
   return (
     <Switch
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       onCheckedChange={onChangeSwitch}
       checked={optimisticState.isVisibile}
     />
