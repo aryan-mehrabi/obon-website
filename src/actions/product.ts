@@ -34,16 +34,12 @@ export const createProduct = serverActionMiddleware(
 
     const buffers = await getBuffer(images);
     const uploadedFiles = await uploadImages(images, buffers);
-
-    const imagesData = data.images.map((image) => {
-      const index = images.findIndex((val) => val.name === image.id);
-      return {
-        url: uploadedFiles[index].url,
-        width: uploadedFiles[index].width,
-        height: uploadedFiles[index].height,
-        is_default: image.is_default,
-      };
-    });
+    const imagesData = data.images.map((image, i) => ({
+      url: uploadedFiles[i].url,
+      width: uploadedFiles[i].width,
+      height: uploadedFiles[i].height,
+      is_default: image.is_default,
+    }));
     const { metadata, ...productData } = data;
     await prisma.product.create({
       data: {
