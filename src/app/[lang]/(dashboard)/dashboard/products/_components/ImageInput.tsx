@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ImageIcon, TrashIcon } from "@radix-ui/react-icons";
 import React, { useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -38,14 +39,16 @@ export default function ImageInput({ dict, form }: PropTypes) {
       ?.is_default;
     const newImages = images.filter((image) => image.id !== id);
     if (isDeletedDefault && newImages[0]) newImages[0].is_default = true;
-    form.setValue("images", newImages);
+    form.setValue("images", newImages, { shouldDirty: true });
   };
 
   const onClickSetDefault = (id: string | number) => {
-    const newImages = images.map((image) => (image.id === id
-      ? { ...image, is_default: true }
-      : { ...image, is_default: false }));
-    form.setValue("images", newImages);
+    const newImages = images.map((image) =>
+      image.id === id
+        ? { ...image, is_default: true }
+        : { ...image, is_default: false },
+    );
+    form.setValue("images", newImages, { shouldDirty: true });
   };
 
   const onChangeFiles = (
@@ -71,11 +74,7 @@ export default function ImageInput({ dict, form }: PropTypes) {
       control={form.control}
       name="images"
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      render={({
-        field: {
-          value, onChange, ref, ...field
-        },
-      }) => (
+      render={({ field: { value, onChange, ref, ...field } }) => (
         <FormItem className="col-span-2 ">
           <FormLabel>{imagesDict.title}</FormLabel>
           <FormControl>
@@ -124,7 +123,9 @@ export default function ImageInput({ dict, form }: PropTypes) {
                     className="hidden"
                     type="file"
                     multiple
-                    onChange={(e) => onChangeFiles(e.target.files!, { value, onChange })}
+                    onChange={(e) =>
+                      onChangeFiles(e.target.files!, { value, onChange })
+                    }
                     accept="image/*"
                     {...field}
                   />

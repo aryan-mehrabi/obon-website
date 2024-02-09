@@ -1,8 +1,9 @@
+import { Locale } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
 
 import Heading from "@/components/atoms/Heading";
-import { getDictionary, type Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 
 import CartCheckout from "./_components/CartCheckout";
 import CartList from "./_components/CartList";

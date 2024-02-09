@@ -1,8 +1,9 @@
+import { Locale } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-import { getDictionary, type Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 
 interface PropTypes extends React.HTMLAttributes<HTMLElement> {
   lang: Locale;

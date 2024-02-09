@@ -58,7 +58,7 @@ export default function Sidebar({ dict }: { dict: typeof en.sidebar }) {
                 currentPath === itemPath ? "text-primary" : ""
               }`}
             />
-            <p className="font-medium leading-none hidden sm:block">
+            <p className="font-medium leading-none hidden md:block">
               {item.dict.title}
             </p>
           </li>

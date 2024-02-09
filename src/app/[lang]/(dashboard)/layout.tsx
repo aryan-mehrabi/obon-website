@@ -1,8 +1,9 @@
+import { Locale } from "@prisma/client";
 import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 
 import Sidebar from "@/components/organs/Sidebar";
-import { getDictionary, Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 
 interface PropTypes {
   children: React.ReactNode;
@@ -34,7 +35,7 @@ export default async function layout({
   return (
     <div className="flex h-[calc(100vh-80px)]">
       <Sidebar dict={sidebar} />
-      <main className="grow px-4 py-5 sm:px-12 sm:py-8 overflow-auto">
+      <main className="grow px-4 py-5 md:px-12 md:py-8 overflow-auto">
         {children}
       </main>
     </div>

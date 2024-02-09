@@ -8,6 +8,7 @@ import { v2 as cloudinary } from "cloudinary";
 import DatauriParser from "datauri/parser";
 import { isNotFoundError } from "next/dist/client/components/not-found";
 import { isRedirectError } from "next/dist/client/components/redirect";
+import { NextRequest } from "next/server";
 import path from "path";
 import * as z from "zod";
 
@@ -30,32 +31,43 @@ export const errorResponse = (message: string): ErrorResponse => ({
   message,
 });
 
-export const successResponse = <T>(data: T | null = null): SuccessResponse => ({
-  success: true,
-  data,
-});
+export const successResponse = <T>(
+  data: T | null = null,
+  message: string = "",
+): SuccessResponse => ({
+    success: true,
+    message,
+    data,
+  });
 
-export const serverActionMiddleware = <T extends (...args: any[]) => any>(fn: T) => async (...args: Parameters<T>): Promise<ErrorResponse | SuccessResponse> => {
-  try {
-    return successResponse(await fn(...args));
-  } catch (error) {
-    if (isRedirectError(error) || isNotFoundError(error)) {
-      throw error;
+export const serverActionMiddleware = <
+    T extends (
+      ...args: any[]
+    ) => Promise<{ data?: unknown; message?: string } | void>,
+  >(
+    fn: T,
+  ) => async (...args: Parameters<T>): Promise<ErrorResponse | SuccessResponse> => {
+    try {
+      const response = await fn(...args);
+      return successResponse(response?.data, response?.message);
+    } catch (error) {
+      if (isRedirectError(error) || isNotFoundError(error)) {
+        throw error;
+      }
+      if (error instanceof z.ZodError) {
+        return errorResponse(
+          error.issues.reduce(
+            (zodError, { message }) => `${zodError}\n ${message}`,
+            "",
+          ),
+        );
+      }
+      if (error instanceof Error) {
+        return errorResponse(error.message);
+      }
+      return errorResponse(en.errors.server);
     }
-    if (error instanceof z.ZodError) {
-      return errorResponse(
-        error.issues.reduce(
-          (zodError, { message }) => `${zodError}\n ${message}`,
-          "",
-        ),
-      );
-    }
-    if (error instanceof Error) {
-      return errorResponse(error.message);
-    }
-    return errorResponse(en.errors.server);
-  }
-};
+  };
 
 export const apiMiddleware = <T extends (...args: any[]) => any>(fn: T) => async (...args: Parameters<T>): Promise<Response> => {
   try {
@@ -97,3 +109,10 @@ export const uploadImages = async (images: File[], buffers: Buffer[]) => Promise
 export const getBuffer = (images: File[]) => Promise.all(
   images.map(async (image) => Buffer.from(await image.arrayBuffer())),
 );
+
+// prettier-ignore
+export const createNextRequest = (header: Headers, body = {}): NextRequest => new Request(header.get("referer")!, {
+  method: "POST",
+  headers: header,
+  body: JSON.stringify(body),
+}) as NextRequest;

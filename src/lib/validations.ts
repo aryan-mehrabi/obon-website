@@ -1,3 +1,4 @@
+import { Attribute, Locale } from "@prisma/client";
 import * as z from "zod";
 
 export const credentialsSchema = z.object({
@@ -35,21 +36,48 @@ export const productFirstStepFormSchema = z.object({
 });
 
 export const productSecondStepFormSchema = z.object({
-  material_en: z.string().min(1),
-  material_fa: z.string().min(1),
-  description_fa: z.string(),
-  description_en: z.string(),
-  dimensions: z
-    .object({
-      width: z.number().nullish(),
-      height: z.number().nullish(),
-      length: z.number().nullish(),
-    })
-    .nullish(),
   is_available: z.boolean(),
   is_visible_to_user: z.boolean(),
+  metadata: z
+    .record(
+      z.object({
+        id: z.number().optional(),
+        value: z.string(),
+        attributeId: z.number(),
+      }),
+    )
+    .or(z.record(z.never())),
 });
 
 export const productFormSchema = productFirstStepFormSchema.merge(
   productSecondStepFormSchema,
 );
+
+const metadata = z.object({
+  id: z.number().optional(),
+  attributeId: z.number(),
+  value: z.string(),
+});
+
+export const productMetadataFormSchema = (attr: Attribute[]) => z.object({
+  metadata: z.object(
+    attr.reduce(
+      (acc, { key, required }) => ({
+        ...acc,
+        [key]: required ? metadata : metadata.optional(),
+      }),
+      {},
+    ),
+  ),
+});
+
+export const attributeFormSchema = z.object({
+  title_fa: z.string().min(1),
+  title_en: z.string().min(1),
+  key: z
+    .string()
+    .min(1)
+    .regex(/^[a-z]+(_|[a-z]+)*$/, { message: "only small english characters" }),
+  required: z.boolean(),
+  locale: z.nativeEnum(Locale),
+});

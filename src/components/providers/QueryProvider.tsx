@@ -8,7 +8,7 @@ interface PropTypes {
   children: React.ReactNode;
 }
 
-export default function Provider({ children }: PropTypes) {
+export default function QueryProvider({ children }: PropTypes) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>

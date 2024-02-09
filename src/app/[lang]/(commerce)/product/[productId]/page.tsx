@@ -1,3 +1,4 @@
+import { Locale } from "@prisma/client";
 import { notFound } from "next/navigation";
 import React from "react";
 
@@ -11,9 +12,11 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { getProduct } from "@/data/product";
-import { getDictionary, i18n, Locale } from "@/lib/locale";
-import { formatNumber } from "@/lib/utils";
-import { Dimension, ProductWithImage } from "@/types";
+import { getDictionary } from "@/lib/locale";
+import { formatNumber, i18n } from "@/lib/utils";
+import {
+  TAttribute, TImage, TMetadata, TProduct,
+} from "@/types";
 
 import AddToCart from "./AddToCart";
 
@@ -33,8 +36,13 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
       },
       include: {
         images: true,
+        metadata: {
+          include: {
+            attribute: true,
+          },
+        },
       },
-    }) as unknown as ProductWithImage,
+    }) as unknown as TProduct<TImage & TMetadata<TAttribute>>,
   ]);
 
   if (!product || !product.is_visible_to_user) {
@@ -43,7 +51,7 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
 
   const {
     pages: {
-      productDetail: { disclaimer, specifications },
+      productDetail: { disclaimer },
     },
     price: { currency },
   } = dict;
@@ -54,32 +62,25 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
     return 0;
   });
 
-  const renderDimensions = () => {
-    const {
-      width: dimWidth,
-      length: dimlength,
-      height: dimHeight,
-    } = (product.dimensions || {}) as Dimension;
-
-    if (!dimWidth && !dimlength && !dimHeight) return null;
-
-    const {
-      width, height, length, title, unit,
-    } = specifications.dimensions;
-
+  const renderAttributes = () => {
+    const productMetdata = product.metadata.filter(
+      (metadata) => metadata.attribute.locale === lang && metadata.value,
+    );
+    if (!productMetdata.length) return null;
     return (
-      <p>
-        <strong>
-          {title}
-          (
-          {unit}
-          ):
-          {" "}
-        </strong>
-        {dimWidth && `${width}: ${dimWidth} `}
-        {dimlength && `${height}: ${dimlength} `}
-        {dimHeight && `${length}: ${dimHeight}`}
-      </p>
+      <div className="border border-neutral-200 p-5 rounded-sm ">
+        <ul className="space-y-2">
+          {productMetdata.map((metadata) => (
+            <li key={metadata.id}>
+              <strong>
+                {metadata.attribute[`title_${lang}`]}
+                :
+              </strong>
+              {metadata.value}
+            </li>
+          ))}
+        </ul>
+      </div>
     );
   };
 
@@ -114,35 +115,7 @@ export default async function Page({ params: { lang, productId } }: PropTypes) {
           </p>
         </div>
         <AddToCart dict={dict} availableQuantity={product.quantity} />
-        <div className="border border-neutral-200 p-5 rounded-sm ">
-          <ul className="space-y-2">
-            <li>
-              {product[`description_${lang}`] && (
-                <>
-                  <strong>
-                    {specifications.description}
-                    :
-                    {" "}
-                  </strong>
-                  {product[`description_${lang}`]}
-                </>
-              )}
-            </li>
-            <li>{renderDimensions()}</li>
-            <li>
-              {product[`material_${lang}`] && (
-                <>
-                  <strong>
-                    {specifications.material}
-                    :
-                    {" "}
-                  </strong>
-                  {product[`material_${lang}`]}
-                </>
-              )}
-            </li>
-          </ul>
-        </div>
+        {renderAttributes()}
       </div>
       <div className="text-center">
         <Heading type="h4">{disclaimer}</Heading>

@@ -1,3 +1,4 @@
+import { Locale } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
 
@@ -9,7 +10,7 @@ import List from "@/components/atoms/List";
 import Header from "@/components/organs/Header";
 import Products from "@/components/organs/Products";
 import { getProducts } from "@/data/product";
-import { getDictionary, type Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 import { ProductWithImage } from "@/types";
 
 export default async function Home({

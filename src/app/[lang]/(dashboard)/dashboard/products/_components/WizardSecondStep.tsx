@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
+import { Attribute, Locale } from "@prisma/client";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 
@@ -15,31 +16,36 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import en from "@/dictionaries/en.json";
-import { productSecondStepFormSchema } from "@/lib/validations";
+import { filterDirtyFields } from "@/lib/utils";
+import {
+  productMetadataFormSchema,
+  productSecondStepFormSchema,
+} from "@/lib/validations";
 import {
   ErrorResponse,
   FormSteps,
-  ProductFormSchema,
   ProductSecondStepFormSchema,
   SuccessResponse,
+  TFormData,
 } from "@/types";
 
 interface PropTypes {
+  attributes: Attribute[];
   dict: typeof en;
-  formData: ProductFormSchema;
+  formData: TFormData;
   onSubmit: (
     values: FormData,
     id?: number,
   ) => Promise<SuccessResponse | ErrorResponse>;
-  setFormData: React.Dispatch<React.SetStateAction<ProductFormSchema>>;
+  setFormData: React.Dispatch<React.SetStateAction<TFormData>>;
   setStep: React.Dispatch<React.SetStateAction<FormSteps>>;
 }
 
 export default function WizardSecondStep({
-  formData,
+  attributes,
+  formData: { fields, dirtyFields },
   setFormData,
   setStep,
   dict,
@@ -49,49 +55,61 @@ export default function WizardSecondStep({
     pages: {
       dashboardProducts: {
         newProductModal: { buttons },
-        productForm: {
-          available,
-          visible,
-          material,
-          width,
-          length,
-          height,
-          description,
-        },
+        productForm: { available, visible },
       },
     },
   } = dict;
+  const { lang }: { lang: Locale } = useParams();
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const router = useRouter();
   const pathname = usePathname();
+  const attributesSchema = productMetadataFormSchema(attributes);
   const form = useForm<ProductSecondStepFormSchema>({
-    resolver: zodResolver(productSecondStepFormSchema),
+    resolver: zodResolver(productSecondStepFormSchema.merge(attributesSchema)),
     defaultValues: {
-      material_en: formData.material_en,
-      material_fa: formData.material_fa,
-      description_en: formData.description_en,
-      description_fa: formData.description_fa,
-      dimensions: formData.dimensions,
-      is_available: formData.is_available,
-      is_visible_to_user: formData.is_visible_to_user,
+      is_available: fields.is_available,
+      is_visible_to_user: fields.is_visible_to_user,
+      metadata: fields.metadata,
     },
   });
 
   const onSubmitForm = (values: ProductSecondStepFormSchema) => {
-    const id = +pathname.split("/").filter((path) => path)[3];
-    setFormData((state) => ({ ...state, ...values }));
     const data = new FormData();
-    formData.images.forEach(({ file }) => {
+    const productId = +pathname.split("/").filter((path) => path)[3];
+    const isEditingSubmit = !Number.isNaN(productId);
+    const allFields = { ...fields, ...values };
+    const allDirtyFields: TFormData["dirtyFields"] = [
+      ...dirtyFields,
+      ...(Object.keys(form.formState.dirtyFields) as TFormData["dirtyFields"]),
+    ];
+
+    setFormData({
+      fields: allFields,
+      dirtyFields: allDirtyFields,
+    });
+
+    fields.images.forEach(({ file }) => {
       if (file) {
         data.append("files", file, file.name);
       }
     });
-    data.append("data", JSON.stringify({ ...formData, ...values }));
+    data.append(
+      "data",
+      JSON.stringify(
+        isEditingSubmit
+          ? filterDirtyFields(allFields, allDirtyFields)
+          : allFields,
+      ),
+    );
+
     startTransition(async () => {
-      const res = await onSubmit(data, Number.isNaN(id) ? undefined : id);
+      const res = await onSubmit(
+        data,
+        Number.isNaN(productId) ? undefined : productId,
+      );
       if (res.success) {
-        toast({ title: "Product Created Successfully" });
+        toast({ title: res.message });
         router.push("/dashboard/products");
       } else {
         toast({ title: res.message, variant: "destructive" });
@@ -104,151 +122,39 @@ export default function WizardSecondStep({
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={form.handleSubmit(onSubmitForm)} className="space-y-8">
         <div className="grid grid-cols-2 gap-x-2 gap-y-6">
-          <FormField
-            control={form.control}
-            name="material_en"
-            render={({ field }) => (
-              <FormItem className="grow">
-                <FormLabel>
-                  {material.title}
-                  {" "}
-                  (EN)
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder={material.placeholder} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="material_fa"
-            render={({ field }) => (
-              <FormItem className="grow">
-                <FormLabel>
-                  {material.title}
-                  {" "}
-                  (FA)
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder={material.placeholder} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description_en"
-            render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>
-                  {description.title}
-                  {" "}
-                  (EN)
-                </FormLabel>
-                <FormControl>
-                  <Textarea placeholder={description.placeholder} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description_fa"
-            render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>
-                  {description.title}
-                  {" "}
-                  (FA)
-                </FormLabel>
-                <FormControl>
-                  <Textarea placeholder={description.placeholder} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="col-span-2 grid grid-cols-3 gap-2">
+          {attributes.map((attribute) => (
             <FormField
+              key={attribute.id}
               control={form.control}
-              name="dimensions.width"
-              render={() => (
-                <FormItem>
+              name={`metadata.${attribute.key}`}
+              render={({ field: { value, onChange, ...field } }) => (
+                <FormItem className="grow">
                   <FormLabel>
-                    {width.title}
-                    {" "}
+                    {attribute[`title_${lang}`]}
                     (
-                    {width.unit}
+                    {attribute.locale}
                     )
                   </FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
-                      placeholder={width.placeholder}
-                      {...form.register("dimensions.width", {
-                        valueAsNumber: true,
-                      })}
+                      {...field}
+                      value={value?.value || ""}
+                      onChange={(e) => onChange(
+                        e.target.value
+                          ? {
+                            ...value,
+                            attributeId: attribute.id,
+                            value: e.target.value,
+                          }
+                          : undefined,
+                      )}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="dimensions.height"
-              render={() => (
-                <FormItem>
-                  <FormLabel>
-                    {height.title}
-                    {" "}
-                    (
-                    {height.unit}
-                    )
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder={height.placeholder}
-                      {...form.register("dimensions.height", {
-                        valueAsNumber: true,
-                      })}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="dimensions.length"
-              render={() => (
-                <FormItem>
-                  <FormLabel>
-                    {length.title}
-                    {" "}
-                    (
-                    {length.unit}
-                    )
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder={length.placeholder}
-                      {...form.register("dimensions.length", {
-                        valueAsNumber: true,
-                      })}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          ))}
           <FormField
             control={form.control}
             name="is_available"

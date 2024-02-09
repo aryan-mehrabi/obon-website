@@ -1,5 +1,6 @@
 "use client";
 
+import { Attribute } from "@prisma/client";
 import React, { useState } from "react";
 
 import en from "@/dictionaries/en.json";
@@ -8,6 +9,7 @@ import {
   FormSteps,
   ProductFormSchema,
   SuccessResponse,
+  TFormData,
 } from "@/types";
 
 import WizardFirstStep from "./WizardFirstStep";
@@ -19,28 +21,31 @@ const initVal = {
   price: 0,
   quantity: 1,
   images: [],
-  material_en: "",
-  material_fa: "",
-  description_en: "",
-  description_fa: "",
-  dimensions: null,
   is_available: true,
   is_visible_to_user: true,
+  metadata: {},
 };
 
-export default function Wizard({
-  dict,
-  defaultValues = initVal,
-  onSubmit,
-}: {
+interface PropTypes {
+  attributes: Attribute[];
   defaultValues?: ProductFormSchema;
   dict: typeof en;
   onSubmit: (
     values: FormData,
     id?: number,
   ) => Promise<SuccessResponse | ErrorResponse>;
-}) {
-  const [formData, setFormData] = useState(defaultValues);
+}
+
+export default function Wizard({
+  dict,
+  defaultValues = initVal,
+  onSubmit,
+  attributes,
+}: PropTypes) {
+  const [formData, setFormData] = useState<TFormData>({
+    dirtyFields: [],
+    fields: defaultValues,
+  });
   const [step, setStep] = useState(FormSteps.first);
 
   return step === FormSteps.first ? (
@@ -60,6 +65,7 @@ export default function Wizard({
         setStep,
         dict,
         onSubmit,
+        attributes,
       }}
     />
   );

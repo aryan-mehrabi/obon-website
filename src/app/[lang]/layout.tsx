@@ -1,13 +1,15 @@
 import "@/styles/tailwind.css";
 
+import { Locale } from "@prisma/client";
 import type { Metadata } from "next";
 import { Inter, Vazirmatn } from "next/font/google";
 import React from "react";
 
 import Navbar from "@/components/organs/Navbar";
-import Provider from "@/components/Provider";
+import QueryProvider from "@/components/providers/QueryProvider";
 import { Toaster } from "@/components/ui/toaster";
-import { getDictionary, i18n, type Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
+import { i18n } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 const vazir = Vazirmatn({ subsets: ["arabic"] });
@@ -40,14 +42,14 @@ export default async function RootLayout({
     <html lang={lang} dir={i18n.rtl.some((ln) => ln === lang) ? "rtl" : "ltr"}>
       <body
         className={`${
-          lang === "fa" ? vazir.className : inter.className
+          lang === Locale.fa ? vazir.className : inter.className
         } min-h-screen flex flex-col pt-20`}
       >
-        <Provider>
+        <QueryProvider>
           <Toaster />
           <Navbar navMenu={navMenu} />
           {children}
-        </Provider>
+        </QueryProvider>
       </body>
     </html>
   );

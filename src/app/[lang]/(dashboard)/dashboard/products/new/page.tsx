@@ -1,8 +1,10 @@
+import { Locale } from "@prisma/client";
 import React from "react";
 
 import { createProduct } from "@/actions/product";
 import Modal from "@/components/organs/Modal";
-import { getDictionary, Locale } from "@/lib/locale";
+import { getAttributes } from "@/data/product";
+import { getDictionary } from "@/lib/locale";
 
 import Wizard from "../_components/Wizard";
 
@@ -13,10 +15,13 @@ interface PropTypes {
 }
 
 export default async function Page({ params: { lang } }: PropTypes) {
-  const dict = await getDictionary(lang);
+  const [attributes, dict] = await Promise.all([
+    getAttributes(),
+    getDictionary(lang),
+  ]);
   return (
     <Modal title={dict.pages.dashboardProducts.newProductModal.title}>
-      <Wizard dict={dict} onSubmit={createProduct} />
+      <Wizard dict={dict} onSubmit={createProduct} attributes={attributes} />
     </Modal>
   );
 }

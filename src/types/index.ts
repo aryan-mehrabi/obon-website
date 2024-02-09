@@ -1,7 +1,15 @@
-import { Image, Product, User as schemaUser } from "@prisma/client";
+import {
+  Attribute as AttributePrisma,
+  Image as ImagePrisma,
+  Metadata as MetadataPrisma,
+  Product as ProductPrisma,
+  User as schemaUser,
+} from "@prisma/client";
 import * as z from "zod";
 
+import { getDictionary } from "@/lib/locale";
 import {
+  attributeFormSchema,
   productFirstStepFormSchema,
   productFormSchema,
   productSecondStepFormSchema,
@@ -18,13 +26,17 @@ export interface Cart {
   [key: string]: CartItem;
 }
 
-export type ProductWithImage = Product & { images: Image[] };
+export type TProduct<T = Record<string, never>> = ProductPrisma & T;
 
-export interface Dimension {
-  height?: number;
-  length?: number;
-  width?: number;
-}
+export type TImage = { images: ImagePrisma[] };
+
+export type ProductWithImage = ProductPrisma & TImage;
+
+export type TMetadata<T = Record<string, never>> = {
+  metadata: (MetadataPrisma & T)[];
+};
+
+export type TAttribute = { attribute: AttributePrisma };
 
 export interface ErrorResponse {
   message: string;
@@ -33,6 +45,7 @@ export interface ErrorResponse {
 
 export interface SuccessResponse {
   data?: unknown;
+  message?: string;
   success: true;
 }
 
@@ -48,3 +61,12 @@ export type ProductSecondStepFormSchema = z.infer<
   typeof productSecondStepFormSchema
 >;
 export type ProductFormSchema = z.infer<typeof productFormSchema>;
+
+export type TFormData = {
+  dirtyFields: (keyof ProductFormSchema)[];
+  fields: ProductFormSchema;
+};
+
+export type AttributeFormSchema = z.infer<typeof attributeFormSchema>;
+
+export type TDictionary = Awaited<ReturnType<typeof getDictionary>>;

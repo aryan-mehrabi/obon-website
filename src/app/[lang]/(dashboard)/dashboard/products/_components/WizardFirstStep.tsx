@@ -16,24 +16,20 @@ import { Input } from "@/components/ui/input";
 import en from "@/dictionaries/en.json";
 import { convertToNumber, formatNumber } from "@/lib/utils";
 import { productFirstStepFormSchema } from "@/lib/validations";
-import {
-  type FormSteps,
-  ProductFirstStepFormSchema,
-  ProductFormSchema,
-} from "@/types";
+import { type FormSteps, ProductFirstStepFormSchema, TFormData } from "@/types";
 
 import ImageInput from "./ImageInput";
 
 interface PropTypes {
   dict: typeof en;
-  formData: ProductFormSchema;
-  setFormData: React.Dispatch<React.SetStateAction<ProductFormSchema>>;
+  formData: TFormData;
+  setFormData: React.Dispatch<React.SetStateAction<TFormData>>;
   setStep: React.Dispatch<React.SetStateAction<FormSteps>>;
 }
 
 export default function WizardFirstStep({
   setFormData,
-  formData,
+  formData: { fields },
   setStep,
   dict,
 }: PropTypes) {
@@ -46,21 +42,31 @@ export default function WizardFirstStep({
       },
     },
   } = dict;
+
   const form = useForm<ProductFirstStepFormSchema>({
     resolver: zodResolver(productFirstStepFormSchema),
     defaultValues: {
-      title_en: formData.title_en,
-      title_fa: formData.title_fa,
-      price: formData.price,
-      quantity: formData.quantity,
-      images: formData.images,
+      title_en: fields.title_en,
+      title_fa: fields.title_fa,
+      price: fields.price,
+      quantity: fields.quantity,
+      images: fields.images,
     },
   });
 
   const onSubmit = (values: ProductFirstStepFormSchema) => {
-    setFormData((state) => ({ ...state, ...values }));
+    setFormData((state) => ({
+      dirtyFields: [
+        ...state.dirtyFields,
+        ...(Object.keys(
+          form.formState.dirtyFields,
+        ) as TFormData["dirtyFields"]),
+      ],
+      fields: { ...state.fields, ...values },
+    }));
     setStep((step) => step + 1);
   };
+
   return (
     <Form {...form}>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}

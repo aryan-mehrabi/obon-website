@@ -1,8 +1,9 @@
-import React from "react";
+import { Locale } from "@prisma/client";
+import React, { Suspense } from "react";
 
-import { getDictionary, type Locale } from "@/lib/locale";
+import { getDictionary } from "@/lib/locale";
 
-import LoginForm from "./LoginForm";
+import LoginForm from "./_components/LoginForm";
 
 interface PropTypes {
   params: {
@@ -14,7 +15,9 @@ export default async function LoginPage({ params: { lang } }: PropTypes) {
   const dict = await getDictionary(lang);
   return (
     <div className="flex justify-center items-center pt-10">
-      <LoginForm dict={dict} />
+      <Suspense>
+        <LoginForm dict={dict} />
+      </Suspense>
     </div>
   );
 }
