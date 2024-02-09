@@ -2,8 +2,15 @@
 
 import { UploadApiResponse } from "cloudinary";
 import { revalidateTag } from "next/cache";
+import { headers } from "next/headers";
 
-import { getBuffer, serverActionMiddleware, uploadImages } from "@/lib/helpers";
+import {
+  createNextRequest,
+  getBuffer,
+  serverActionMiddleware,
+  uploadImages,
+} from "@/lib/helpers";
+import { getDictionary, getLocale } from "@/lib/locale";
 import prisma, { bulkUpdate } from "@/prisma/client";
 import { ProductFormSchema } from "@/types";
 
@@ -15,6 +22,11 @@ const filterNumbers = (imageId: number | string): imageId is number => typeof im
 
 export const createProduct = serverActionMiddleware(
   async (formData: FormData) => {
+    const locale = getLocale(createNextRequest(headers()));
+    const {
+      actions: { product },
+    } = await getDictionary(locale);
+
     const images = formData.getAll("files") as File[];
     const data = JSON.parse(
       formData.get("data") as string,
@@ -47,12 +59,18 @@ export const createProduct = serverActionMiddleware(
       },
     });
     revalidateTag("products");
+    return { message: product.create.success };
   },
 );
 
 export const updateProduct = serverActionMiddleware(
   async (formData: FormData, id?: number) => {
     if (!id) throw new Error("no id provided");
+
+    const locale = getLocale(createNextRequest(headers()));
+    const {
+      actions: { product },
+    } = await getDictionary(locale);
 
     // Parse form data
     const data = JSON.parse(
@@ -147,6 +165,7 @@ export const updateProduct = serverActionMiddleware(
     }
     await Promise.all(promises);
     revalidateTag("products");
+    return { message: product.update.success };
   },
 );
 
@@ -166,11 +185,17 @@ export const updateProductVisibile = serverActionMiddleware(
 
 export const deleteProduct = serverActionMiddleware(
   async (productId: number) => {
+    const locale = getLocale(createNextRequest(headers()));
+    const {
+      actions: { product },
+    } = await getDictionary(locale);
+
     await prisma.product.delete({
       where: {
         id: productId,
       },
     });
     revalidateTag("products");
+    return { message: product.delete.success };
   },
 );

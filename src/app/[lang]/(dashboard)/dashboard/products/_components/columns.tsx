@@ -48,7 +48,7 @@ function ProductActions({ row }: { row: Row<ProductWithImage> }) {
   const onDelete = async () => {
     const res = await deleteProduct(row.original.id);
     if (res.success) {
-      toast({ title: "Product deleted Successfully" });
+      toast({ title: res.message });
     } else {
       toast({ title: res.message, variant: "destructive" });
     }

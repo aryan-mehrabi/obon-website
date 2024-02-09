@@ -109,7 +109,7 @@ export default function WizardSecondStep({
         Number.isNaN(productId) ? undefined : productId,
       );
       if (res.success) {
-        toast({ title: "Product Created Successfully" });
+        toast({ title: res.message });
         router.push("/dashboard/products");
       } else {
         toast({ title: res.message, variant: "destructive" });
