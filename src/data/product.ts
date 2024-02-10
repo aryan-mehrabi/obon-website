@@ -34,3 +34,19 @@ export const getAttribute = unstableCache(
     tags: ["attributes"],
   },
 );
+
+export const getCategories = unstableCache(
+  async (opt: Prisma.CategoryFindManyArgs = {}) => prisma.category.findMany(opt),
+  ["categories"],
+  {
+    tags: ["categories"],
+  },
+);
+
+export const getCategory = unstableCache(
+  async (opt: Prisma.CategoryFindUniqueArgs) => prisma.category.findUnique(opt),
+  ["category"],
+  {
+    tags: ["categories"],
+  },
+);

@@ -164,6 +164,11 @@
           "title": "ویژگی‌ها",
           "href": "/dashboard/products/attributes",
           "path": "attributes"
+        },
+        {
+          "title": "دسته‌بندی",
+          "href": "/dashboard/products/categories",
+          "path": "categories"
         }
       ]
     },
@@ -211,6 +216,37 @@
     },
     "dashboardAttributesEdit": {
       "title": "ویرایش ویژگی",
+      "submit": "ثبت",
+      "dismiss": "انصراف"
+    },
+    "dashboardCategories": {
+      "title": "دسته‌بندی",
+      "newCategoryButton": "دسته‌بندی جدید",
+      "categoryForm": {
+        "title": {
+          "title": "عنوان",
+          "placeholder": "عنوان دسته‌بندی را وارد کنید."
+        }
+      },
+      "table": {
+        "cols": {
+          "id": "Id",
+          "title": "عنوان"
+        },
+        "actions": {
+          "delete": "حذف",
+          "edit": "ویرایش",
+          "deleteDialog": {
+            "title": "آیا از حذف کردن دسته‌بندی مطمینید؟",
+            "disclaimer": "این عملیات غیر قابل بازگشت است. دسته‌بندی به طور کامل پاک میشوند.",
+            "cancel": "انصراف",
+            "delete": "حذف"
+          }
+        }
+      }
+    },
+    "dashboardCategoriesEdit": {
+      "title": "ویرایش دسته‌بندی",
       "submit": "ثبت",
       "dismiss": "انصراف"
     }
@@ -345,6 +381,17 @@
       },
       "delete": {
         "success": "ویژگی با موفقیت حذف شد!"
+      }
+    },
+    "category": {
+      "create": {
+        "success": "دسته‌بندی با موفقیت ایجاد شد!"
+      },
+      "update": {
+        "success": "دسته‌بندی با موفقیت اصلاح شد!"
+      },
+      "delete": {
+        "success": "دسته‌بندی با موفقیت حذف شد!"
       }
     }
   }

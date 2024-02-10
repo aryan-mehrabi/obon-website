@@ -164,6 +164,11 @@
           "title": "Attributes",
           "href": "/dashboard/products/attributes",
           "path": "attributes"
+        },
+        {
+          "title": "Categories",
+          "href": "/dashboard/products/categories",
+          "path": "categories"
         }
       ]
     },
@@ -211,6 +216,37 @@
     },
     "dashboardAttributesEdit": {
       "title": "Edit Attribute",
+      "submit": "Submit",
+      "dismiss": "Cancel"
+    },
+    "dashboardCategories": {
+      "title": "Categories",
+      "newCategoryButton": "New Category",
+      "categoryForm": {
+        "title": {
+          "title": "Title",
+          "placeholder": "Enter Category Title"
+        }
+      },
+      "table": {
+        "cols": {
+          "id": "Id",
+          "title": "Title"
+        },
+        "actions": {
+          "delete": "Delete",
+          "edit": "Edit",
+          "deleteDialog": {
+            "title": "Are you sure you wanna delete this Category?",
+            "disclaimer": "This action cannot be undone. This will permanently delete this category!",
+            "cancel": "Cancel",
+            "delete": "Delete"
+          }
+        }
+      }
+    },
+    "dashboardCategoriesEdit": {
+      "title": "Edit Category",
       "submit": "Submit",
       "dismiss": "Cancel"
     }
@@ -345,6 +381,17 @@
       },
       "delete": {
         "success": "Attribute deleted successfully!"
+      }
+    },
+    "category": {
+      "create": {
+        "success": "Category created successfully!"
+      },
+      "update": {
+        "success": "Category updated successfully!"
+      },
+      "delete": {
+        "success": "Category deleted successfully!"
       }
     }
   }

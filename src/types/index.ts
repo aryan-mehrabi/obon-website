@@ -10,6 +10,7 @@ import * as z from "zod";
 import { getDictionary } from "@/lib/locale";
 import {
   attributeFormSchema,
+  categoryFormSchema,
   productFirstStepFormSchema,
   productFormSchema,
   productSecondStepFormSchema,
@@ -68,5 +69,7 @@ export type TFormData = {
 };
 
 export type AttributeFormSchema = z.infer<typeof attributeFormSchema>;
+
+export type CategoryFormSchema = z.infer<typeof categoryFormSchema>;
 
 export type TDictionary = Awaited<ReturnType<typeof getDictionary>>;

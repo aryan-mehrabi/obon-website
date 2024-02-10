@@ -81,3 +81,8 @@ export const attributeFormSchema = z.object({
   required: z.boolean(),
   locale: z.nativeEnum(Locale),
 });
+
+export const categoryFormSchema = z.object({
+  title_fa: z.string().min(1),
+  title_en: z.string().min(1),
+});
