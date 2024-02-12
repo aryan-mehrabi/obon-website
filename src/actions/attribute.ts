@@ -34,7 +34,7 @@ export const updateAttribute = serverActionMiddleware(
       },
       data: values,
     });
-    revalidateTag("attributes");
+    revalidateTag("products_attributes");
     return { message: attribute.update.success };
   },
 );
@@ -50,7 +50,7 @@ export const deleteAttribute = serverActionMiddleware(
         id: attributeId,
       },
     });
-    revalidateTag("attributes");
+    revalidateTag("products_attributes");
     return { message: attribute.delete.success };
   },
 );

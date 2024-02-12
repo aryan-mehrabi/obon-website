@@ -34,7 +34,7 @@ export const updateCategory = serverActionMiddleware(
       },
       data: values,
     });
-    revalidateTag("categories");
+    revalidateTag("products_categories");
     return { message: update.success };
   },
 );
@@ -49,7 +49,7 @@ export const deleteCategory = serverActionMiddleware(
         id: categoryId,
       },
     });
-    revalidateTag("categories");
+    revalidateTag("products_categories");
     return { message: category.delete.success };
   },
 );
