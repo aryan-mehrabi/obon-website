@@ -4,10 +4,10 @@ import React from "react";
 
 import { updateProduct } from "@/actions/product";
 import Modal from "@/components/organs/Modal";
-import { getAttributes, getProduct } from "@/data/product";
+import { getAttributes, getCategories, getProduct } from "@/data/product";
 import { getDictionary } from "@/lib/locale";
 import {
-  TAttribute, TImage, TMetadata, TProduct,
+  TAttribute, TCategory, TImage, TMetadata, TProduct,
 } from "@/types";
 
 import Wizard from "../../_components/Wizard";
@@ -20,7 +20,7 @@ interface PropTypes {
 }
 
 export default async function Page({ params: { productId, lang } }: PropTypes) {
-  const [product, attributes] = await Promise.all([
+  const [product, attributes, categories] = await Promise.all([
     getProduct({
       where: {
         id: +productId,
@@ -32,9 +32,11 @@ export default async function Page({ params: { productId, lang } }: PropTypes) {
             attribute: true,
           },
         },
+        categories: true,
       },
-    }) as unknown as TProduct<TImage & TMetadata<TAttribute>>,
+    }) as unknown as TProduct<TImage & TMetadata<TAttribute> & TCategory>,
     getAttributes(),
+    getCategories(),
   ]);
 
   if (!product) notFound();
@@ -53,6 +55,7 @@ export default async function Page({ params: { productId, lang } }: PropTypes) {
         dict={dict}
         defaultValues={modifiedProduct}
         onSubmit={updateProduct}
+        categories={categories}
       />
     </Modal>
   );

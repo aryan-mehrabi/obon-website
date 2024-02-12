@@ -47,6 +47,13 @@ export const productSecondStepFormSchema = z.object({
       }),
     )
     .or(z.record(z.never())),
+  categories: z.array(
+    z.object({
+      id: z.number(),
+      title_en: z.string(),
+      title_fa: z.string(),
+    }),
+  ),
 });
 
 export const productFormSchema = productFirstStepFormSchema.merge(

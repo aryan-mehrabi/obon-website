@@ -151,8 +151,14 @@
           "placeholder": "Drop your Image here",
           "cta": "Add Image"
         },
-        "available": { "title": "Available", "placeholder": "Available" },
-        "visible": { "title": "Visible", "placeholder": "Visible" }
+        "available": { "title": "Available" },
+        "visible": { "title": "Visible" },
+        "categories": {
+          "title": "Categories",
+          "placeholder": "Select Categories..",
+          "search": "Search Categories..",
+          "notFound": "No Category Found."
+        }
       },
       "productRoutes": [
         {

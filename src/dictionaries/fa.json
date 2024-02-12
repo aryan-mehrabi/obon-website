@@ -151,8 +151,14 @@
           "placeholder": "تصویر را اینجا رها کنید",
           "cta": "اضافه کردن تصویر"
         },
-        "available": { "title": "موجود", "placeholder": "موجود" },
-        "visible": { "title": "نمایش دادن", "placeholder": "نمایش دادن" }
+        "available": { "title": "موجود" },
+        "visible": { "title": "نمایش دادن" },
+        "categories": {
+          "title": "دسته‌بندی",
+          "placeholder": "انتخاب دسته‌بندی..",
+          "search": "جستجو دسته‌بندی..",
+          "notFound": "دسته‌بندی پیدا نشد."
+        }
       },
       "productRoutes": [
         {

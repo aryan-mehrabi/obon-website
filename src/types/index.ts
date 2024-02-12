@@ -1,5 +1,6 @@
 import {
   Attribute as AttributePrisma,
+  Category,
   Image as ImagePrisma,
   Metadata as MetadataPrisma,
   Product as ProductPrisma,
@@ -38,6 +39,8 @@ export type TMetadata<T = Record<string, never>> = {
 };
 
 export type TAttribute = { attribute: AttributePrisma };
+
+export type TCategory = { categories: Category[] };
 
 export interface ErrorResponse {
   message: string;
