@@ -40,7 +40,9 @@ export const createProduct = serverActionMiddleware(
       height: uploadedFiles[i].height,
       is_default: image.is_default,
     }));
-    const { metadata, ...productData } = data;
+
+    const { metadata, categories, ...productData } = data;
+
     await prisma.product.create({
       data: {
         ...productData,
@@ -48,6 +50,9 @@ export const createProduct = serverActionMiddleware(
           createMany: {
             data: Object.values(metadata),
           },
+        },
+        categories: {
+          connect: categories,
         },
         images: {
           create: imagesData,
@@ -81,7 +86,9 @@ export const updateProduct = serverActionMiddleware(
       uploadedImages = await uploadImages(files, buffers);
     }
 
-    const { images, metadata, ...productData } = data;
+    const {
+      images, metadata, categories, ...productData
+    } = data;
 
     // Filter images that has id (meaning exists in db)
     const imagesId = images?.map((image) => image.id).filter(filterNumbers);
@@ -146,6 +153,11 @@ export const updateProduct = serverActionMiddleware(
               },
             }
             : undefined,
+        categories: categories
+          ? {
+            set: categories,
+          }
+          : undefined,
       },
       include: {
         images: true,
