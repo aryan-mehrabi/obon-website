@@ -22,7 +22,7 @@ export default async function ProductCard({ product, lang }: PropTypes) {
 
   return (
     <Link href={`/product/${product.id}`}>
-      <div className="shadow-sm rounded p-3 bg-white">
+      <div className="shadow-sm hover:shadow-xl transition-shadow rounded p-3 bg-white">
         <div className="mb-2 h-[250px] overflow-hidden">
           <Image
             alt="sample product image"
