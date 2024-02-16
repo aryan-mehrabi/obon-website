@@ -3,28 +3,59 @@ import React from "react";
 
 import Heading from "@/components/atoms/Heading";
 import Products from "@/components/organs/Products";
-import { getProducts } from "@/data/product";
+import { getCategories, getProducts } from "@/data/product";
 import { getDictionary } from "@/lib/locale";
-import { ProductWithImage } from "@/types";
+import { TCategory, TImage, TProduct } from "@/types";
+
+import FilterProducts from "./_components/FilterProducts";
 
 interface PropTypes {
   params: {
     lang: Locale;
   };
+  searchParams: {
+    categories?: string;
+  };
 }
 
-export default async function page({ params: { lang } }: PropTypes) {
-  const [dict, products] = await Promise.all([
+export default async function page({
+  params: { lang },
+  searchParams,
+}: PropTypes) {
+  const selectedCategories = searchParams.categories
+    ?.split(",")
+    .map((id) => +id)
+    .filter((id) => id);
+
+  const [dict, categories, products] = await Promise.all([
     getDictionary(lang),
+    getCategories(),
     getProducts({
       where: {
         is_visible_to_user: true,
+        categories: selectedCategories?.length
+          ? {
+            some: {
+              id: {
+                in: selectedCategories,
+              },
+            },
+          }
+          : undefined,
       },
       include: {
         images: true,
+        categories: true,
       },
-    }) as unknown as ProductWithImage[],
+    }) as unknown as TProduct<TImage & TCategory>[],
   ]);
+
+  // prettier-ignore
+  const filteredProducts = selectedCategories
+    ? products.filter((product) => (
+      selectedCategories.every((id) => (
+        product.categories.some((category) => id === category.id)))))
+    : products;
 
   const {
     pages: {
@@ -38,7 +69,8 @@ export default async function page({ params: { lang } }: PropTypes) {
         <Heading type="h2">{title}</Heading>
         <p>{description}</p>
       </div>
-      <Products lang={lang} products={products} />
+      <FilterProducts dict={dict} categories={categories} />
+      <Products lang={lang} products={filteredProducts} />
     </section>
   );
 }

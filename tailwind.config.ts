@@ -2,6 +2,9 @@
 // eslint-disable-next-line
 const tailwindcssAnimate = require("tailwindcss-animate");
 module.exports = {
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",

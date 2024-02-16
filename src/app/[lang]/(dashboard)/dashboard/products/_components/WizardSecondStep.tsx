@@ -1,10 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Attribute, Locale } from "@prisma/client";
+import { Attribute, Category, Locale } from "@prisma/client";
+import { CaretSortIcon, CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import React, { useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
   Form,
@@ -15,10 +23,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/components/ui/use-toast";
 import en from "@/dictionaries/en.json";
-import { filterDirtyFields } from "@/lib/utils";
+import { cn, filterDirtyFields } from "@/lib/utils";
 import {
   productMetadataFormSchema,
   productSecondStepFormSchema,
@@ -33,6 +46,7 @@ import {
 
 interface PropTypes {
   attributes: Attribute[];
+  categories: Category[];
   dict: typeof en;
   formData: TFormData;
   onSubmit: (
@@ -45,6 +59,7 @@ interface PropTypes {
 
 export default function WizardSecondStep({
   attributes,
+  categories,
   formData: { fields, dirtyFields },
   setFormData,
   setStep,
@@ -55,7 +70,7 @@ export default function WizardSecondStep({
     pages: {
       dashboardProducts: {
         newProductModal: { buttons },
-        productForm: { available, visible },
+        productForm: { available, visible, categories: dictCategories },
       },
     },
   } = dict;
@@ -65,12 +80,14 @@ export default function WizardSecondStep({
   const router = useRouter();
   const pathname = usePathname();
   const attributesSchema = productMetadataFormSchema(attributes);
+  const [open, setOpen] = useState(false);
   const form = useForm<ProductSecondStepFormSchema>({
     resolver: zodResolver(productSecondStepFormSchema.merge(attributesSchema)),
     defaultValues: {
       is_available: fields.is_available,
       is_visible_to_user: fields.is_visible_to_user,
       metadata: fields.metadata,
+      categories: fields.categories,
     },
   });
 
@@ -155,40 +172,129 @@ export default function WizardSecondStep({
               )}
             />
           ))}
-          <FormField
-            control={form.control}
-            name="is_available"
-            render={({ field: { value, onChange, ...field } }) => (
-              <FormItem className="flex gap-2 items-center space-y-0">
-                <FormLabel>{available.title}</FormLabel>
-                <FormControl>
-                  <Switch
-                    onCheckedChange={(val) => onChange(val)}
-                    checked={value}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="is_visible_to_user"
-            render={({ field: { value, onChange, ...field } }) => (
-              <FormItem className="flex gap-2 items-center space-y-0">
-                <FormLabel>{visible.placeholder}</FormLabel>
-                <FormControl>
-                  <Switch
-                    onCheckedChange={(val) => onChange(val)}
-                    checked={value}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="col-span-2 grid grid-cols-2 gap-x-2">
+            <FormField
+              control={form.control}
+              name="is_available"
+              render={({ field: { value, onChange, ...field } }) => (
+                <FormItem className="flex gap-2 items-center space-y-0">
+                  <FormLabel>{available.title}</FormLabel>
+                  <FormControl>
+                    <Switch
+                      onCheckedChange={(val) => onChange(val)}
+                      checked={value}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="is_visible_to_user"
+              render={({ field: { value, onChange, ...field } }) => (
+                <FormItem className="flex gap-2 items-center space-y-0">
+                  <FormLabel>{visible.title}</FormLabel>
+                  <FormControl>
+                    <Switch
+                      onCheckedChange={(val) => onChange(val)}
+                      checked={value}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="col-span-2">
+            <FormField
+              control={form.control}
+              name="categories"
+              render={({ field: { value, onChange } }) => (
+                <FormItem>
+                  <FormLabel>{dictCategories.title}</FormLabel>
+                  <FormControl>
+                    <Popover open={open} onOpenChange={setOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={open}
+                          className="w-full justify-between"
+                        >
+                          <ul className="inline-block text-ellipsis whitespace-nowrap overflow-hidden">
+                            {value.length
+                              ? value.map((category) => (
+                                <li
+                                  key={category.id}
+                                  className="inline-block py-1 px-2 rounded-full bg-muted"
+                                >
+                                  {category[`title_${lang}`]}
+                                  <span
+                                    role="presentation"
+                                    onClick={(e) => {
+                                      onChange(
+                                        value.filter(
+                                          (cat) => cat.id !== category.id,
+                                        ),
+                                      );
+                                      e.stopPropagation();
+                                    }}
+                                  >
+                                    <Cross2Icon className="h-3 w-3 opacity-50 inline-block" />
+                                  </span>
+                                </li>
+                              ))
+                              : dictCategories.placeholder}
+                          </ul>
+                          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0">
+                        <Command>
+                          <CommandInput
+                            placeholder={dictCategories.search}
+                            className="h-9"
+                          />
+                          <CommandEmpty>{dictCategories.notFound}</CommandEmpty>
+                          <CommandGroup>
+                            {categories.map((category) => (
+                              <CommandItem
+                                key={category.id}
+                                value={category[`title_${lang}`]}
+                                onSelect={() => {
+                                  onChange(
+                                    value.some((cat) => cat.id === category.id)
+                                      ? value.filter(
+                                        (cat) => cat.id !== category.id,
+                                      )
+                                      : [...value, category],
+                                  );
+                                  setOpen(false);
+                                }}
+                              >
+                                {category[`title_${lang}`]}
+                                <CheckIcon
+                                  className={cn(
+                                    "ml-auto h-4 w-4",
+                                    value.some((cat) => cat.id === category.id)
+                                      ? "opacity-100"
+                                      : "opacity-0",
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
         <DialogFooter>
           <Button

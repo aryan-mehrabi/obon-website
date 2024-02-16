@@ -14,35 +14,35 @@ model User {
   id             String    @id @default(cuid())
   first_name     String?
   last_name      String?
-  email          String @unique
+  email          String    @unique
   password       String?
   emailVerified  DateTime?
   address        Address?
-  role           Role @default(USER)
+  role           Role      @default(USER)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 }
 
 model Address {
-  id            Int    @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   county        String
   city          String
   postal_code   Int
   address       String
-  user          User   @relation(fields: [userId], references: [id])
-  userId        String @unique
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String    @unique
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
 
 model Product {
-  id                  Int    @id @default(autoincrement())
+  id                  Int       @id @default(autoincrement())
   title_en            String
   title_fa            String
-  is_available        Boolean @default(true)
-  is_visible_to_user  Boolean @default(true)
-  quantity            Int @default(1)
-  price               Int @default(0)
+  is_available        Boolean   @default(true)
+  is_visible_to_user  Boolean   @default(true)
+  quantity            Int       @default(1)
+  price               Int       @default(0)
   images              Image[]
   categories          Category[]
   metadata            Metadata[]
@@ -51,20 +51,20 @@ model Product {
 }
 
 model Image {
-  id          Int    @id @default(autoincrement())
-  product     Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  id          Int       @id @default(autoincrement())
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId   Int
   url         String
   width       Int
   height      Int
-  alt         String? @default("")
-  is_default  Boolean @default(false)
+  alt         String?   @default("")
+  is_default  Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
 
 model Category {
-  id            Int    @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   products      Product[]
   title_en      String
   title_fa      String
@@ -73,13 +73,15 @@ model Category {
 }
 
 model Attribute {
-  id            Int    @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   title_en      String
   title_fa      String
-  key           String @unique
+  key           String    @unique
   required      Boolean
-  locale        Locale @default(fa)
+  locale        Locale    @default(fa)
   metadata      Metadata[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Metadata {
@@ -89,6 +91,8 @@ model Metadata {
   productId     Int
   attribute     Attribute   @relation(fields: [attributeId], references: [id], onDelete: Cascade)
   attributeId   Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 
   @@unique([productId, attributeId])
 }

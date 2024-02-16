@@ -1,6 +1,6 @@
 "use client";
 
-import { Attribute } from "@prisma/client";
+import { Attribute, Category } from "@prisma/client";
 import React, { useState } from "react";
 
 import en from "@/dictionaries/en.json";
@@ -24,10 +24,12 @@ const initVal = {
   is_available: true,
   is_visible_to_user: true,
   metadata: {},
+  categories: [],
 };
 
 interface PropTypes {
   attributes: Attribute[];
+  categories: Category[];
   defaultValues?: ProductFormSchema;
   dict: typeof en;
   onSubmit: (
@@ -37,10 +39,11 @@ interface PropTypes {
 }
 
 export default function Wizard({
+  attributes,
+  categories,
   dict,
   defaultValues = initVal,
   onSubmit,
-  attributes,
 }: PropTypes) {
   const [formData, setFormData] = useState<TFormData>({
     dirtyFields: [],
@@ -66,6 +69,7 @@ export default function Wizard({
         dict,
         onSubmit,
         attributes,
+        categories,
       }}
     />
   );

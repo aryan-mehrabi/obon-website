@@ -47,6 +47,13 @@ export const productSecondStepFormSchema = z.object({
       }),
     )
     .or(z.record(z.never())),
+  categories: z.array(
+    z.object({
+      id: z.number(),
+      title_en: z.string(),
+      title_fa: z.string(),
+    }),
+  ),
 });
 
 export const productFormSchema = productFirstStepFormSchema.merge(
@@ -80,4 +87,9 @@ export const attributeFormSchema = z.object({
     .regex(/^[a-z]+(_|[a-z]+)*$/, { message: "only small english characters" }),
   required: z.boolean(),
   locale: z.nativeEnum(Locale),
+});
+
+export const categoryFormSchema = z.object({
+  title_fa: z.string().min(1),
+  title_en: z.string().min(1),
 });

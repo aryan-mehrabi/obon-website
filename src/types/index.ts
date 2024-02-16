@@ -1,5 +1,6 @@
 import {
   Attribute as AttributePrisma,
+  Category,
   Image as ImagePrisma,
   Metadata as MetadataPrisma,
   Product as ProductPrisma,
@@ -10,6 +11,7 @@ import * as z from "zod";
 import { getDictionary } from "@/lib/locale";
 import {
   attributeFormSchema,
+  categoryFormSchema,
   productFirstStepFormSchema,
   productFormSchema,
   productSecondStepFormSchema,
@@ -37,6 +39,8 @@ export type TMetadata<T = Record<string, never>> = {
 };
 
 export type TAttribute = { attribute: AttributePrisma };
+
+export type TCategory = { categories: Category[] };
 
 export interface ErrorResponse {
   message: string;
@@ -68,5 +72,7 @@ export type TFormData = {
 };
 
 export type AttributeFormSchema = z.infer<typeof attributeFormSchema>;
+
+export type CategoryFormSchema = z.infer<typeof categoryFormSchema>;
 
 export type TDictionary = Awaited<ReturnType<typeof getDictionary>>;
