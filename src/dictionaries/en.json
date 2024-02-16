@@ -55,7 +55,10 @@
     },
     "products": {
       "title": "Products",
-      "description": "Order it for you or for your beloved ones"
+      "description": "Order it for you or for your beloved ones",
+      "filterInput": {
+        "placeholder": "Categories"
+      }
     },
     "productDetail": {
       "addCart": "Add to Cart",

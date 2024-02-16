@@ -55,7 +55,10 @@
     },
     "products": {
       "title": "محصولات",
-      "description": "برای خود یا عزیزانتان سفارش دهید"
+      "description": "برای خود یا عزیزانتان سفارش دهید",
+      "filterInput": {
+        "placeholder": "دسته‌بندی"
+      }
     },
     "productDetail": {
       "addCart": "اضافه به سبد خرید",

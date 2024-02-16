@@ -12,11 +12,15 @@ import {
 import React from "react";
 
 import Icon from "@/components/atoms/Icon";
+import { i18n } from "@/lib/utils";
+import { TDictionary } from "@/types";
 
 export default function FilterProducts({
   categories,
+  dict,
 }: {
   categories: Category[];
+  dict: TDictionary;
 }) {
   const { lang }: { lang: Locale } = useParams();
   const searchParams = useSearchParams();
@@ -27,6 +31,12 @@ export default function FilterProducts({
     ?.split(",")
     .map((cat) => +cat)
     .filter((cat) => cat);
+
+  const {
+    pages: {
+      products: { filterInput },
+    },
+  } = dict;
 
   const onClickCategory = (id: number) => {
     if (!selectedCategories) selectedCategories = [];
@@ -47,16 +57,19 @@ export default function FilterProducts({
 
   return (
     <div className="flex items-center">
-      <DropdownMenu.Root modal={false}>
+      <DropdownMenu.Root
+        modal={false}
+        dir={i18n.rtl.some((locale) => locale === lang) ? "rtl" : "ltr"}
+      >
         <DropdownMenu.Trigger asChild>
           <button
             className="flex w-52 justify-between items-center gap-2 px-2 py-1 bg-white border border-[#898989]"
             type="button"
           >
-            <p>Select Categories</p>
+            <p>{filterInput.placeholder}</p>
             <Icon
               render={ChevronDownIcon}
-              className="w-6 h-6 border-l-[1px] pl-2"
+              className="w-6 h-6 ltr:border-l-[1px] rtl:border-r-[1px] ps-2"
             />
           </button>
         </DropdownMenu.Trigger>
@@ -87,7 +100,11 @@ export default function FilterProducts({
             className="flex gap-2 items-center bg-white rounded-full text-secondary-foreground py-1 px-3 border"
           >
             <p className="whitespace-nowrap">
-              {categories.find((cat) => cat.id === categoryId)?.title_en}
+              {
+                categories.find((cat) => cat.id === categoryId)?.[
+                  `title_${lang}`
+                ]
+              }
             </p>
             <button onClick={() => onClickDelete(categoryId)} type="button">
               <Icon render={Cross2Icon} className="w-3 h-3" />

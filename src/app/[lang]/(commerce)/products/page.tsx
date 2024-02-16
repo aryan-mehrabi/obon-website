@@ -69,7 +69,7 @@ export default async function page({
         <Heading type="h2">{title}</Heading>
         <p>{description}</p>
       </div>
-      <FilterProducts categories={categories} />
+      <FilterProducts dict={dict} categories={categories} />
       <Products lang={lang} products={filteredProducts} />
     </section>
   );
