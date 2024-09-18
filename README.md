@@ -8,7 +8,7 @@ A full-stack e-commerce application features dual-language support and a conveni
 
 - Next.js (App Router)
 - [Prisma ORM](https://www.prisma.io/)
-- PostgeSQL
+- PostgreSQL
 - Styled using [Tailwind CSS](https://tailwindcss.com/)
 - UI Components using [Shadcn-UI](https://ui.shadcn.com/)
 - Eslint for code quality
