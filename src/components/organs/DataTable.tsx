@@ -39,7 +39,8 @@ export function DataTable<TData, TValue>({
   hiddenOnSm = [],
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
@@ -47,9 +48,12 @@ export function DataTable<TData, TValue>({
     { id: "id", desc: false },
   ]);
 
+  const memoizedData = React.useMemo(() => data, [data]);
+  const memoizedColumns = React.useMemo(() => columns, [columns]);
+
   const table = useReactTable({
-    data,
-    columns,
+    data: memoizedData,
+    columns: memoizedColumns,
     state: {
       sorting,
       columnVisibility,
